@@ -1,0 +1,12 @@
+#aca van los archivos python que me parecen mas relevantes del caso sin kz: 
+	
+	-campos longitudinales: Ez (pol s) y Hz (pol p)
+	-denominador gn adimensional (relacion de dispersion para resolver numericamente)
+	-seccion eficaz (formulas simplificadas, ver cuaderno) solo para la pol p (la unica pol permitida por este tipo de plasmones) para el caso no dispersivo y para el dispersivo (nanocristal)
+	-ganancia modal
+	-graficar el |determinante sin kz| cerca del punto de minimizacion
+
+
+parametros en complex_freq: frecuencia compleja (im(omega/c),re(omega/c)), im(epsilon1) ---> se hace un barrido en im(epsilon1) y omega/c complejo para cada mu y luego se halla el im(epsilon1) que minimiza la im(omega/c). No se si llego por cuestion de tiempo a hacer esta carpeta
+
+parametros en real_freq: re(omega/c), im(epsilon1)

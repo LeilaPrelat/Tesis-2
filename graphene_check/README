@@ -1,0 +1,7 @@
+sobre Tesis-corregido : estaba mal la conductividad del grafeno, el sigma del paper de tunable != el sigma del libro de grafeno de Depine ---> aca se usa el sigma del libro de grafeno
+
+grafeno.py : conductividad del paper de tunable
+
+dentro de grafeno-depine.py : conductividad del libro de depine y la conductividad del paper de tunable (sigmaMAL)
+
+se puede observar que la diferencia entre ambos se vuelve apreciable en Re(omega/c)>1 y hasta ahora veniamos teniendo Re(omega/c)<1
