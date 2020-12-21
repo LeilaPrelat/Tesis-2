@@ -58,7 +58,7 @@ print('Definir parametros del problema')
 
 re_epsi1 = 4.9
 R = 0.5              #micrones
-modo = 1
+modo = 2
 
 if modo==1:
     list_im_epsi1 = np.linspace(0,-0.04,401) 
@@ -88,7 +88,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_graphs==1 or save_data_opt==1:
     try:
-        path_data = r'/re_epsi1_%.2f_vs_mu/find_Lambda' %(re_epsi1)
+        path_data = r'/re_epsi1_%.2f_vs_mu/find_Lambda/modo_%i' %(re_epsi1,modo)
         path = path_basic + path_data
         os.chdir(path) 
     except OSError or IOError as error:
