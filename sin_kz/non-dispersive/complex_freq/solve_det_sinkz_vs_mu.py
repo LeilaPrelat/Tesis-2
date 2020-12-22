@@ -28,16 +28,6 @@ if graficar ==1:
 
 #%%
 
-print('Definir parametros para graficos')
-
-tamfig = (10,8)
-tamlegend = 18
-tamletra = 18
-tamtitle = 18
-tamnum = 16
-
-#%%
-
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
@@ -54,27 +44,34 @@ except ModuleNotFoundError:
 
 #%%
 
+print('Definir parametros para graficos')
+
+tamfig = (10,8)
+tamlegend = 18
+tamletra = 18
+tamtitle = 18
+tamnum = 16
+
+#%%
+
 print('Definir parametros del problema')
 
 re_epsi1 = 4.9
 R = 0.5              #micrones
-modo = 2
+modo = 3
 
 if modo==1:
-    list_im_epsi1 = np.linspace(0,-0.04,401) 
     list_im_epsi1 = np.linspace(0,-0.05,501) 
-elif modo==2 or modo==3:
-    list_im_epsi1 = np.linspace(0,-0.03,301) 
-elif modo==4:
-    list_im_epsi1 = np.linspace(0,-0.03,301) 
-    
+else:
+    list_im_epsi1 = np.linspace(0,-0.04,401) 
+
 list_mu =  np.linspace(0.3,0.9,601)  
 # list_mu = [0.3]
 
 #%%
 
-if list_im_epsi1[0]!= 0 or list_mu[0]!= 0.3:
-    raise TypeError('Se necesita empezar im(epsi1)=0 y mu = 0.3 para usar las cond iniciales')
+# if list_im_epsi1[0]!= 0 or list_mu[0]!= 0.3:
+#     raise TypeError('Se necesita empezar im(epsi1)=0 y mu = 0.3 para usar las cond iniciales')
 
 if R!=0.5:
     raise TypeError('Wrong value for radium')
@@ -88,7 +85,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_graphs==1 or save_data_opt==1:
     try:
-        path_data = r'/re_epsi1_%.2f_vs_mu/find_Lambda/modo_%i' %(re_epsi1,modo)
+        path_data = r'/re_epsi1_%.2f_vs_mu/find_Lambda' %(re_epsi1)
         path = path_basic + path_data
         os.chdir(path) 
     except OSError or IOError as error:
@@ -97,7 +94,7 @@ if save_graphs==1 or save_data_opt==1:
         os.chdir(path)
 
     path_g = path + '/' + 'graficos'
-    path_d = path 
+    path_d = path + '/' + 'modo_%i' %(modo)
     
     if not os.path.exists(path_g):
         print('Creating folder to save graphs')
@@ -138,7 +135,7 @@ mu0 = list_mu[0]
 if mu0 == 0.3:
     cond_inicial0 = fcond_inicial(re_epsi1)
 else:
-    cond_inicial0 = [] #mu anterior
+    cond_inicial0 = [3.147886255e+01, 6.614417934e-02] #mu anterior
 
 if graficar==0:
     os.chdir(path_d)

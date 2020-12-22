@@ -34,7 +34,7 @@ try:
     sys.path.insert(1, path_basic)
     from Etot_conkz import Etot
 except ModuleNotFoundError:
-    print('Etot_conkz.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('Etot_conkz.py no se encuentra en ' + path_basic)
     path_basic = input('path de la carpeta donde se encuentra Etot_conkz.py')
     sys.path.insert(1, path_basic)
     from Etot_conkz import Etot

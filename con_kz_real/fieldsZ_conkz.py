@@ -28,7 +28,7 @@ try:
     sys.path.insert(1, path_basic)
     from coef_matrix_AoBo import coef
 except ModuleNotFoundError:
-    print('coef_matrix_AoBo.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('coef_matrix_AoBo.py no se encuentra en ' + path_basic)
     path_basic = input('path de la carpeta donde se encuentra coef_matrix_AoBo.py')
     sys.path.insert(1, path_basic)
     from coef_matrix_AoBo import coef
@@ -37,7 +37,7 @@ try:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
 except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('constantes.py no se encuentra en ' + path_graphene)
     path_graphene3 = input('path de la carpeta donde se encuentra constantes.py')
     sys.path.insert(1, path_graphene3)
     from constantes import constantes

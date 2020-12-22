@@ -17,8 +17,8 @@ from scipy.optimize import fsolve
 
 #%% 
 
-save_data_opt = 1 #guardar data de la minimizacion
-save_graphs = 1 #guardar los graficos
+save_data_opt = 0 #guardar data de la minimizacion
+save_graphs = 0 #guardar los graficos
 
 tamfig = (11,9)
 tamlegend = 18
@@ -31,16 +31,15 @@ tamnum = 16
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_graphene = path_basic.replace('/sin_kz/dispersive','') 
 
 try:
-    sys.path.insert(1, path_graphene)
-    from constantes import constantes
+    sys.path.insert(1, path_basic)
+    from complex_omegac_QE import omegac_QE
 except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
-    path_graphene3 = input('path de la carpeta donde se encuentra constantes.py')
-    sys.path.insert(1, path_graphene3)
-    from constantes import constantes 
+    print('complex_omegac_QE.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    path_basic1 = input('path de la carpeta donde se encuentra complex_omegac_QE.py')
+    sys.path.insert(1, path_basic1)
+    from complex_omegac_QE import omegac_QE
 
 #Para condiciones iniciales
 try:
@@ -51,8 +50,6 @@ except ModuleNotFoundError:
     path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
-
-pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 
@@ -90,48 +87,6 @@ if save_data_opt==1 or save_graphs ==1:
     if not os.path.exists(path):
         print('Creating folder to save data')
         os.mkdir(path)
-        
-#%%
-
-def omegac_QE(modo,hbaramu,epsi_ci):
-    """
-    Parameters
-    ----------
-    im_epsi1 : imaginary part of electric permeability of medium 1
-    modo : mode
-    R : radius of cylinder in micrometer
-    hbaramu : hbar*mu chemical potential of graphene in eV
-
-    Returns
-    -------
-    complex frequency (pole) omega/c QE approximation
-    dispersive case
-
-    """
-
-
-    TK = 300               	# temperature in K
-    akb = 8.6173324E-5           ### Boltzman constant in eV/K 
-
-    TKmu = TK*akb/hbaramu
-    aux = np.exp(1/(2*TKmu)) + np.exp(-1/(2*TKmu))
-    intra = 2j*(1/pi)*akb*TK*np.log(aux)/(hb)
-    intra = intra*alfac*c
-    omega02 = -4*pi*1j*intra*modo/R #omega0n**2
-
-    gammaDL_ev = gamma_DL/hb
-    gamma_c_ev = hbargama/hb
-
-    omegap = Ep/hb
-    num_real = omegap**2 + omega02
-    den_real = epsiinf_DL + 1j*epsi_ci + epsi2
-    omega_real = (num_real/den_real)**(1/2)
-    num_imag = gammaDL_ev*(omegap**2) + gamma_c_ev*omega02
-    den_imag = 2*(omegap**2 + omega02)
-    omega_imag = num_imag/den_imag
-    rta = omega_real - 1j*omega_imag    
-    
-    return rta/c
 
 #%%
 
@@ -179,13 +134,13 @@ for mu in list_mu:
 
            
     def im_omegac_QE(x):
-        rta = omegac_QE(modo,mu,x)
+        rta = omegac_QE(modo,Ep,epsiinf_DL,gamma_DL,x,R,mu)
         return rta.imag
         
     
     sol = fsolve(im_omegac_QE,cond_inicial,xtol=tol_NM,maxfev=ite_NM)[0]
 
-    omegac = omegac_QE(modo,mu,sol)
+    omegac = omegac_QE(modo,Ep,epsiinf_DL,gamma_DL,sol,R,mu)
     re_omegac_opt.append(omegac.real)
     im_omegac_opt.append(omegac.imag)
     epsi1_imag_opt.append(sol)

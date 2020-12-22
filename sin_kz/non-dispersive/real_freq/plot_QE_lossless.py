@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 #%% 
 
 save_graphs = 1 #guardar los graficos
+save_data_opt = 1
 
 tamfig = (11,9)
 tamlegend = 18
@@ -59,7 +60,6 @@ if R != 0.5:
         
 #%%
 
-label_graph = 'Opt det sin kz'
 label_QE = 'QE approx sin perdidas'
 label_QE2 = 'QE approx sin perdidas sin ' + r'$\gamma^2_c$' 
 title = 'Modo = %i, R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f' %(modo,R,re_epsi1) +  ', ' + name_this_py
@@ -90,11 +90,22 @@ for mu in list_mu:
     omegac_QE.append(a1)
     im_epsi1_QE_aprox.append(b2)
     omegac_QE_aprox.append(a2)
-    
+
+#%%
+
+if save_data_opt==1:
+    print('Guardar data de minimizacion en .txt')
+    os.chdir(path_save)
+    tabla = np.array([list_mu,omegac_QE,im_epsi1_QE])
+    tabla = np.transpose(tabla)
+    info = '.QE lossless sin despreciar gamma_c**2, R=%.1f \mum, Re(epsi1)=%.2f' %(R,re_epsi1) 
+    header1 = 'mu [eV]     Im(epsi1)     omega/c' + info + name_this_py
+    np.savetxt('QE_lossless_vs_mu_modo%i.txt' %(modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
+  
 
 plt.figure(figsize=tamfig)
-plt.plot(list_mu,im_epsi1_QE,'.m',ms=10,label=label_QE)
-plt.plot(list_mu,im_epsi1_QE_aprox,'.b',ms=10,label=label_QE2)
+plt.plot(list_mu,im_epsi1_QE,'.-m',ms=10,label=label_QE)
+plt.plot(list_mu,im_epsi1_QE_aprox,'-b',lw=5,label=label_QE2)
 plt.title(title,fontsize=tamtitle)
 plt.ylabel(r'Im($\epsilon_1$)',fontsize=tamletra)
 plt.xlabel(labelx,fontsize=tamletra)
@@ -102,12 +113,11 @@ plt.tick_params(labelsize = tamnum)
 plt.legend(loc='best',markerscale=2,fontsize=tamlegend)
 plt.grid(1)
 if save_graphs==1:
-    os.chdir(path_save)
     plt.savefig('Im_epsi1_vs_mu_%i_QE'%(modo))
 
 plt.figure(figsize=tamfig)
-plt.plot(list_mu,omegac_QE,'.m',ms=10,label=label_QE)
-plt.plot(list_mu,omegac_QE_aprox,'.b',ms=10,label=label_QE2)
+plt.plot(list_mu,omegac_QE,'.-m',ms=10,label=label_QE)
+plt.plot(list_mu,omegac_QE_aprox,'-b',lw=5,label=label_QE2)
 plt.title(title,fontsize=tamtitle)
 plt.ylabel(r'$\omega/c$ [1/$\mu$m]',fontsize=tamletra)
 plt.xlabel(labelx,fontsize=tamletra)

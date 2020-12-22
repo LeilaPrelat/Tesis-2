@@ -14,17 +14,19 @@ import numpy as np
 import os
 import sys
 import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
 
 #%% 
 
 save_graphs = 1 #guardar los graficos
 break_axes = 1
 
-tamfig = (11,9)
-tamlegend = 18
-tamletra = 18
-tamtitle = 18
-tamnum = 16
+tamfig = (12,9)
+tamlegend = 16
+tamletra = 16
+tamtitle = 16
+tamnum = 14
 
 #%%
 
@@ -48,7 +50,7 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 print('Definir parametros del problema')
 
-modo = 1
+modo = 3
 R = 0.5 #micrones
 re_epsi1 = 4.9
 
@@ -57,7 +59,7 @@ list_mu = [0.3,0.5,0.7]
 info = 'Modo = %i, R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f' %(modo,R,re_epsi1) +  ', ' + name_this_py
 
 path_g = path_basic + r'/complex_freq/re_epsi1_%.2f_vs_mu' %(re_epsi1)
-path_load = path_g  + '/' + 'find_Lambda'
+path_load = path_g  + '/' + 'find_Lambda' + '/' + 'modo_%i' %(modo)
 os.chdir(path_load)
 
 #%%
@@ -76,6 +78,7 @@ if modo not in [1,2,3,4]:
 #hallar minimos y maximos
 
 list_im_epsi1 = []
+index_crit = []
 
 maxis_y = []
 minis_y = []
@@ -83,7 +86,7 @@ maxis_x = []
 minis_x = []
 for mu in list_mu:
     
-    tabla = np.loadtxt('opt_det_mu%.3f_modo%i.txt' %(mu,modo), delimiter='\t', skiprows=1)     
+    tabla = np.loadtxt('opt_det_mu%.4f_modo%i.txt' %(mu,modo), delimiter='\t', skiprows=1)     
     tabla = np.transpose(tabla)       
     try: 
         [epsi1_imag_opt,lambda_real_opt,lambda_imag_opt,eq_gn] = tabla
@@ -100,11 +103,11 @@ for mu in list_mu:
         omega_c_real.append(omega_c.real)
         omega_c_imag.append(omega_c.imag)
 
-    maxis_y.append(np.max(omega_c_real))
-    minis_y.append(np.min(omega_c_real))
+    maxis_x.append(np.max(omega_c_real))
+    minis_x.append(np.min(omega_c_real))
     
-    maxis_x.append(np.max(omega_c_imag))
-    minis_x.append(np.min(omega_c_imag))
+    maxis_y.append(np.max(omega_c_imag))
+    minis_y.append(np.min(omega_c_imag))
     
     #hallar en donde se anula la parte imaginaria de omega/c (valor critico)
 
@@ -112,10 +115,18 @@ for mu in list_mu:
     ind3 = np.argmin(omega_c_imag2)
     
     list_im_epsi1.append(epsi1_imag_opt[ind3])
+    index_crit.append(ind3)
+
+#crear ticks del eje x (parte real de omega/c) con los minimos y maximos anteriores
+# ticks_mu1 = []
+# ticks_mu2 = []
+# ticks_mu3 = []
+# for k in range(list_mu):
+#     deltax = maxis_x
+
+# los del eje y se ven bien automaticamente
 
 #%%        
-
-N = int(1e5) #interpolacion
 
 print('Graficar')
 
@@ -125,7 +136,7 @@ list_color = ['purple','darkblue','darkgreen']
 #fig,ax = plt.subplots(1,len(list_mu), sharey=True, gridspec_kw={'hspace': 1, 'wspace': 0.01}, figsize = (12,14))
 wspace = 0.0005
 if break_axes==1:
-    wspace = 0.1
+    wspace = 0.05
 
 fig,ax = plt.subplots(1,len(list_mu), sharey=True, facecolor='w', figsize = tamfig)
 plt.subplots_adjust(hspace = 0.001,wspace=wspace)
@@ -135,7 +146,7 @@ plt.subplots_adjust(hspace = 0.001,wspace=wspace)
 i = 0
 for mu in list_mu:
     
-    tabla = np.loadtxt('opt_det_mu%.3f_modo%i.txt' %(mu,modo), delimiter='\t', skiprows=1)     
+    tabla = np.loadtxt('opt_det_mu%.4f_modo%i.txt' %(mu,modo), delimiter='\t', skiprows=1)     
     tabla = np.transpose(tabla)       
     try: 
         [epsi1_imag_opt,lambda_real_opt,lambda_imag_opt,eq_gn] = tabla
@@ -146,7 +157,7 @@ for mu in list_mu:
     
     omega_c_real = []
     omega_c_imag = []
-    for k in range(len(lambda_real_opt)):
+    for k in range(index_crit[i]):
         lambda_real = lambda_real_opt[k]
         lambda_imag = lambda_imag_opt[k]
         lambbda = lambda_real + 1j*lambda_imag
@@ -160,13 +171,13 @@ for mu in list_mu:
     list_im_epsi1.append(epsi1_imag_opt[ind3])
     label_graph_im_eps1_3 = 'Im($\epsilon_1)_c$ = %.7f' %(epsi1_imag_opt[ind3])
     
-    ax[i].plot(omega_c_real,omega_c_imag,'-',lw = 7,color = list_color[i],label = '$\mu_c$ = %.1f' %(mu))
+    ax[i].plot(omega_c_real,omega_c_imag,'-',lw = 5,color = list_color[i],label = '$\mu_c$ = %.1f' %(mu))
     #ax[i].plot(omega_c_real[ind3],omega_c_imag[ind3],'.', color = 'darkred',ms=10) 
     #label = label_graph_im_eps1_3
     i = i + 1
 
-ax[0].set_ylabel('Im($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad=12)
-ax[1].set_xlabel('Re($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamtitle,labelpad=8)
+ax[0].set_ylabel('Im($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad=5)
+ax[1].set_xlabel('Re($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamtitle,labelpad=17)
 
 
 ticks1_mod1 = [0.121,0.1215,0.122]
@@ -198,13 +209,14 @@ ticks3_mod4 = [0.3705,0.3715,0.3725,0.3735]
 ticks_mod4 = [ticks1_mod4,ticks2_mod4,ticks3_mod4]
 
 ax[0].tick_params(axis='y',left=True, right=False,labelsize=tamnum)
-ax[0].tick_params(axis='x',bottom=True, top=True,labelsize=tamnum)
+ax[0].tick_params(axis='x',bottom=True, top=False,labelsize=tamnum)
 
-ax[1].tick_params(axis='x', bottom=True, top=True,labelsize=tamnum)
 ax[1].tick_params(axis='y', right=False, left = False)
+ax[1].tick_params(axis='x', bottom=True, top=False,labelsize=tamnum)
 
-ax[2].tick_params(axis='x', bottom=True, top=True,labelsize=tamnum)
 ax[2].tick_params(axis='y', right=False, left = False)
+ax[2].tick_params(axis='x', bottom=True, top=False,labelsize=tamnum)
+
 
 if break_axes==1:
 
@@ -244,8 +256,6 @@ if break_axes==1:
     ax[2].plot((-d,+d), (-d,+d), **kwargs)
 
 
-
-
 for i in [0,1,2]:
     # deltax = maxis_x[i] - minis_x[i]
     # ax[i].set_ylim([minis_x[i]-deltax*8*1e-3,maxis_x[i]+deltax*8*1e-3])
@@ -266,8 +276,8 @@ for i in [0,1,2]:
     elif modo==4:
         ticks = ticks_mod4[i]
     
-    ax[i].set_xticks(ticks)
-    ax[i].legend(loc='upper right',markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+    # ax[i].set_xticks(ticks)
+    ax[i].legend(loc=[0.25,1],markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
     #ax[i].grid(1)
 
 if save_graphs==1:
@@ -275,11 +285,11 @@ if save_graphs==1:
     os.chdir(path_g)
     plt.savefig('complex_poles%i'%(modo))
 
-tabla = np.array([list_mu, list_im_epsi1])
+tabla = np.array([list_mu, list_im_epsi1],dtype=object)
 tabla = np.transpose(tabla)
 
 header1 = 'mu[eV]     Im(epsi1)' + ' inf: ' + info
-np.savetxt('inf_modo%i.txt' %(modo), tabla, fmt='%.7f',header = header1)
+np.savetxt('info_complex_poles_modo%i.txt' %(modo), tabla, fmt='%s',header = header1)
 
 #%%
 

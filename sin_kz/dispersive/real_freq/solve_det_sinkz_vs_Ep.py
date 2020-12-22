@@ -135,6 +135,8 @@ omegac_opt = []
 eq_det = []
 list_Ep_opt = []
 
+tol_NM = 1e-13
+ite_NM = 1150
 for Ep in list_Ep:
     Ep = np.round(Ep,4)
     print('')
@@ -145,8 +147,8 @@ for Ep in list_Ep:
         rta = determinante(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,modo,R,hbaramu)
         return np.abs(rta)
         
-    res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=1e-15, 
-                   options={'maxiter':1050})
+    res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=tol_NM, 
+                   options={'maxiter':ite_NM})
 #        print(res.message)
     # if res.message == 'Optimization terminated successfully.' :
     if res.x[1] <= fcond_inicial(Ep)[1]: #QE tiene que requerir menor medio activo que la sol numerica

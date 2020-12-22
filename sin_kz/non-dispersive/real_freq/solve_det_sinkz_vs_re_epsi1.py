@@ -114,6 +114,8 @@ omegac_opt = []
 eq_det = []
 list_re_epsi1_opt = []
 
+tol_NM = 1e-13
+ite_NM = 1150
 for re_epsi1 in list_re_epsi1:
     re_epsi1 = np.round(re_epsi1,4)
     print('')
@@ -126,8 +128,8 @@ for re_epsi1 in list_re_epsi1:
         rta = determinante(omegac,epsi1,modo,R,hbaramu)
         return np.abs(rta)
         
-    res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=1e-11, 
-                   options={'maxiter':1050})
+    res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=tol_NM, 
+                   options={'maxiter':ite_NM})
 #        print(res.message)
     if res.message == 'Optimization terminated successfully.':
         omegac_opt.append(res.x[0])
