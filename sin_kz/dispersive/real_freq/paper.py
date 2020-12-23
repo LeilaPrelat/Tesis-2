@@ -45,7 +45,7 @@ except ModuleNotFoundError:
     sys.path.insert(1, path_graphene3)
     from constantes import constantes
 
-pi,hb,c,alfac,mu1,mu2,epsi2 = constantes()
+pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 
@@ -53,7 +53,7 @@ print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
 R = 0.5              #micrones
-Ep = 0.6
+Ep = 0.3
 gamma_DL = 0.01 #unidades de energia
 
 path_load = path_basic + '/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(epsiinf_DL,Ep)

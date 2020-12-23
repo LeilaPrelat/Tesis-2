@@ -99,7 +99,7 @@ if save_data_opt==1:
     tabla = np.array([list_mu,omegac_QE,im_epsi1_QE])
     tabla = np.transpose(tabla)
     info = '.QE lossless sin despreciar gamma_c**2, R=%.1f \mum, Re(epsi1)=%.2f' %(R,re_epsi1) 
-    header1 = 'mu [eV]     Im(epsi1)     omega/c' + info + name_this_py
+    header1 = 'mu [eV]     Im(epsi1)     omega/c' + info + ', ' + name_this_py
     np.savetxt('QE_lossless_vs_mu_modo%i.txt' %(modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
   
 

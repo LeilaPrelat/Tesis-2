@@ -1,0 +1,1 @@
+R = 0.5 $\mu$m, $\epsilon_\infty$ = 3.90,Ep = 0.3,$\gamma_{Dl}$ = 0.01,$\mu_1$ = 1, $\mu_2$ = 1, $\epsilon_2$ = 1. Ver paper.py

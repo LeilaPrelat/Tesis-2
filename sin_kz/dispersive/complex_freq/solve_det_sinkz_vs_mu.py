@@ -65,9 +65,9 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 R = 0.5              #micrones
-modo = 2
+modo = 1
 
-Ep = 0.6
+Ep = 0.3
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
@@ -103,7 +103,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_graphs==1 or save_data_opt==1:
     try:
-        path_data = r'/epsiinf_DL_%.2f_vs_mu/find_Lambda' %(epsiinf_DL)
+        path_data = r'/epsiinf_DL_%.2f_vs_mu/Ep_%.1f/find_Lambda' %(epsiinf_DL,Ep)
         path = path_basic + path_data
         os.chdir(path) 
     except OSError or IOError as error:

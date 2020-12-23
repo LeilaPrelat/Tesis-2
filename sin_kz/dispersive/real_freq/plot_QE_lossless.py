@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 #%% 
 
 save_graphs = 1 #guardar los graficos
+save_data_opt = 1
 
 tamfig = (11,9)
 tamlegend = 18
@@ -46,30 +47,30 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 R = 0.5              #micrones
-modo = 3
+modo = 4
 
-Ep = 0.6
+Ep = 0.3
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 list_mu =  np.linspace(0.3,0.9,6001)  
-path_save = path_basic + '/epsiinf_DL_%.2f_vs_mu' %(epsiinf_DL)
+path_save = path_basic + '/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(epsiinf_DL,Ep)
+
+info1 = 'R = %.1f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
+info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
+title = info1 +'\n' + info2  + ', ' + name_this_py
+info = info1 + ', ' + info2  + ', ' + name_this_py
 
 #%%
 
 if R != 0.5:
     raise TypeError('Wrong value for radium')
-        
+
 #%%
 
 label_graph = 'Opt det sin kz'
 label_QE = 'QE approx sin perdidas'
 label_QE2 = 'QE approx sin perdidas sin ' + r'$\gamma^2_c$' 
-
-info1 = 'R = %.1f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
-info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
-title = info1 +'\n' + info2  + ', ' + name_this_py
-
 labelx = '$\mu_c$ [eV]'
 
 im_epsi1_QE = []
@@ -97,6 +98,16 @@ for mu in list_mu:
     omegac_QE.append(a1)
     im_epsi1_QE_aprox.append(b2)
     omegac_QE_aprox.append(a2)
+
+#%%
+
+if save_data_opt==1:
+    print('Guardar data de minimizacion en .txt')
+    os.chdir(path_save)
+    tabla = np.array([list_mu,omegac_QE,im_epsi1_QE])
+    tabla = np.transpose(tabla)
+    header1 = 'mu [eV]     Im(epsi1)     omega/c' + info 
+    np.savetxt('QE_lossless_vs_mu_modo%i.txt' %(modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
 
 #%%
 

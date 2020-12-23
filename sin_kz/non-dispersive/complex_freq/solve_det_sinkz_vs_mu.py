@@ -58,7 +58,7 @@ print('Definir parametros del problema')
 
 re_epsi1 = 4.9
 R = 0.5              #micrones
-modo = 3
+modo = 4
 
 if modo==1:
     list_im_epsi1 = np.linspace(0,-0.05,501) 
@@ -135,7 +135,7 @@ mu0 = list_mu[0]
 if mu0 == 0.3:
     cond_inicial0 = fcond_inicial(re_epsi1)
 else:
-    cond_inicial0 = [3.147886255e+01, 6.614417934e-02] #mu anterior
+    cond_inicial0 = [] #mu anterior
 
 if graficar==0:
     os.chdir(path_d)

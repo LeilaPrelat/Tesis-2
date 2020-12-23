@@ -54,26 +54,26 @@ except ModuleNotFoundError:
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
     
-try:
-    sys.path.insert(1, path_ctes)
-    from constantes import constantes
-except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
-    path_ctes = input('path de la carpeta donde se encuentra constantes.py')
-    sys.path.insert(1, path_ctes)
-    from constantes import constantes
+# try:
+#     sys.path.insert(1, path_ctes)
+#     from constantes import constantes
+# except ModuleNotFoundError:
+#     print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
+#     path_ctes = input('path de la carpeta donde se encuentra constantes.py')
+#     sys.path.insert(1, path_ctes)
+#     from constantes import constantes
 
-pi,hb,c,alfac,mu1,mu2,epsi2 = constantes()
+# pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 
 print('Definir parametros del problema')
 
 R = 0.5              #micrones
-modo = 4
+modo = 1
 
 Ep = 0.3
-epsiinf_DL = 4.9
+epsiinf_DL = 2.9
 gamma_DL = 0.01 #unidades de energia
 
 list_mu =  np.linspace(0.3,0.9,6001)  
@@ -161,7 +161,7 @@ for mu in list_mu:
     def det_2variables(x):
         [omegac,epsi_ci] = x
         rta = determinante(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,modo,R,mu)
-        return np.abs(rta)
+        return np.log10(np.abs(rta))
         
     res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=tol_NM, 
                    options={'maxiter':ite_NM})
@@ -256,8 +256,7 @@ plt.grid(1)
 if save_graphs==1:
     plt.savefig('Omegac_vs_mu_%i'%(modo))
 
-
-
+"""
 omega_QE = (np.array(omegac_QE)*c)*1e-12
 omega_opt = (np.array(omegac_opt)*c)*1e-12
 omegap = (Ep/hb)*1e-12
@@ -277,5 +276,5 @@ plt.grid(1)
 if save_graphs==1:
     os.chdir(path)
     plt.savefig('Omega_vs_mu_%i'%(modo))
-
+"""
 #%%

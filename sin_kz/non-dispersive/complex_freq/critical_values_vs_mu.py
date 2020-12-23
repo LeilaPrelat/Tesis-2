@@ -57,7 +57,7 @@ print('Definir parametros del problema')
 
 re_epsi1 = 4.9
 R = 0.5              #micrones
-modo = 2
+modo = 4
 
 barrido_mu = np.linspace(0.3,0.9,601)
 

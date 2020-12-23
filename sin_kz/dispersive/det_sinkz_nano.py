@@ -29,7 +29,7 @@ try:
     sys.path.insert(1, path_graphene)
     from graphene_sigma import sigma
 except ModuleNotFoundError:
-    print('graphene_sigma.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('graphene_sigma.py no se encuentra en ' + path_graphene)
     path_graphene2 = input('path de la carpeta donde se encuentra graphene_sigma.py')
     sys.path.insert(1, path_graphene2)
     from graphene_sigma import sigma
@@ -38,7 +38,7 @@ try:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
 except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('constantes.py no se encuentra en ' + path_graphene)
     path_graphene3 = input('path de la carpeta donde se encuentra constantes.py')
     sys.path.insert(1, path_graphene3)
     from constantes import constantes
@@ -81,10 +81,10 @@ def determinante(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,modo,R,mu_c):
     x1,x2 = (epsi1*mu1)**(1/2), (epsi2*mu2)**(1/2)
     x1t,x2t = x1, x2
     
-    if (x1t*Rbarra).real>=0:
- 	    x1t = x1t
-    else:
- 	    x1t = -x1t
+    # if (x1t*Rbarra).real>=0:
+ 	  #   x1t = x1t
+    # else:
+ 	  #   x1t = -x1t
     
     if (x2t*Rbarra).real>=0:
 	    x2t = x2t

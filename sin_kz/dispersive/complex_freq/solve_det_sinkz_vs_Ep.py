@@ -70,7 +70,7 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 R = 0.5              #micrones
-modo = 1
+modo = 4
 
 hbaramu = 0.3
 epsi_ci = 0
@@ -150,14 +150,14 @@ for Ep in list_Ep:
         [re_omegac,im_omegac] = x
         omegac = re_omegac + 1j*im_omegac
         rta = determinante(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,modo,R,hbaramu)
-        return np.abs(rta)
+        return np.log10(np.abs(rta))
         
     res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=tol_NM, 
                    options={'maxiter':ite_NM})
 #        print(res.message)
     value = det_2variables([res.x[0],res.x[1]])
-    # if res.message == 'Optimization terminated successfully.' :
-    if value <= 1e-10:
+    if res.message == 'Optimization terminated successfully.' :
+    #if value <= 1e-10:
     # if res.x[1] <= fcond_inicial(Ep)[1]: #QE tiene que requerir menor medio activo que la sol numerica
         re_omegac_opt.append(res.x[0])
         im_omegac_opt.append(res.x[1])
