@@ -5,8 +5,10 @@ Created on Wed May 20 08:58:35 2020
 
 @author: leila
 
-barrido en mu. Hallar omega/c real y im(epsilon1) que minimizan
-el determinante sin kz para diferentes valores de mu
+barrido en R. Hallar omega/c real y im(epsilon1) que minimizan
+el determinante sin kz para diferentes valores de R :
+    solve_det_sinkz_vs_R : radios R >= .5 micrones
+    solve_det_sinkz_vs_R_2 : radios R <= .5 micrones
 """
 
 import numpy as np
@@ -150,9 +152,11 @@ if save_data_opt==1:
     header1 = 'R [micrones]     Omega/c [1/micrones]    Im(epsi1)     Eq(det)' + info + ', ' + name_this_py
     np.savetxt('opt_det_sinkz_vs_R_modo%i.txt' %(modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
 
+#%%
+
 label_graph = 'Opt det sin kz'
 label_QE = 'QE approx sin perdidas'
-title = 'Modo = %i, $\mu$ = %.1f eV, Re($\epsilon_1$) = %.2f' %(modo,hbaramu,re_epsi1) +  ', ' + name_this_py
+title = 'Modo = %i, $\mu_c$ = %.1f eV, Re($\epsilon_1$) = %.2f' %(modo,hbaramu,re_epsi1) +  ', ' + name_this_py
 labelx = 'R [$\mu$m]'
 
 im_epsi1_QE = []

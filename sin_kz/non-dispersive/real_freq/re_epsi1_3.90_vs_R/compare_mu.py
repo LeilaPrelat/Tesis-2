@@ -39,7 +39,7 @@ path_basic = path.replace('/' + name_this_py,'')
 print('Definir parametros del problema')
 
 barrido_mu = [0.3,0.6,0.9] 
-modo = 4
+modo = 3
 re_epsi1 = 3.9
 
 if re_epsi1!= 3.9:
@@ -82,7 +82,7 @@ for mu in barrido_mu:
     data_load = np.loadtxt('opt_det_sinkz_vs_R_modo%i.txt' %(modo), delimiter='\t', skiprows = 1)
     data_load = np.transpose(data_load)
     [barrido_R,omegac_opt,epsi1_imag_opt,eq_det] = data_load
-    plt.plot(barrido_R,omegac_opt,'.',ms=10,label = r'$\mu$ = %.1f' %(mu))
+    plt.plot(barrido_R,omegac_opt,'.',ms=10,label = r'$\mu_c$ = %.1f' %(mu))
 
 plt.title(title,fontsize=tamtitle)
 plt.ylabel('Re($\omega$/c) [1/$\mu$m]',fontsize=tamletra)

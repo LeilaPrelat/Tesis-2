@@ -54,9 +54,9 @@ epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 list_mu =  np.linspace(0.3,0.9,6001)  
-path_save = path_basic + '/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(epsiinf_DL,Ep)
+path_save = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
 
-info1 = 'R = %.1f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
+info1 = 'R = %.2f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
 info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
 title = info1 +'\n' + info2  + ', ' + name_this_py
 info = info1 + ', ' + info2  + ', ' + name_this_py

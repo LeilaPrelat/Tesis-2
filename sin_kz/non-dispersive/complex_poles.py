@@ -50,7 +50,7 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 print('Definir parametros del problema')
 
-modo = 3
+modo = 4
 R = 0.5 #micrones
 re_epsi1 = 4.9
 
@@ -171,14 +171,15 @@ for mu in list_mu:
     list_im_epsi1.append(epsi1_imag_opt[ind3])
     label_graph_im_eps1_3 = 'Im($\epsilon_1)_c$ = %.7f' %(epsi1_imag_opt[ind3])
     
+    omega_c_real = np.array(omega_c_real)*1e7
     ax[i].plot(omega_c_real,omega_c_imag,'-',lw = 5,color = list_color[i],label = '$\mu_c$ = %.1f' %(mu))
     #ax[i].plot(omega_c_real[ind3],omega_c_imag[ind3],'.', color = 'darkred',ms=10) 
     #label = label_graph_im_eps1_3
+    #ax[i].set_xscale('log')
     i = i + 1
 
 ax[0].set_ylabel('Im($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad=5)
-ax[1].set_xlabel('Re($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamtitle,labelpad=17)
-
+ax[1].set_xlabel('Re($\omega/c$) [$\mu$m]$^{-1}$ $\cdot 10^{-7}$ ',fontsize = tamtitle,labelpad=17)
 
 ticks1_mod1 = [0.121,0.1215,0.122]
 ticks2_mod1 = [0.1561,0.1567,0.1572]

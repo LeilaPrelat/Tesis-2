@@ -56,9 +56,9 @@ R = 0.5              #micrones
 Ep = 0.3
 gamma_DL = 0.01 #unidades de energia
 
-path_load = path_basic + '/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(epsiinf_DL,Ep)
+path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
 
-info1 = 'R = %.1f $\mu$m, $\epsilon_\infty$ = %.2f,Ep = %.1f,$\gamma_{Dl}$ = %.2f' %(R,epsiinf_DL,Ep,gamma_DL)
+info1 = 'R = %.2f $\mu$m, $\epsilon_\infty$ = %.2f,Ep = %.1f,$\gamma_{Dl}$ = %.2f' %(R,epsiinf_DL,Ep,gamma_DL)
 info2 = '$\mu_1$ = %i, $\mu_2$ = %i, $\epsilon_2$ = %i' %(mu1,mu2,epsi2)
 inf_tot = info1 + ',' + info2 + '. Ver ' + name_this_py
 

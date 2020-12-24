@@ -32,6 +32,7 @@ tamnum = 16
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
+del path
 path_det = path_basic.replace('/' + 'real_freq','')
 path_ctes = path_basic.replace('/sin_kz/dispersive/real_freq','') 
 
@@ -69,25 +70,25 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 0.5              #micrones
+R = 0.05              #micrones
 modo = 1
 
 Ep = 0.3
-epsiinf_DL = 2.9
+epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 list_mu =  np.linspace(0.3,0.9,6001)  
 # list_mu = [0.3]
 
-info1 = 'R = %.1f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
+info1 = 'R = %.2f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
 info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
 title = info1 +'\n' + info2  + ', ' + name_this_py
 info = info1 + ', ' + info2
 
 #%%
 
-if R != 0.5:
-    raise TypeError('Las condiciones iniciales (barrido en Ep) fueron hechas para R = 0.5')
+# if R != 0.5:
+#     raise TypeError('Las condiciones iniciales (barrido en Ep) fueron hechas para R = 0.5')
 
 if gamma_DL != 0.01:
     raise TypeError('Las condiciones iniciales (barrido en Ep) fueron hechas para gamma_DL = 0.01')
@@ -101,15 +102,17 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_data_opt==1:
 
-    path_save = r'/epsiinf_DL_%.2f_vs_mu' %(epsiinf_DL)
-    path = path_basic + path_save
-
+    path_save0 = r'/R_%.2f/epsiinf_DL_%.2f_vs_mu' %(R,epsiinf_DL)
+    path0 = path_basic + path_save0
+    path = path0 + '/' + 'Ep_%.1f' %(Ep)
+    
+    if not os.path.exists(path0):
+        print('Creating folder to save data')
+        os.mkdir(path0)
+    
     if not os.path.exists(path):
         print('Creating folder to save data')
         os.mkdir(path)
-
-if epsiinf_DL == 3.9:
-    path = path + '/' + 'Ep_%.1f' %(Ep)
 
 #%%
 
@@ -128,7 +131,7 @@ def fcond_inicial(Ep):
     Uso como condiciones iniciales el barrido en Ep hecho
     para R = 0.5 $\mu$m, $\mu_c$ = 0.3 eV, $\gamma_{DL}$ = 0.01 eV
     """
-    os.chdir(path_basic + '/' + 'epsiinf_DL_%.2f_vs_Ep' %(epsiinf_DL))
+    os.chdir(path_basic + r'/R_%.2f/epsiinf_DL_%.2f_vs_Ep' %(R,epsiinf_DL))
     cond_init = np.loadtxt('opt_det_sinkz_vs_Ep_modo%i.txt' %(modo),delimiter='\t', skiprows = 1)
     cond_init = np.transpose(cond_init)
     [Ep_opt,omegac_opt,epsi1_imag_opt,eq_det] = cond_init
@@ -161,7 +164,7 @@ for mu in list_mu:
     def det_2variables(x):
         [omegac,epsi_ci] = x
         rta = determinante(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,modo,R,mu)
-        return np.log10(np.abs(rta))
+        return np.abs(rta)
         
     res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=tol_NM, 
                    options={'maxiter':ite_NM})

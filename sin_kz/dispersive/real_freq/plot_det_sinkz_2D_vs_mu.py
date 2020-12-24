@@ -74,10 +74,10 @@ if R!= 0.5:
 print('Importar los valores de SPASER')
 
 try:
-    path_load = path_basic + '/' + 'epsiinf_DL_%.2f_vs_mu' %(epsiinf_DL) + '/' + 'Ep_%.1f' %(Ep)
+    path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
     os.chdir(path_load)
 except OSError or IOError:
-    path_load = path_basic + '/' + 'epsiinf_DL_%.2f_vs_mu' %(epsiinf_DL) 
+    path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu' %(R,epsiinf_DL)
     os.chdir(path_load)
 
 name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)
@@ -102,7 +102,7 @@ omegac = omegac_opt[index]
 if np.abs(index) > 0: #index != 0 
     cond_init2 = [omegac_opt[index-1],epsi1_imag_opt[index-1]]
 
-info1 = 'R = %.1f $\mu$m, $\mu_c$ = %.3f eV, $\epsilon_\infty$ = %.1f, Ep = %.1f eV, $\gamma_{DL}$ = %.2f eV' %(R,hbaramu,epsiinf_DL,Ep,gamma_DL)
+info1 = 'R = %.2f $\mu$m, $\mu_c$ = %.3f eV, $\epsilon_\infty$ = %.1f, Ep = %.1f eV, $\gamma_{DL}$ = %.2f eV' %(R,hbaramu,epsiinf_DL,Ep,gamma_DL)
 info2 = '$\Delta_{ci}$ = %.3e y $\omega/c$ = %.2e 1/$\mu$m del modo = %i' %(delta_ci,omegac,modo)
 title = info1 + '\n' + info2 + '\n' + name_this_py
 
