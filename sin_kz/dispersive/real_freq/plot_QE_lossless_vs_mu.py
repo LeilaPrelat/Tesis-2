@@ -63,8 +63,8 @@ info = info1 + ', ' + info2  + ', ' + name_this_py
 
 #%%
 
-if R != 0.5:
-    raise TypeError('Wrong value for radium')
+if gamma_DL != 0.01:
+    raise TypeError('Wrong value for gamma_DL')
 
 #%%
 

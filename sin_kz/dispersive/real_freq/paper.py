@@ -52,25 +52,25 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
-R = 0.5              #micrones
+R = 0.05              #micrones
 Ep = 0.3
 gamma_DL = 0.01 #unidades de energia
 
 path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
 
-info1 = 'R = %.2f $\mu$m, $\epsilon_\infty$ = %.2f,Ep = %.1f,$\gamma_{Dl}$ = %.2f' %(R,epsiinf_DL,Ep,gamma_DL)
-info2 = '$\mu_1$ = %i, $\mu_2$ = %i, $\epsilon_2$ = %i' %(mu1,mu2,epsi2)
+info1 = 'R = %.2f $\mu$m, $\epsilon_\infty$ = %.2f,Ep = %.1f,$\gamma_{DL}$ = %.2f' %(R,epsiinf_DL,Ep,gamma_DL)
+info2 = '$gamma_c$ = %.2f eV, $\mu_1$ = %i, $\mu_2$ = %i, $\epsilon_2$ = %i' %(hbargama,mu1,mu2,epsi2)
 inf_tot = info1 + ',' + info2 + '. Ver ' + name_this_py
 
 os.chdir(path_load)
-np.savetxt('inf_mu_disp.txt', [inf_tot], fmt='%s')
+np.savetxt('inf_critical_values_dispR_%.2f.txt' %(R), [inf_tot], fmt='%s')
 
 list_color = ['darkred','yellowgreen','steelblue','coral']
 
 #%%
 
-if R != 0.5:
-    raise TypeError('Wrong value for radium')
+if gamma_DL != 0.01:
+    raise TypeError('Wrong value for gamma_DL')
 
 #%%
 
@@ -129,7 +129,10 @@ for key in legend_mode2:
         
 fig.legend(handles=patchList2,loc=[0.145,0.87],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
 
-s1,s2,s3 = 'a)', 'b)', 'c)'
+if R == 0.5:
+    s1,s2,s3 = 'a)', 'b)', 'c)'
+else:
+    s1,s2,s3 = 'd)', 'e)', 'f)'
 xs = 0.133
 fig.text(xs,0.84,s1,fontsize = tamletra) 
 fig.text(xs,0.575,s2,fontsize = tamletra) 
@@ -137,7 +140,7 @@ fig.text(xs,0.319,s3,fontsize = tamletra)
 
 if save_graphs==1:
     os.chdir(path_load)
-    plt.savefig('Im_epsi1_vs_mu')
+    plt.savefig('Im_epsi1_vs_muR_%.2f.png' %(R),format = 'png')
     
 #%% 
 
@@ -170,7 +173,7 @@ plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=
 
 if save_graphs==1:
     os.chdir(path_load)
-    plt.savefig('omegac_vs_mu')
+    plt.savefig('omegac_vs_muR_%.2f.png' %(R),format = 'png')
     
 #%%
  
