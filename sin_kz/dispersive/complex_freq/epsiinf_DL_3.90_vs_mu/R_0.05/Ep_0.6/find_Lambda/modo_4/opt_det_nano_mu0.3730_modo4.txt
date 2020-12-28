@@ -1,0 +1,1 @@
+# epsi_ci     Re(Lambda)      Im(Lambda)      Eq(det), R = 0.05 $\mu$m, $E_p$ = 0.600 eV, modo = 4, $\epsilon_\infty$ = 3.9, $\gamma_{DL}$ = 0.01 eV, solve_det_sinkz_vs_mu.py

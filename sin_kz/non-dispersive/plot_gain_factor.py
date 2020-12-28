@@ -87,7 +87,7 @@ omegac0 = omegac_opt[index]
 im_epsi1c = epsi1_imag_opt[index]
 epsi1 = re_epsi1 + 1j*im_epsi1c
 
-info1 = 'R = %.1f $\mu$m, $\mu_c$ = %.4f eV, $\epsilon_1$ = %.1f - i%.2e' %(R,hbaramu,re_epsi1,-im_epsi1c)
+info1 = 'R = %.2f $\mu$m, $\mu_c$ = %.4f eV, $\epsilon_1$ = %.1f - i%.2e' %(R,hbaramu,re_epsi1,-im_epsi1c)
 info2 = ' y $\omega/c$ = %.2e 1/$\mu$m del modo = %i' %(omegac0,modo)
 
 title2 = 'R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f, modo = %i' %(R,re_epsi1,modo)

@@ -39,7 +39,7 @@ try:
     sys.path.insert(1, path_det)
     from det_sinkz_nano import determinante
 except ModuleNotFoundError:
-    print('det_sinkz_nano.py no se encuentra en el path_det definido/carpeta de trabajo')
+    print('det_sinkz_nano.py no se encuentra en ' + path_det)
     path_basic2 = input('path de la carpeta donde se encuentra det_sinkz_nano.py')
     sys.path.insert(1, path_det)
     from det_sinkz_nano import determinante
@@ -49,7 +49,7 @@ try:
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
 except ModuleNotFoundError:
-    print('QE_lossless.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('QE_lossless.py no se encuentra en ' + path_basic)
     path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
@@ -58,7 +58,7 @@ try:
     sys.path.insert(1, path_ctes)
     from constantes import constantes
 except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('constantes.py no se encuentra en ' + path_ctes)
     path_ctes = input('path de la carpeta donde se encuentra constantes.py')
     sys.path.insert(1, path_ctes)
     from constantes import constantes

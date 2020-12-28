@@ -42,7 +42,7 @@ except ModuleNotFoundError:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
 
-pi,hb,c,alfac,mu1,mu2,epsi2 = constantes()
+pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
     
@@ -147,7 +147,7 @@ def Ez(omegac,epsi1,nmax,R,hbaramu,Bo,rho,phi):
     """
     energy = omegac*c*hb
 
-    sigmatot, inter, intra = sigma(energy,hbaramu) 
+    sigmatot, inter, intra = sigma(energy,hbaramu,hbargama) 
         
     k0 = omegac
     Rbarra = R*k0 #adimensional

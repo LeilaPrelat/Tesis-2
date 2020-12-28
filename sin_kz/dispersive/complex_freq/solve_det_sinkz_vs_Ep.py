@@ -54,17 +54,6 @@ except ModuleNotFoundError:
     sys.path.insert(1, path_det)
     from complex_omegac_QE import omegac_QE
 
-try:
-    sys.path.insert(1, path_ctes)
-    from constantes import constantes
-except ModuleNotFoundError:
-    print('constantes.py no se encuentra en ' + path_ctes)
-    path_ctes = input('path de la carpeta donde se encuentra constantes.py')
-    sys.path.insert(1, path_ctes)
-    from constantes import constantes
-
-pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
-
 #%%
 
 print('Definir parametros del problema')
@@ -86,8 +75,8 @@ info = info1 + ', ' + info2 + ', ' + name_this_py
 
 #%%
 
-if R != 0.5:
-    raise TypeError('Wrong value for radium')
+# if R != 0.5:
+#     raise TypeError('Wrong value for radium')
 
 if epsi_ci != 0:
     raise TypeError('Wrong value for epsilon_{ci}: must be zero')
@@ -101,7 +90,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_data_opt==1:
 
-    path_det = r'/epsiinf_DL_%.2f_vs_Ep' %(epsiinf_DL)
+    path_det = r'/epsiinf_DL_%.2f_vs_Ep/R_%.2f' %(epsiinf_DL,R)
     path = path_basic + path_det
 
     if not os.path.exists(path):

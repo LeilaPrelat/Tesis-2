@@ -1,0 +1,1 @@
+R = 0.5 $\mu$m, nmax = 10, $\mu_c$ = 0.3 eV, $\epsilon_1$ = 3.9 - i3.53e-02,  y $\omega/c$ = 1.34e-01 1/$\mu$m del modo = 1, Ver plot_Qabs_sinkz.py, se desprecian los campos incidentes en Qscat

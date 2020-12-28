@@ -39,7 +39,7 @@ try:
     sys.path.insert(1, path_basic2)
     from det_sinkz import determinante
 except ModuleNotFoundError:
-    print('det_sinkz.py no se encuentra en el path_basic2 definido/carpeta de trabajo')
+    print('det_sinkz.py no se encuentra en ' + path_basic2)
     path_basic2 = input('path de la carpeta donde se encuentra det_sinkz.py')
     sys.path.insert(1, path_basic2)
     from det_sinkz import determinante
@@ -49,7 +49,7 @@ try:
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
 except ModuleNotFoundError:
-    print('QE_lossless.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('QE_lossless.py no se encuentra en ' + path_basic)
     path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi

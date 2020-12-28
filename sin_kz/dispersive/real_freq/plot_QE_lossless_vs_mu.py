@@ -30,7 +30,7 @@ tamnum = 16
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-
+del path
 
 #Para condiciones iniciales
 try:
@@ -46,10 +46,10 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 0.5              #micrones
+R = 0.05              #micrones
 modo = 4
 
-Ep = 0.3
+Ep = 0.6
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 

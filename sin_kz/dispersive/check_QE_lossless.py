@@ -17,8 +17,8 @@ from scipy.optimize import fsolve
 
 #%% 
 
-save_data_opt = 0 #guardar data de la minimizacion
-save_graphs = 0 #guardar los graficos
+save_data_opt = 1 #guardar data de la minimizacion
+save_graphs = 1 #guardar los graficos
 
 tamfig = (11,9)
 tamlegend = 18
@@ -31,12 +31,13 @@ tamnum = 16
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
+del path
 
 try:
     sys.path.insert(1, path_basic)
     from complex_omegac_QE import omegac_QE
 except ModuleNotFoundError:
-    print('complex_omegac_QE.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('complex_omegac_QE.py no se encuentra en ' + path_basic)
     path_basic1 = input('path de la carpeta donde se encuentra complex_omegac_QE.py')
     sys.path.insert(1, path_basic1)
     from complex_omegac_QE import omegac_QE
@@ -46,7 +47,7 @@ try:
     sys.path.insert(1, path_basic + '/real_freq')
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
 except ModuleNotFoundError:
-    print('QE_lossless.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('QE_lossless.py no se encuentra en ' + path_basic + '/real_freq')
     path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
@@ -55,25 +56,28 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 0.5              #micrones
+R = 0.05              #micrones
 modo = 4
 
 Ep = 0.6
-epsiinf_DL = 4.9
+epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 list_mu =  np.linspace(0.3,0.9,6001)  
 # list_mu = [0.3]
 
-info1 = 'R = %.1f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
+info1 = 'R = %.2f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
 info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
 info =  ', ' + info1 + ', ' + info2  + ', ' + name_this_py
 title = info1 +'\n' + info2  + ', ' + name_this_py
 
 #%%
 
-if R != 0.5:
-    raise TypeError('Wrong value for radium')
+if gamma_DL != 0.01:
+    raise TypeError('Wrong value for gamma_DL')
+    
+if modo not in [1,2,3,4]:
+    raise TypeError('Wrong value for mode')
     
 #%%
 
@@ -81,7 +85,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_data_opt==1 or save_graphs ==1:
 
-    path_det = r'/complex_freq/epsiinf_DL_%.2f_vs_mu' %(epsiinf_DL)
+    path_det = r'/complex_freq/epsiinf_DL_%.2f_vs_mu/R_%.2f' %(epsiinf_DL,R)
     path = path_basic + path_det
 
     if not os.path.exists(path):
@@ -147,7 +151,8 @@ for mu in list_mu:
     list_mu_opt.append(mu)
         
     cond_inicial = [sol]
-    
+
+#%%    
         
 if save_data_opt==1:
     os.chdir(path)
@@ -158,7 +163,6 @@ if save_data_opt==1:
     header1 = 'mu [eV]     Im(epsi1)     Re(omega/c) [1/micrones]     Im(omega/c) [1/micrones]' + info
     np.savetxt('opt_QE_vs_mu_modo%i.txt' %(modo), tabla, fmt='%1.11e', delimiter='\t', header = header1)
 
-#%%
 
 im_epsi1_QE_lossless = []
 omegac_QE_lossless = []

@@ -1,0 +1,3 @@
+# mu[eV]     epsi_ci inf: , R = 0.1 $\mu$m, $E_p$ = 0.600 eV, modo = 3, $\epsilon_\infty$ = 3.9, $\gamma_{DL}$ = 0.01 eV, complex_poles.py
+[0.3, 0.5, 0.7]
+[-0.128, -0.127, -0.1, -0.127, -0.126, -0.099]

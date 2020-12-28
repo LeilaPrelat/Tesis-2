@@ -10,3 +10,6 @@
 parametros en complex_freq: frecuencia compleja (im(omega/c),re(omega/c)), im(epsilon1) ---> se hace un barrido en im(epsilon1) y omega/c complejo para cada mu y luego se halla el im(epsilon1) que minimiza la im(omega/c). No se si llego por cuestion de tiempo a hacer esta carpeta
 
 parametros en real_freq: re(omega/c), im(epsilon1)
+
+
+en el caso no dispersivo, siempre el radio es 0.5 micrones

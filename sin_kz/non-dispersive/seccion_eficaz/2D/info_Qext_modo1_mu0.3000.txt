@@ -1,0 +1,1 @@
+R = 0.5 $\mu$m, nmax = 10, $\mu_c$ = 0.3000 eV, $\epsilon_1$ = 3.9 - i3.53072e-02,  y $\omega/c$ = 1.34005e-01 1/$\mu$m del modo = 1, Ver plot_Qext_sinkz.py, se desprecian los campos incidentes en Qscat

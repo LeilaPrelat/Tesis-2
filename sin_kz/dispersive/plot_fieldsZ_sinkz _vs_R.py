@@ -23,6 +23,7 @@ save_graphs = 1
 modulo = 1 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
+paper = 1  # sacar el titulo y guardar la info (formato paper)
 
 #%%
 
@@ -39,23 +40,26 @@ tamnum = 16
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_save = path_basic + '/' + 'fields' + '/' + 'barrido_R'
 name_this_py = 'Ver ' + name_this_py
+
+if save_graphs==1:
+    path_save0 = 'fields'  + '/' + 'barrido_R'
+    if paper == 0:
+        path_save = path_basic + '/' + path_save0
+    else:
+        path_save = path_basic + '/' + path_save0 + '/' + 'paper'
+    if not os.path.exists(path_save):
+        print('Creating folder to save graphs')
+        os.mkdir(path_save)
 
 try:
     sys.path.insert(1, path_basic)
     from fieldsZ_sinkz import Ez,Hz
 except ModuleNotFoundError:
-    print('fieldsZ_sinkz.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('fieldsZ_sinkz.py no se encuentra en ' + path_basic)
     path_fields = input('path de la carpeta donde se encuentra fieldsZ_sinkz.py')
     sys.path.insert(1, path_fields)
     from fieldsZ_sinkz import Ez,Hz
-
-if save_graphs==1:
-
-    if not os.path.exists(path_save):
-        print('Creating folder to save graphs')
-        os.mkdir(path_save)
 
 #%%
 
@@ -63,7 +67,7 @@ print('Definir parametros del problema')
 
 Ao,Bo = 1,1
 hbaramu = 0.3
-modo = 1
+modo = 3
 
 Ep = 0.3
 epsiinf_DL = 3.9
@@ -96,16 +100,20 @@ data_load = np.transpose(data_load)
 [barrido_R,omegac_opt,epsi1_imag_opt,eq_det] = data_load
 
 m = len(barrido_R)
-index = -1
+index = 2860
 index = int(index)
 R = barrido_R[index]
 omegac = omegac_opt[index]
 delta_ci = epsi1_imag_opt[index]
+print(R)
 
-info1 = 'R = %.3f $\mu$m, $\mu_c$ = %.1f eV, $\epsilon_\infty$ = %.1f, Ep = %.1f, $\gamma_{DL}$ = %.2f eV' %(R,hbaramu,epsiinf_DL,Ep,gamma_DL)
-info2 = '$\Delta_{ci}$ = %.3e y $\omega/c$ = %.2e 1/$\mu$m del modo = %i, nmax = %i' %(delta_ci,omegac,modo,nmax)
+info1 = 'R = %.3f $\mu$m, $\mu_c$ = %.4f eV, $\epsilon_\infty$ = %.1f, Ep = %.1f, $\gamma_{DL}$ = %.2f eV' %(R,hbaramu,epsiinf_DL,Ep,gamma_DL)
+info2 = '$\Delta_{ci}$ = %.5e y $\omega/c$ = %.5e 1/$\mu$m del modo = %i, nmax = %i' %(delta_ci,omegac,modo,nmax)
 title1 = 'Ao = %i, ' %(Ao) + info1 + '\n' + info2  + '\n' + name_this_py
 title2 = 'Bo = %i, ' %(Bo) + info1 + '\n' + info2  + '\n' + name_this_py
+
+labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
+infotot = 'Ao = %i, Bo = %i' %(Ao,Bo) + ', ' + info1 +  ', ' + info2 +  ', ' + name_this_py
 
 if non_active_medium == 1:
     info2_loss = '$\omega/c$ = %.2e 1/$\mu$m del modo = %i, nmax = %i' %(omegac,modo,nmax)
@@ -124,46 +132,17 @@ if gamma_DL != 0.01:
 
 print('Graficar el campo Hz para el medio 1 y 2')
 
-def Hz_2variable(x,y):   
-    phi = np.arctan2(y,x)
-    rho = (x**2+y**2)**(1/2)
-    [Hz1,Hz2] = Hz(omegac,Ep,epsiinf_DL,gamma_DL,delta_ci,nmax,R,hbaramu,Ao,rho,phi)   
-    if modulo==1:
-        Hz1_tot, Hz2_tot = np.abs(Hz1), np.abs(Hz2)
-    else:
-        Hz1_tot, Hz2_tot = Hz1.real, Hz2.real
-    if np.abs(rho)<=R: #medio1
-        return Hz1_tot
-    else: #medio2
-        return Hz2_tot
-    
-n2 = 100
+if modulo==1:
+    label = '$|H_z|$'
+else:
+    label = 'Re($H_z$)'
+
+n2 = 250
 cota = 2*R
 x = np.linspace(-cota,cota,n2)
 y = np.linspace(-cota,cota,n2)
 X, Y = np.meshgrid(x, y)
-f1 = np.vectorize(Hz_2variable)
-Z = f1(X, Y)
-# Z = Z/np.max(Z)
-labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
-
-plt.figure(figsize=tamfig)
 limits = [min(x) , max(x), min(y) , max(y)]
-plt.xlabel(labelx,fontsize=tamletra)
-plt.ylabel(labely,fontsize=tamletra)
-plt.title(title1,fontsize=int(tamtitle*0.9))
-im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
-cbar = plt.colorbar(im)
-if modulo==1:
-    cbar.set_label('|Hz|',size=tamlegend)
-else:
-    cbar.set_label('Re(Hz)',size=tamlegend)
-if save_graphs==1:
-    os.chdir(path_save)
-    if modulo==1:
-        plt.savefig('modHz_modo%i_R%.3f' %(modo,R), format='png') 
-    else:
-        plt.savefig('reHz_modo%i_R%.3f' %(modo,R), format='png') 
 
 if non_active_medium == 1: #epsi_ci = 0 ---> no hay medio activo
     def Hz_2variable(x,y):   
@@ -179,76 +158,73 @@ if non_active_medium == 1: #epsi_ci = 0 ---> no hay medio activo
         else: #medio2
             return Hz2_tot
         
-    n2 = 100
-    cota = 2*R
-    x = np.linspace(-cota,cota,n2)
-    y = np.linspace(-cota,cota,n2)
-    X, Y = np.meshgrid(x, y)
     f1 = np.vectorize(Hz_2variable)
     Z = f1(X, Y)
-    # Z = Z/np.max(Z)
-    labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
+    maxH = np.max(Z) 
+    Z = Z/maxH
     
-    plt.figure(figsize=tamfig)
-    limits = [min(x) , max(x), min(y) , max(y)]
+    plt.figure(figsize=tamfig)  
     plt.xlabel(labelx,fontsize=tamletra)
     plt.ylabel(labely,fontsize=tamletra)
-    plt.title(title1_loss,fontsize=int(tamtitle*0.9))
+    plt.tick_params(labelsize = tamnum)
+    if paper == 0:
+        plt.title(title1_loss,fontsize=int(tamtitle*0.9))
     im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
-    if modulo==1:
-        cbar.set_label('|Hz|',size=tamlegend)
-    else:
-        cbar.set_label('Re(Hz)',size=tamlegend)
+    cbar.ax.tick_params(labelsize = tamnum)
+    cbar.set_label(label,fontsize=tamletra)
     if save_graphs==1:
         os.chdir(path_save)
         if modulo==1:
-            plt.savefig('modHz_loss_modo%i_R%.3f' %(modo,R), format='png') 
+            plt.savefig('modHz_loss_modo%i_R%.3f.png' %(modo,R), format='png') 
         else:
-            plt.savefig('reHz_loss_modo%i_R%.3f' %(modo,R), format='png') 
+            plt.savefig('reHz_loss_modo%i_R%.3f.png' %(modo,R), format='png') 
+
+
+def Hz_2variable(x,y):   
+    phi = np.arctan2(y,x)
+    rho = (x**2+y**2)**(1/2)
+    [Hz1,Hz2] = Hz(omegac,Ep,epsiinf_DL,gamma_DL,delta_ci,nmax,R,hbaramu,Ao,rho,phi)   
+    if modulo==1:
+        Hz1_tot, Hz2_tot = np.abs(Hz1), np.abs(Hz2)
+    else:
+        Hz1_tot, Hz2_tot = Hz1.real, Hz2.real
+    if np.abs(rho)<=R: #medio1
+        return Hz1_tot
+    else: #medio2
+        return Hz2_tot
+    
+f1 = np.vectorize(Hz_2variable)
+Z = f1(X, Y)
+if non_active_medium == 1:
+    Z = Z/maxH
+
+plt.figure(figsize=tamfig)
+plt.xlabel(labelx,fontsize=tamletra)
+plt.ylabel(labely,fontsize=tamletra)
+plt.tick_params(labelsize = tamnum)
+if paper == 0:
+    plt.title(title1,fontsize=int(tamtitle*0.9))
+im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+cbar = plt.colorbar(im)
+cbar.ax.tick_params(labelsize = tamnum)
+cbar.set_label(label,fontsize=tamletra)
+if save_graphs==1:
+    os.chdir(path_save)
+    if modulo==1:
+        plt.savefig('modHz_modo%i_R%.3f.png' %(modo,R), format='png') 
+    else:
+        plt.savefig('reHz_modo%i_R%.3f.png' %(modo,R), format='png') 
 
 #%%
 
 print('Graficar el campo Ez para el medio 1 y 2')
 
-def Ez_2variable(x,y):   
-    phi = np.arctan2(y,x)
-    rho = (x**2+y**2)**(1/2)
-    [Ez1,Ez2] = Ez(omegac,Ep,epsiinf_DL,gamma_DL,delta_ci,nmax,R,hbaramu,Bo,rho,phi)   
-    if modulo==1:
-        Ez1_tot, Ez2_tot = np.abs(Ez1), np.abs(Ez2)
-    else:
-        Ez1_tot, Ez2_tot = Ez1.real, Ez2.real
-    if np.abs(rho)<=R: #medio1
-        return Ez1_tot
-    else: #medio2
-        return Ez2_tot
-    
-# x = np.linspace(-cota,cota,n2)
-# y = np.linspace(-cota,cota,n2)
-X, Y = np.meshgrid(x, y)
-f2 = np.vectorize(Ez_2variable)
-Z = f2(X, Y)
-# Z = Z/np.max(Z)
-
-plt.figure(figsize=tamfig)
-limits = [min(x) , max(x), min(y) , max(y)]
-plt.xlabel(labelx,fontsize=tamletra)
-plt.ylabel(labely,fontsize=tamletra)
-plt.title(title2,fontsize=int(tamtitle*0.9))
-im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
-cbar = plt.colorbar(im)
 if modulo==1:
-    cbar.set_label('|Ez|',size=tamlegend)
+    label = '$|E_z|$'
 else:
-    cbar.set_label('Re(Ez)',size=tamlegend)
-if save_graphs==1:
-    os.chdir(path_save)
-    if modulo==1:
-        plt.savefig('modEz_modo%i_R%.3f' %(modo,R), format='png') 
-    else:
-        plt.savefig('reEz_modo%i_R%.3f' %(modo,R), format='png') 
-
+    label ='Re($E_z$)'
+    
 if non_active_medium == 1: #epsi_ci = 0 ---> no hay medio activos
        
     def Ez_2variable(x,y):   
@@ -263,30 +239,64 @@ if non_active_medium == 1: #epsi_ci = 0 ---> no hay medio activos
             return Ez1_tot
         else: #medio2
             return Ez2_tot
-        
-    # x = np.linspace(-cota,cota,n2)
-    # y = np.linspace(-cota,cota,n2)
-    X, Y = np.meshgrid(x, y)
+    
     f2 = np.vectorize(Ez_2variable)
     Z = f2(X, Y)
-    # Z = Z/np.max(Z)
+    maxE = np.max(Z) 
+    Z = Z/maxE
     
     plt.figure(figsize=tamfig)
-    limits = [min(x) , max(x), min(y) , max(y)]
     plt.xlabel(labelx,fontsize=tamletra)
     plt.ylabel(labely,fontsize=tamletra)
-    plt.title(title2_loss,fontsize=int(tamtitle*0.9))
+    plt.tick_params(labelsize = tamnum)
+    if paper == 0:
+        plt.title(title2_loss,fontsize=int(tamtitle*0.9))
     im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
-    if modulo==1:
-        cbar.set_label('|Ez|',size=tamlegend)
-    else:
-        cbar.set_label('Re(Ez)',size=tamlegend)
+    cbar.ax.tick_params(labelsize = tamnum)
+    cbar.set_label(label,fontsize=tamletra)
     if save_graphs==1:
         os.chdir(path_save)
         if modulo==1:
-            plt.savefig('modEz_loss_modo%i_R%.3f' %(modo,R), format='png') 
+            plt.savefig('modEz_loss_modo%i_R%.3f.png' %(modo,R), format='png') 
         else:
-            plt.savefig('reEz_loss_modo%i_R%.3f' %(modo,R), format='png') 
+            plt.savefig('reEz_loss_modo%i_R%.3f.png' %(modo,R), format='png') 
+
+def Ez_2variable(x,y):   
+    phi = np.arctan2(y,x)
+    rho = (x**2+y**2)**(1/2)
+    [Ez1,Ez2] = Ez(omegac,Ep,epsiinf_DL,gamma_DL,delta_ci,nmax,R,hbaramu,Bo,rho,phi)   
+    if modulo==1:
+        Ez1_tot, Ez2_tot = np.abs(Ez1), np.abs(Ez2)
+    else:
+        Ez1_tot, Ez2_tot = Ez1.real, Ez2.real
+    if np.abs(rho)<=R: #medio1
+        return Ez1_tot
+    else: #medio2
+        return Ez2_tot
+    
+f2 = np.vectorize(Ez_2variable)
+Z = f2(X, Y)
+# Z = Z/np.max(Z)
+
+plt.figure(figsize=tamfig)
+plt.xlabel(labelx,fontsize=tamletra)
+plt.ylabel(labely,fontsize=tamletra)
+plt.tick_params(labelsize = tamnum)
+if paper == 0:
+    plt.title(title2,fontsize=int(tamtitle*0.9))
+im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+cbar = plt.colorbar(im)
+cbar.ax.tick_params(labelsize = tamnum)
+cbar.set_label(label,size=tamlegend)
+if save_graphs==1:
+    os.chdir(path_save)
+    if modulo==1:
+        plt.savefig('modEz_modo%i_R%.3f.png' %(modo,R), format='png') 
+    else:
+        plt.savefig('reEz_modo%i_R%.3f.png' %(modo,R), format='png') 
+
+if paper == 1:
+    np.savetxt('info_fields_disp_modo%i_R%.3f.txt' %(modo,R), [infotot],fmt='%s')   
     
 #%%

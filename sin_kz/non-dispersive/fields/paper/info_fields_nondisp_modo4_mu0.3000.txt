@@ -1,0 +1,1 @@
+Ao = 1, Bo = 1, R = 0.5 $\mu$m, nmax = 10, $\mu_c$ = 0.3 eV, $\epsilon_1$ = 3.9 - i2.98547e-02 y $\omega/c$ = 2.67846e-01 1/$\mu$m del modo = 4, Ver plot_fieldsZ_sinkz.py

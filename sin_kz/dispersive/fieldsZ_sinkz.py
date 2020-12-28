@@ -22,13 +22,13 @@ import sys
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_graphene = path_basic.replace('/sin_kz/non-dispersive','') 
+path_graphene = path_basic.replace('/sin_kz/dispersive','') 
 
 try:
     sys.path.insert(1, path_graphene)
     from graphene_sigma import sigma
 except ModuleNotFoundError:
-    print('graphene_sigma.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('graphene_sigma.py no se encuentra en ' + path_graphene)
     path_graphene = input('path de la carpeta donde se encuentra graphene_sigma.py')
     sys.path.insert(1, path_graphene)
     from graphene_sigma import sigma
@@ -37,7 +37,7 @@ try:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
 except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('constantes.py no se encuentra en ' + path_graphene)
     path_graphene = input('path de la carpeta donde se encuentra constantes.py')
     sys.path.insert(1, path_graphene)
     from constantes import constantes
@@ -84,7 +84,7 @@ def Hz(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,R,hbaramu,Ao,rho,phi):
     rhobarra = rho*k0
     x1,x2 = (epsi1*mu1)**(1/2)+0j,(epsi2*mu2)**(1/2)+0j
     
-    def coef_an_cn(modo):
+    def coef_an_cn(nu):
         
         def bessel1(modo):
             CJ1 = sp.jn(modo,x1*Rbarra)+0j
@@ -98,11 +98,11 @@ def Hz(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,R,hbaramu,Ao,rho,phi):
             DCH2 = sp.h1vp(modo,x2*Rbarra)+0j  
             return CJ2,DCJ2,CH2,DCH2
         
-        J1,derJ1 = bessel1(modo)
-        J2,derJ2,H2,derH2 = bessel2(modo)
+        J1,derJ1 = bessel1(nu)
+        J2,derJ2,H2,derH2 = bessel2(nu)
         
         Sigma_ad = 4*pi*1j*sigmatot*alfac #sigma devuelve la conductividad teniendo que multiplicar por alfac*c ---> no hay que dividir por c
-        aux =   (1j)**(modo)
+        aux =   (1j)**(nu)
         an_num = -Ao*aux*(epsi1*x2*J1*derJ2 - epsi2*x1*J2*derJ1 + Sigma_ad*x1*x2*derJ2*derJ1)
         an_den = epsi1*x2*J1*derH2 - epsi2*x1*H2*derJ1 + Sigma_ad*x1*x2*derH2*derJ1
         an = an_num/an_den
@@ -159,7 +159,7 @@ def Ez(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,R,hbaramu,Bo,rho,phi):
     """
     energy = omegac*c*hb
 
-    sigmatot, inter, intra = sigma(energy,hbaramu) 
+    sigmatot, inter, intra = sigma(energy,hbaramu,hbargama) 
 
     num = Ep**2
     den = energy**2 + 1j*gamma_DL*energy

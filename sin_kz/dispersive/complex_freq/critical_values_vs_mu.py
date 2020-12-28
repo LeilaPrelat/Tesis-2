@@ -55,8 +55,8 @@ tamnum = 16
 
 print('Definir parametros del problema')
 
-R = 0.5              #micrones
-modo = 3
+R = 0.05              #micrones
+modo = 1
 
 Ep = 0.6
 epsiinf_DL = 3.9
@@ -72,7 +72,7 @@ title = info1 +'\n' + info2  + ', ' + name_this_py
 #%%
 
 try:
-    path0 = r'/epsiinf_DL_%.2f_vs_mu/Ep_%.1f'  %(epsiinf_DL,Ep)
+    path0 = r'/epsiinf_DL_%.2f_vs_mu/R_%.2f/Ep_%.1f'  %(epsiinf_DL,R,Ep)
     path_load = path_basic + path0 + '/find_Lambda/modo_%i' %(modo)
     os.chdir(path_load)
 except OSError or IOError:
@@ -90,8 +90,8 @@ os.chdir(path_load)
         
 #%%
 
-if R!=0.5:
-    raise TypeError('Wrong value for radium')
+if gamma_DL != 0.01:
+    raise TypeError('Wrong value for gamma_DL')
     
 if modo not in [1,2,3,4]:
     raise TypeError('Wrong value for mode')
@@ -102,7 +102,11 @@ tol_NM = 1e-13
 ite_NM = 1150
 N_inter = int(1e5) #puntos de la interpolacion
 
-bounds = [-0.199,-0.13]
+if R >= 0.5 :
+    bounds = [-0.199,-0.13]
+else:
+    bounds = [-0.199,-0.05]
+
 # ((min_first_var, min_second_var), (max_first_var, max_second_var))
 
 rta_Im_epsi1 = []
@@ -118,6 +122,8 @@ if modo == 1:
     cond_inicial1 = -0.8
 else:
     cond_inicial1 = -0.17
+    
+    
 cond_inicial3 = cond_inicial1
 
 for mu in barrido_mu:
@@ -212,7 +218,7 @@ if save_data==1:
 
 print('Importar datos obtenidos planteando frecuencia real')
 
-path_load = path_omegacQE + '/real_freq/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(epsiinf_DL,Ep)
+path_load = path_omegacQE + '/real_freq/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
 os.chdir(path_load)
 opt_complex_freq = np.loadtxt('opt_det_sinkz_vs_mu_modo%i.txt' %(modo),delimiter = '\t',skiprows=1)
 opt_complex_freq = np.transpose(opt_complex_freq)
@@ -238,7 +244,7 @@ plt.plot(barrido_mu,rta_Im_epsi1,'.-m',ms=10,label=label_graph)
 plt.plot(barrido_mu3,Im_epsi1_real_freq_QE,'-b',lw=5,alpha = 0.4,label=label_QE2)
 plt.plot(barrido_mu,rta_Im_epsi1_cuasi,'.-g',ms=10,label=label_QE)
 plt.title(title,fontsize=tamtitle)
-plt.ylabel(r'Im($\epsilon_1$)',fontsize=tamletra)
+plt.ylabel(r'$\epsilon_{ci}$',fontsize=int(tamletra*1.2))
 plt.xlabel('$\mu_c$ [eV]',fontsize=tamletra)
 plt.tick_params(labelsize = tamnum) 
 plt.legend(loc='best',markerscale=2,fontsize=tamlegend)

@@ -36,7 +36,7 @@ try:
     sys.path.insert(1, path_basic)
     from complex_omegac_QE import omegac_QE
 except ModuleNotFoundError:
-    print('complex_omegac_QE.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('complex_omegac_QE.py no se encuentra en ' + path_basic)
     path_basic1 = input('path de la carpeta donde se encuentra complex_omegac_QE.py')
     sys.path.insert(1, path_basic1)
     from complex_omegac_QE import omegac_QE 
@@ -46,7 +46,7 @@ try:
     sys.path.insert(1, path_basic + '/real_freq')
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
 except ModuleNotFoundError:
-    print('QE_lossless.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('QE_lossless.py no se encuentra en ' + path_basic + '/real_freq')
     path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi

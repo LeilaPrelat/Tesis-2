@@ -1,0 +1,1 @@
+Ao = 1, Bo = 1, R = 3.402 $\mu$m, $\mu_c$ = 0.3000 eV, $\epsilon_\infty$ = 3.9, Ep = 0.3, $\gamma_{DL}$ = 0.01 eV, $\Delta_{ci}$ = -1.17889e+00 y $\omega/c$ = 7.95311e-01 1/$\mu$m del modo = 2, nmax = 10, Ver plot_fieldsZ_sinkz _vs_R.py
