@@ -5,8 +5,8 @@ Created on Wed May 20 08:58:35 2020
 
 @author: leila
 
-barrido en mu. Hallar omega/c real y im(epsilon1) que minimizan
-el determinante sin kz para diferentes valores de mu
+barrido en R. Hallar omega/c real y im(epsilon1) que minimizan
+el determinante sin kz para diferentes valores de R
 """
 
 import numpy as np

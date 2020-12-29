@@ -5,8 +5,9 @@ Created on Wed May 20 08:58:35 2020
 
 @author: leila
 
-barrido en mu. Hallar omega/c real y im(epsilon1) que minimizan
-el determinante sin kz para diferentes valores de mu
+barrido en Ep. Find omega/c complejo que minimizan
+el determinante sin kz para diferentes valores de im(epsilon1) 
+para cada valor de Ep
 """
 
 import numpy as np

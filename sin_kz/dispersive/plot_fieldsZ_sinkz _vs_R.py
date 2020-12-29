@@ -22,8 +22,8 @@ import matplotlib.pyplot as plt
 save_graphs = 1
 modulo = 1 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
-non_active_medium = 1 #plotear campos con im(epsilon1) = 0
-paper = 1  # sacar el titulo y guardar la info (formato paper)
+non_active_medium = 0 #plotear campos con im(epsilon1) = 0
+paper = 0  # sacar el titulo y guardar la info (formato paper)
 
 #%%
 
@@ -67,7 +67,7 @@ print('Definir parametros del problema')
 
 Ao,Bo = 1,1
 hbaramu = 0.3
-modo = 3
+modo = 2
 
 Ep = 0.3
 epsiinf_DL = 3.9
@@ -100,7 +100,7 @@ data_load = np.transpose(data_load)
 [barrido_R,omegac_opt,epsi1_imag_opt,eq_det] = data_load
 
 m = len(barrido_R)
-index = 2860
+index = 2859
 index = int(index)
 R = barrido_R[index]
 omegac = omegac_opt[index]

@@ -159,7 +159,7 @@ for mu in list_mu:
     omega_c_imag2 = np.abs(omega_c_imag)
     ind3 = np.argmin(omega_c_imag2)
     
-    list_im_epsi1.append(epsi1_imag_opt[ind3])
+#    list_im_epsi1.append(epsi1_imag_opt[ind3])
     label_graph_im_eps1_3 = 'Im($\epsilon_1)_c$ = %.7f' %(epsi1_imag_opt[ind3])
     
     ax[i].plot(omega_c_real,omega_c_imag,'-',lw = 5,color = list_color[i],label = '$\mu_c$ = %.1f' %(mu))

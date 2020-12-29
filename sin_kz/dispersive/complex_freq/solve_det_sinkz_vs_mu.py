@@ -228,7 +228,7 @@ for mu in list_mu:
         plt.grid(1)
         if save_graphs==1:
             os.chdir(path_g)
-            plt.savefig('Re_Lambda_mu%i_modo%i'%(mu*1e4,modo))
+            plt.savefig('Re_Lambda_mu%.4f_modo%i.png' %(mu,modo), format = 'png')
             
         if close_graphs==1:    
             plt.close()
@@ -242,7 +242,7 @@ for mu in list_mu:
         plt.legend(loc='lower right',markerscale=2,fontsize=tamlegend)
         plt.grid(1)
         if save_graphs==1:
-            plt.savefig('Im_Lambda_mu%i_modo%i'%(mu*1e4,modo))
+            plt.savefig('Im_Lambda_mu%.4f_modo%i.png' %(mu,modo), format = 'png')
     
         if close_graphs==1:    
             plt.close()
