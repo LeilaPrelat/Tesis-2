@@ -18,10 +18,10 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
-save_graphs = 1 #guardar los graficos 2D/1D del campo
-graph_2D = 1    #graficos 2D
+save_graphs = 0 #guardar los graficos 2D/1D del campo
+graph_2D = 1   #graficos 2D
 graph_1D = 0    #graficos 1D
-save_data = 1
+save_data = 0
 
 #%%
 
@@ -114,8 +114,8 @@ title = info1 +'\n' + info2  +'\n' + name_this_py
 
 #%%
 
-if modo in [2,3,4]:
-    print('Ojo: Modo ' + modo + ' no excitado')
+# if modo in [2,3,4]:
+#     print('Ojo: Modo ' + modo + ' no excitado')
 
 if gamma_DL != 0.01:
     raise TypeError('Wrong value for gamma_DL')
@@ -322,5 +322,16 @@ if graph_2D==1:
             np.savetxt('y_im_epsi1_Qabs_modo%i_mu%.4f.txt' %(modo,hbaramu),y, fmt='%1.5e', delimiter='\t', header = inf_tot)
             np.savetxt('Qabs_modo%i_mu%.4f.txt' %(modo,hbaramu),Z,fmt='%1.5e', delimiter='\t', header = inf_tot)
         
-    
+        
+    # peaks = np.where((y[1:-1] > y[0:-2]) * (y[1:-1] > y[2:]))[0] + 1
+    # dips = np.where((Z[1:-1] < Z[0:-2]) * (Z[1:-1] < Z[2:]))[0] + 1
+    index = np.where(Z[:]<-1e2)
+    print(index)
+
+    # The above makes a list of all indices where the value of y[i] is greater than both of its neighbours
+    # It does not check the endpoints, which only have one neighbour each
+    # The extra +1 at the end is necessary because where finds the indices within the slice y[1:-1],
+    # not the full array y. The [0] is necessary because where returns a tuple of arrays, where the first element 
+    # is the array we want.
+        
 #%%

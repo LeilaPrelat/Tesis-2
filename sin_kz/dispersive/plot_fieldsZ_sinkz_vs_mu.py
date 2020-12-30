@@ -193,8 +193,8 @@ def Hz_2variable(x,y):
     
 f1 = np.vectorize(Hz_2variable)
 Z = f1(X, Y)
-# Z = Z/np.max(Z)
-
+if non_active_medium == 1: 
+    Z = Z/maxH
 plt.figure(figsize=tamfig)
 plt.xlabel(labelx,fontsize=tamletra)
 plt.ylabel(labely,fontsize=tamletra)
@@ -273,6 +273,8 @@ def Ez_2variable(x,y):
     
 f2 = np.vectorize(Ez_2variable)
 Z = f2(X, Y)
+if non_active_medium == 1: 
+    Z = Z/maxE
 # Z = Z/np.max(Z)
 
 plt.figure(figsize=tamfig)

@@ -17,10 +17,10 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
-save_graphs = 1 #guardar los graficos 2D/1D del campo
+save_graphs = 0 #guardar los graficos 2D/1D del campo
 graph_2D = 1    #graficos 2D
 graph_1D = 0    #graficos 1D
-save_data = 1
+save_data = 0
 
 #%%
 
@@ -311,6 +311,6 @@ if graph_2D==1:
             np.savetxt('info_Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu), [inf_tot + ', se desprecian los campos incidentes en Qscat'],fmt='%s')
             np.savetxt('x_lambda_Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),x, fmt='%1.5e', delimiter='\t', header = inf_tot)
             np.savetxt('y_im_epsi1_Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),y, fmt='%1.5e', delimiter='\t', header = inf_tot)
-            np.savetxt('Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),Z,fmt='%1.5e', delimiter='\t', header = inf_tot)         
-        
+            np.savetxt('Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),Z,fmt='%1.5e', delimiter='\t', header = inf_tot)             
+    
 #%%
