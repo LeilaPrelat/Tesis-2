@@ -22,8 +22,8 @@ import matplotlib.pyplot as plt
 save_graphs = 1
 modulo = 1 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
-non_active_medium = 0 #plotear campos con im(epsilon1) = 0
-paper = 0  # sacar el titulo y guardar la info (formato paper)
+non_active_medium = 1 #plotear campos con im(epsilon1) = 0
+paper = 1  # sacar el titulo y guardar la info (formato paper)
 
 #%%
 
@@ -278,6 +278,8 @@ def Ez_2variable(x,y):
 f2 = np.vectorize(Ez_2variable)
 Z = f2(X, Y)
 # Z = Z/np.max(Z)
+if non_active_medium == 1:
+    Z = Z/maxE
 
 plt.figure(figsize=tamfig)
 plt.xlabel(labelx,fontsize=tamletra)

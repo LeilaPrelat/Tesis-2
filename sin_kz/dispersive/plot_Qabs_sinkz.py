@@ -18,10 +18,10 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
-save_graphs = 0 #guardar los graficos 2D/1D del campo
+save_graphs = 1 #guardar los graficos 2D/1D del campo
 graph_2D = 1   #graficos 2D
 graph_1D = 0    #graficos 1D
-save_data = 0
+save_data = 1
 
 #%%
 
@@ -53,7 +53,7 @@ tamnum = 16
 
 print('Definir parametros del problema')
 
-R = 0.05              #micrones
+R = 0.5              #micrones
 modo = 1
 
 Ep = 0.6
@@ -99,7 +99,7 @@ data_load = np.transpose(data_load)
 [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
 
 m = len(barrido_mu)
-index = 5
+index = int(m/2)
 hbaramu = barrido_mu[index]
 omegac = omegac_opt[index]
 delta_ci = epsi1_imag_opt[index]
@@ -111,6 +111,36 @@ labelx = '$\omega/c$ [$\mu m^{-1}$]'
 labely = '|Qabs$_{ad}|$'
 inf_tot = info1 + ', ' + info2  + ', ' + name_this_py
 title = info1 +'\n' + info2  +'\n' + name_this_py
+
+
+#%%
+
+# ver si el polo extra que aparece en R = 0.5 y sin zoom es el modo cuadrupolar
+
+if R == 0.5 and zoom == 0:
+        
+    os.chdir(path_load)
+    name = 'opt_det_sinkz_vs_mu_modo2.txt' 
+    
+    try:
+        data_load = np.loadtxt(name,delimiter = '\t', skiprows=1)
+        for line in (l.strip() for l in open(name) if l.startswith('#')):
+            print('valores de ', name, ':', line)
+    except OSError or IOError:
+        print('El archivo ' + name + ' no se encuentra en ' + path_load)
+        try:
+            os.chdir(path_load + '/' + 'Ep_%.1f' %(Ep))
+            data_load = np.loadtxt(name,delimiter = '\t', skiprows=1)
+            for line in (l.strip() for l in open(name) if l.startswith('#')):
+                print('valores de ', name, ':', line)
+        except OSError or IOError as error:
+            print(error)
+        
+    data_load = np.transpose(data_load)
+    [barrido_mu2,omegac_opt2,epsi1_imag_opt2,eq_det2] = data_load
+    hbaramu2 = barrido_mu2[index]
+    omegac2 = omegac_opt2[index]
+    delta_ci2 = epsi1_imag_opt2[index]
 
 #%%
 
@@ -296,6 +326,11 @@ if graph_2D==1:
     
     plt.plot(x,np.ones(N)*delta_ci,'--',color = 'green')
     plt.plot(np.ones(N)*omegac,y,'--',color = 'green')
+    
+    if R == 0.5 and zoom == 0:
+        plt.plot(x,np.ones(N)*delta_ci2,'--',color = 'magenta')
+        plt.plot(np.ones(N)*omegac2,y,'--',color = 'magenta')
+        
     cbar = plt.colorbar(pcm, extend='both')
     cbar.set_ticks(tick_locations)
     cbar.ax.tick_params(labelsize = tamnum)
@@ -326,8 +361,18 @@ if graph_2D==1:
     # peaks = np.where((y[1:-1] > y[0:-2]) * (y[1:-1] > y[2:]))[0] + 1
     # dips = np.where((Z[1:-1] < Z[0:-2]) * (Z[1:-1] < Z[2:]))[0] + 1
     index = np.where(Z[:]<-1e2)
-    print(index)
-
+    # print(index)
+    
+    if R == 0.5 and zoom == 0:
+        list_x = []
+        list_y = []
+        for i in index[1]:
+            list_x.append(x[i])
+        for j in index[0]:
+            list_y.append(y[j])
+        os.chdir(path_save)
+        np.savetxt('minimus_omegac_modo%i_mu%.4f.txt' %(modo,hbaramu),list_x,fmt='%1.7e', delimiter='\t', header = inf_tot)
+        np.savetxt('minimus_epsici_modo%i_mu%.4f.txt' %(modo,hbaramu),list_y,fmt='%1.7e', delimiter='\t', header = inf_tot)
     # The above makes a list of all indices where the value of y[i] is greater than both of its neighbours
     # It does not check the endpoints, which only have one neighbour each
     # The extra +1 at the end is necessary because where finds the indices within the slice y[1:-1],

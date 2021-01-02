@@ -1,7 +1,17 @@
+
 -archivos python y graficos de la tesis
 -no esta incluido el cuaderno (overleaf)
 -no esta incluida la bibliografia
 
 sobre Tesis-corregido : estaba mal la conductividad del grafeno, el sigma del paper de tunable != el sigma del libro de grafeno de Depine ---> aca se usa el sigma del libro de grafeno
 
+############################################################################################################################################################################################
+
+-graphene-check: comparacion del grafeno viejo (Tesis-1) con el grafeno nuevo (Tesis-2) 
+
+-sin_kz: minimizacion del denominador gn, con freq compleja y real, agregando medio activo y hallan dos los valores criticos de omega/c real y de im_epsi1 que minimizan las perdidas (representadas en este caso por im(omega/c)). 
+
+-sin_kz_inv:  invisibilidad ---> minimizar el numerador en lugar del denominador
+
+-con kz: minimizar el determinante de 2x2. ahora hay propagacion en el eje z. 
 

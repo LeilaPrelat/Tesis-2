@@ -1,4 +1,4 @@
-# R = 0.5 $\mu$m, $\mu_c$ = 0.3 eV, $\epsilon_\infty$ = 3.9, $\gamma_{DL}$ = 0.01 eV, $\Delta_{ci}$ = -9.434e-01 y $\omega/c$ = 1.37e+00 1/$\mu$m del modo = 1, nmax = 10, Ao = 1, Ver plot_Qabs_sinkz.py
+# R = 0.50 $\mu$m, $\mu_c$ = 0.3000 eV, $\epsilon_\infty$ = 3.9, $\gamma_{DL}$ = 0.01 eV, Ep = 0.6 eV, $\Delta_{ci}$ = -9.43384e-01 y $\omega/c$ = 1.37404e+00 1/$\mu$m del modo = 1, nmax = 10, Ao = 1, Ver plot_Qabs_sinkz.py
 -2.74338e+00
 -2.73436e+00
 -2.72534e+00

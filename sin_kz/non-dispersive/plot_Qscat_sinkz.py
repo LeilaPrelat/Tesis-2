@@ -19,10 +19,10 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
-save_graphs = 1 #guardar los graficos 2D/1D del campo
+save_graphs = 0 #guardar los graficos 2D/1D del campo
 graph_2D = 1    #graficos 2D
-graph_1D = 0    #graficos 1D
-save_data = 1
+graph_1D = 0   #graficos 1D
+save_data = 0
 
 #%%
 
@@ -62,7 +62,7 @@ print('Definir parametros del problema')
 
 re_epsi1 = 3.9
 Ao = 1          #pol p unicamente
-modo = 2
+modo = 1
 R = 0.5         #micrones 
 nmax = 10        #sumatoria desde -nmax hasta +nmax (se suman 2*nmax + 1 modos)
 
@@ -118,8 +118,8 @@ if graph_1D==1:
     list_im_epsi1_fino = [0,im_epsi1c + 3*tol,im_epsi1c + 2*tol,im_epsi1c + tol,im_epsi1c,im_epsi1c - tol,im_epsi1c - 2*tol]
     list_im_epsi1_grueso = [0,-im_epsi1c,0.5,-0.001,-0.01,im_epsi1c,-0.5]
     
-    N = int(1e3)               
-    omegac1,omegac2 = omegac*0.97,omegac*1.03
+    N = int(3*1e3)               
+    omegac1,omegac2 = omegac*0.5,omegac*1.5
     if modo ==3 or modo ==4: 
         omegac1,omegac2 = omegac*0.9999,omegac*1.0001
     # lambda1,lambda2 = lambbda_real*0.999998,lambbda_real*1.000002
@@ -231,12 +231,13 @@ if graph_2D==1:
         Qscatt = Qscat(Omegac,Epsi1,nmax,R,hbaramu,Ao)
         return Qscatt
        
-    N = 400
+    N = 700
     
     if zoom==1:
         tol = 1e-3
     else:
         tol = 1e-2
+        # tol = 5*1e-1 #para ver el otro polo
     
     omegac12,omegac22 = omegac*(1-tol),omegac*(1+tol)
     list_omegac = np.linspace(omegac12,omegac22,N)
@@ -258,21 +259,26 @@ if graph_2D==1:
     plt.tick_params(labelsize = tamnum)
     # plt.title(title,fontsize=int(tamtitle*0.9))
     # im = plt.imshow(Z, extent = limits,  cmap='RdBu', interpolation='bilinear')
-    vmin,vmax = np.min(Z), np.max(Z)
-    maxlog=int(np.ceil( np.log10( np.abs(vmax) )))
-    minlog=int(np.ceil( np.log10( np.abs(vmin) )))
+    vmin, vmax = np.min(Z), np.max(Z)
+    maxlog = int(np.ceil( np.log10( np.abs(vmax) )))
+    minlog = int(np.ceil( np.log10( np.abs(vmin) )))
     
-    if vmin < 0 :
-        tick_locations = ( [-(10.0**x) for x in np.linspace(minlog,-1,minlog+2)] 
-                          + [0] 
-                          + [(10.0**x) for x in np.linspace(-1,maxlog,maxlog+2)] )
+    if np.abs(maxlog-minlog)>3:
+    
+        if vmin < 0:
+            tick_locations = ( [-(10.0**x) for x in np.linspace(minlog,-1,minlog+2)] 
+                              + [0] 
+                              + [(10.0**x) for x in np.linspace(-1,maxlog,maxlog+2)] )
+        
+        else:
+            tick_locations = ( [(10.0**x) for x in np.linspace(minlog,maxlog,maxlog + np.abs(minlog) + 1) ])    
+        
+        pcm = plt.pcolormesh(X, Y, Z,
+                            norm = SymLogNorm(linthresh=0.03, linscale=0.03,
+                                                vmin=int(vmin), vmax=int(vmax)),cmap='RdBu_r')
     else:
-        tick_locations = ( [(10.0**x) for x in np.linspace(minlog,maxlog,maxlog + np.abs(minlog) + 1) ])    
-    
-    pcm = plt.pcolormesh(X, Y, Z,
-                        norm = SymLogNorm(linthresh=0.03, linscale=0.03,
-                                            vmin=int(vmin), vmax=int(vmax)),cmap='RdBu_r')
-    
+        pcm = plt.pcolormesh(X, Y, Z,cmap='RdBu_r')
+        
     plt.plot(x,np.ones(N)*im_epsi1c,'--',color = 'green')
     plt.plot(np.ones(N)*omegac,y,'--',color = 'green')
     cbar = plt.colorbar(pcm, extend='both')
