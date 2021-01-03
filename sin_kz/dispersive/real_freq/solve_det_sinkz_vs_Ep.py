@@ -69,7 +69,7 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 print('Definir parametros del problema')
 
-R = 0.01              #micrones
+R = 0.4              #micrones
 hbaramu = 0.3
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia

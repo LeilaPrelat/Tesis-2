@@ -70,10 +70,10 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 0.1              #micrones
+R = 0.35              #micrones
 list_modos = [1,2,3,4]
 
-Ep = 0.6
+Ep = 0.7                                
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 

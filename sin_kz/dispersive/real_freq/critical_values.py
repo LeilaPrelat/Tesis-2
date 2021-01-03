@@ -52,8 +52,8 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
-R = 0.5              #micrones
-Ep = 0.6
+R = 0.35              #micrones
+Ep = 0.8
 gamma_DL = 0.01 #unidades de energia
 
 path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
@@ -117,13 +117,15 @@ elif R == 0.5 and epsiinf_DL == 3.9 and Ep == 0.6:
     ticks2 = [-0.226,-0.228,-0.230,-0.232,-0.234,-0.236]
     ticks3 = [-0.157,-0.164,-0.171,-0.178,-0.185]    
 
-ticks = [ticks1,ticks2,ticks3]
+
 
 for i in [0,1,2]:
     axs[i].minorticks_on()
     axs[i].tick_params(labelsize = tamnum)
-    axs[i].set_yticks(ticks[i])
-    axs[i].set_yticklabels(ticks[i])
+    if R == 0.05 and epsiinf_DL == 3.9 and Ep == 0.6 or R == 0.5 and epsiinf_DL == 3.9 and Ep == 0.6 :
+        ticks = [ticks1,ticks2,ticks3]
+        axs[i].set_yticks(ticks[i])
+        axs[i].set_yticklabels(ticks[i])
     axs[i].set_ylabel(labely,fontsize = int(tamletra*1.2),labelpad = 6) 
     
 # axs[2].set_ylabel(labely,fontsize =  int(tamletra*1.2),labelpad=6) 
