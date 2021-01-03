@@ -66,9 +66,10 @@ path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,
 info1 = 'R = %.2f $\mu$m, $\epsilon_\infty$ = %.2f, Ep = %.1f, $\gamma_{DL}$ = %.2f' %(R,epsiinf_DL,Ep,gamma_DL)
 info2 = '$gamma_c$ = %.4f eV, $\mu_1$ = %i, $\mu_2$ = %i, $\epsilon_2$ = %i' %(hbargama,mu1,mu2,epsi2)
 inf_tot = info1 + ',' + info2 + '. Ver ' + name_this_py
+info_txt = 'info_critical_values_dispR_%.2f.txt' %(R)
 
 os.chdir(path_load)
-np.savetxt('info_critical_values_dispR_%.2f.txt' %(R), [inf_tot], fmt='%s')
+np.savetxt(info_txt, [inf_tot], fmt='%s')
 
 list_color = ['darkred','yellowgreen','steelblue','coral']
 
@@ -230,6 +231,7 @@ if find_degenerations == 1:
         Returns
         -------
         omega/c correspondiente al mu_c y al modo
+        en condicion de spaser 
         """
         
         os.chdir(path_load)
@@ -238,7 +240,28 @@ if find_degenerations == 1:
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla    
         f = interp1d(list_mu_opt,omegac_opt)
-        return float(f(x))        
+        return float(f(x))   
+
+    def im_epsi1_crit(x,modo):
+        """
+        Parameters
+        ----------
+        x : mu_c obtenido para la condicion de spaser
+        modo : mode
+        
+        Returns
+        -------
+        Im(epsi1) correspondiente al mu_c y al modo
+        en condicion de spaser 
+        """
+        
+        os.chdir(path_load)
+        name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)      
+        tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
+        tabla = np.transpose(tabla)
+        [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla    
+        f = interp1d(list_mu_opt,epsi1_imag_opt)
+        return float(f(x)) 
 
     def resta_f(x,modo): 
         """
@@ -294,7 +317,7 @@ if find_degenerations == 1:
     cond_init = 0.5
     tol = 1e-13
     ite = 1150
-    my_dict = {'modes': '','mu_c deg' : '','omega/c deg' : ''}
+    my_dict = {'modes': '','mu_c deg' : '','omega/c deg' : '', 'im_epsi1 del modo 1' : '', 'im_epsi1 del modo 2' : ''}
     
     for nu in list_modo :
         def F(x):
@@ -310,9 +333,17 @@ if find_degenerations == 1:
         my_dict['modes'] = nu,nu2
         my_dict['mu_c deg'] = sol1
         my_dict['omega/c deg'] = omega_c(sol1,nu)
+        
+        key1_im_epsi1 = 'im_epsi1 del modo 1'
+        my_dict[key1_im_epsi1] = im_epsi1_crit(sol1,nu)
+        my_dict['im_epsi1 del modo %i' %(nu)] = my_dict.pop(key1_im_epsi1)
+        
+        key2_im_epsi1 = 'im_epsi1 del modo 2'
+        my_dict[key2_im_epsi1] = im_epsi1_crit(sol1,nu2)
+        my_dict['im_epsi1 del modo %i' %(nu2)] = my_dict.pop(key2_im_epsi1)
 
     print('')
-    my_dict2 = {'modes': '','mu_c deg' : '','omega/c deg' : ''}
+    my_dict2 = {'modes': '','mu_c deg' : '','omega/c deg' : '', 'im_epsi1 del modo 1' : '', 'im_epsi1 del modo 2' : ''}
     for nu in list_modo :
         def F(x):
             return resta_f2(x,nu)
@@ -327,7 +358,24 @@ if find_degenerations == 1:
         my_dict2['modes'] = nu,nu2
         my_dict2['mu_c deg'] = sol2
         my_dict2['omega/c deg'] = omega_c(sol2,nu)
-   
+
+        key1_im_epsi1 = 'im_epsi1 del modo 1'
+        my_dict2[key1_im_epsi1] = im_epsi1_crit(sol2,nu)
+        my_dict2['im_epsi1 del modo %i' %(nu)] = my_dict2.pop(key1_im_epsi1)
         
+        key2_im_epsi1 = 'im_epsi1 del modo 2'
+        my_dict2[key2_im_epsi1] = im_epsi1_crit(sol2,nu2)
+        my_dict2['im_epsi1 del modo %i' %(nu2)] = my_dict2.pop(key2_im_epsi1)    
+    
+    deg_txt = 'info_degenerations_dispR_%.2f.txt' %(R)
+    np.savetxt(deg_txt, [], fmt='%s')    
+    with open(deg_txt, 'w+') as file: 
+        file.write('{}\n{}'.format(str(my_dict),str(my_dict2)))
+        # file.writelines([inf_tot,str(my_dict),str(my_dict2)])
+    file.close()
+    
 #%%  
+
+
+
 

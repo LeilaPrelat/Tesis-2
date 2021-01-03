@@ -9,6 +9,9 @@ obtuve gn (minimizandolo) ---> obtuve
 los denominadores de los coef an y cn
 (entonces obtuve an y cn) 
 ---> podemos graficar los campos
+     para diferentes valores de mu 
+         con y sin medio activo 
+         para ver la mejora y los compos cercanos
 
 """
 
@@ -20,10 +23,10 @@ import matplotlib.pyplot as plt
 #%%
 
 save_graphs = 1
-modulo = 0 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
+modulo = 1 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
-paper = 1  # sacar el titulo y guardar la info (formato paper)
+paper = 0  # sacar el titulo y guardar la info (formato paper)
 
 #%%
 
@@ -67,17 +70,17 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 Ao,Bo = 1,1
-R = 0.05              #micrones
+R = 0.35              #micrones
 list_modos = [4]
 
-Ep = 0.3
+Ep = 0.9
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 nmax = 10
 
 if save_graphs==1:
-    path_save0 = 'fields'  + '/R_%.2f/' %(R) + 'barrido_mu'
+    path_save0 = 'fields'  + '/' + 'barrido_mu'
     if paper == 0:
         path_save = path_basic + '/' + path_save0
     else:
@@ -101,7 +104,7 @@ for modo in list_modos:
     
     path_load = path_basic + '/' + 'real_freq' + '/' + 'R_%.2f/epsiinf_DL_%.2f_vs_mu' %(R,epsiinf_DL)
     os.chdir(path_load)
-    name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)
+    name = 'info_critical_values_dispR_%.2f.txt' %(R)
     
     try:
         data_load = np.loadtxt(name,delimiter = '\t', skiprows=1)
@@ -116,14 +119,14 @@ for modo in list_modos:
                 print('valores de ', name, ':', line)
         except OSError or IOError as error:
             print(error)
-    
+
     data_load = np.transpose(data_load)
     [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
     
     index = 0
     hbaramu = barrido_mu[index]
     omegac = omegac_opt[index]
-    delta_ci = epsi1_imag_opt[index]
+    delta_ci = epsi1_imag_opt[index]        
     
     info1 = 'R = %.2f $\mu$m, $\mu_c$ = %.4f eV, $\epsilon_\infty$ = %.1f, Ep = %.1f eV, $\gamma_{DL}$ = %.2f eV' %(R,hbaramu,epsiinf_DL,Ep,gamma_DL)
     info2 = '$\Delta_{ci}$ = %.5e y $\omega/c$ = %.5e 1/$\mu$m del modo = %i, nmax = %i' %(delta_ci,omegac,modo,nmax)
