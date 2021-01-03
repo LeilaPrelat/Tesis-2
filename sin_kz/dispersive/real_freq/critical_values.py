@@ -6,7 +6,8 @@ Created on Sun Apr 19 13:19:41 2020
 """
 
 """
-Sobre paper.py: graficar optical gain y omega/c obtenidos
+Sobre critical_values.py: graficar optical gain y omega/c obtenidos
+en formato paper (sin titulo y prolijo)
 
 """
 
@@ -16,10 +17,14 @@ import sys
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
+from scipy.interpolate import interp1d # para find_degenerations == 1
+from scipy import optimize
 
 #%%
 
 save_graphs = 1
+find_degenerations = 1 #encontrar degeneraciones en frecuencia: modos con el mismo omega/c
+
 
 tamfig = (12,7)
 tamlegend = 20
@@ -53,7 +58,7 @@ print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
 R = 0.35              #micrones
-Ep = 0.7
+Ep = 0.9
 gamma_DL = 0.01 #unidades de energia
 
 path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
@@ -188,4 +193,141 @@ if save_graphs==1:
     plt.savefig('omegac_vs_muR_%.2f.png' %(R),format = 'png')
     
 #%%
- 
+
+if find_degenerations == 1:
+    
+    def salto_modo1(modo):
+        if type(modo) != int:
+            raise TypeError('Modo debe ser entero')
+        if modo < 4:
+            rta = modo + 1
+        elif modo == 4:
+            rta = 1
+        else:
+            raise TypeError('Wrong value for mode: mode <= 4')
+        return rta
+
+    def salto_modo2(modo):
+        if type(modo) != int:
+            raise TypeError('Modo debe ser entero')
+        if modo < 3:
+            rta = modo + 2
+        elif modo == 3:
+            rta = 1
+        elif modo == 4:
+            rta = 2
+        else:
+            raise TypeError('Wrong value for mode: mode <= 4')
+        return rta
+
+    def omega_c(x,modo):
+        """
+        Parameters
+        ----------
+        x : mu_c obtenido para la condicion de spaser
+        modo : mode
+        
+        Returns
+        -------
+        omega/c correspondiente al mu_c y al modo
+        """
+        
+        os.chdir(path_load)
+        name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)      
+        tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
+        tabla = np.transpose(tabla)
+        [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla    
+        f = interp1d(list_mu_opt,omegac_opt)
+        return float(f(x))        
+
+    def resta_f(x,modo): 
+        """
+        Parameters
+        ----------
+        x : mu_c obtenido para la condicion de spaser
+        modo : mode
+        
+        Returns
+        -------
+        minimizar la diferencia entre diferentes omega/c
+        para hallar degeneraciones
+        se usan saltos de a 1 modo
+
+        """
+        if modo > 4:
+            raise TypeError('Wrong value for mode')
+            
+        f1 = omega_c(x,modo)
+        
+        modo2 = salto_modo1(modo)
+        f2 = omega_c(x,modo2)
+        
+        return np.abs(f1 - f2)
+
+
+    def resta_f2(x,modo): 
+        """
+        Parameters
+        ----------
+        x : mu_c obtenido para la condicion de spaser
+        modo : mode
+        
+        Returns
+        -------
+        minimizar la diferencia entre diferentes omega/c
+        para hallar degeneraciones
+        se usan saltos de a 2 modos
+
+        """
+
+        if modo > 4:
+            raise TypeError('Wrong value for mode')
+            
+        f1 = omega_c(x,modo)
+        
+        modo2 = salto_modo2(modo)
+        f2 = omega_c(x,modo2)
+        
+        return np.abs(f1 - f2)
+        
+    list_modo = [1,2,3,4]
+    cond_init = 0.5
+    tol = 1e-13
+    ite = 1150
+    my_dict = {'modes': '','mu_c deg' : '','omega/c deg' : ''}
+    
+    for nu in list_modo :
+        def F(x):
+            return resta_f(x,nu)
+        try:
+            sol = optimize.root(F, cond_init, jac=None, method='hybr', tol=tol, 
+                       options={'maxiter':ite})
+        except ValueError:
+            continue
+        nu2 = salto_modo1(nu)
+        sol1 = np.round(sol.x[0],9)
+        print(nu,nu2, sol1)
+        my_dict['modes'] = nu,nu2
+        my_dict['mu_c deg'] = sol1
+        my_dict['omega/c deg'] = omega_c(sol1,nu)
+
+    print('')
+    my_dict2 = {'modes': '','mu_c deg' : '','omega/c deg' : ''}
+    for nu in list_modo :
+        def F(x):
+            return resta_f2(x,nu)
+        try:
+            sol = optimize.root(F, cond_init, jac=None, method='hybr', tol=tol, 
+                       options={'maxiter':ite})
+        except ValueError:
+            continue
+        nu2 = salto_modo2(nu)
+        sol2 = np.round(sol.x[0],9)
+        print(nu, nu2, sol2)    
+        my_dict2['modes'] = nu,nu2
+        my_dict2['mu_c deg'] = sol2
+        my_dict2['omega/c deg'] = omega_c(sol2,nu)
+   
+        
+#%%  
+

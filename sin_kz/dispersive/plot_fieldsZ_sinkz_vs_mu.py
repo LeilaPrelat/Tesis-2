@@ -52,15 +52,6 @@ path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
 name_this_py = 'Ver ' + name_this_py
 
-if save_graphs==1:
-    path_save0 = 'fields'  + '/' + 'barrido_mu'
-    if paper == 0:
-        path_save = path_basic + '/' + path_save0
-    else:
-        path_save = path_basic + '/' + path_save0 + '/' + 'paper'
-    if not os.path.exists(path_save):
-        print('Creating folder to save graphs')
-        os.mkdir(path_save)
 
 try:
     sys.path.insert(1, path_basic)
@@ -84,6 +75,18 @@ epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 nmax = 10
+
+if save_graphs==1:
+    path_save0 = 'fields'  + '/R_%.2f/' %(R) + 'barrido_mu'
+    if paper == 0:
+        path_save = path_basic + '/' + path_save0
+    else:
+        path_save = path_basic + '/' + path_save0 + '/' + 'paper'
+    if not os.path.exists(path_save):
+        print('Creating folder to save graphs')
+        os.mkdir(path_save)
+        
+#%%
 
 # if R != 0.5:
 #     raise TypeError('Wrong value for radium')
