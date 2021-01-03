@@ -73,7 +73,7 @@ print('Definir parametros del problema')
 R = 0.35              #micrones
 list_modos = [1,2,3,4]
 
-Ep = 0.7                                
+Ep = 0.9                                
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
@@ -203,6 +203,7 @@ for modo in list_modos:
     for mu in list_mu:
         a = omegac_cuasi(modo,Ep,epsiinf_DL,gamma_DL,R,mu)
         b = im_epsi1_cuasi(a,Ep,epsiinf_DL,gamma_DL,modo,R,mu) 
+
         im_epsi1_QE.append(b)
         omegac_QE.append(a)
     

@@ -53,7 +53,7 @@ print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
 R = 0.35              #micrones
-Ep = 0.8
+Ep = 0.7
 gamma_DL = 0.01 #unidades de energia
 
 path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
