@@ -59,7 +59,7 @@ def im_epsi1_cuasi(omegac,modo,R,hbaramu):
     -------
     im(epsilon1) para la aprox QE tal que no hay perdidas
     (se calculo el im(epsilon1) tal que im(omega/c) = 0 , ver seccion 7.1 cuaderno corto
-    plasmones sin kz - invisibilidad)
+    plasmones sin kz - invisibilidad---> RESULTA SER LO MISMO QUE LA SECCION 1 CASO SIN KZ)
 
     """
     TK = 300               	# temperature in K
@@ -96,7 +96,9 @@ def omegac_cuasi(modo,R,re_epsi1,hbaramu):
     Returns
     -------
     omega/c en 1/micrones para la aprox QE tal que no hay perdidas
-    (se calculo el im(epsilon1) tal que im(omega/c) = 0 , ver seccion 1.7 cuaderno corto)
+    (se calculo el im(epsilon1) tal que im(omega/c) = 0 , ver seccion 7.1 cuaderno corto
+    plasmones sin kz - invisibilidad---> RESULTA SER CASI LO MISMO: 
+        cambiar Re(epsi1) + epsi2 por Re(epsi1) - epsi2)
     """
     TK = 300               	# temperature in K
     hbargama = 0.0001      	# collision frequency in eV
@@ -160,8 +162,10 @@ def im_epsi1_cuasi_aprox(omegac,modo,R,hbaramu):
     Returns
     -------
     im(epsilon1) para la aprox QE tal que no hay perdidas
-    (se calculo el im(epsilon1) tal que im(omega/c) = 0 , ver seccion 1.7 cuaderno corto)
-    despreciando el gamma_c**2
+    (se calculo el im(epsilon1) tal que im(omega/c) = 0 despreciando el gamma_c**2, 
+     ver seccion 7.1 cuaderno corto plasmones sin kz - invisibilidad---> 
+     RESULTA SER LO MISMO QUE LA SECCION 1 CASO SIN KZ)
+    
 
     """
     TK = 300               	# temperature in K
@@ -179,7 +183,7 @@ def im_epsi1_cuasi_aprox(omegac,modo,R,hbaramu):
     num = omega02*gamma_c
     den = omega**3
 
-    rta = num/den
+    rta = -num/den
     if rta.imag == 0:
         rta = rta.real
     return rta  
@@ -198,8 +202,10 @@ def omegac_cuasi_aprox(modo,R,re_epsi1,hbaramu):
     Returns
     -------
     omega/c en 1/micrones para la aprox QE tal que no hay perdidas
-    (se calculo el im(epsilon1) tal que im(omega/c) = 0 , ver seccion 1.7 cuaderno corto)
-    despreciando el gamma_c**2
+    (se calculo el im(epsilon1) tal que im(omega/c) = 0 despreciando el gamma_c**2, 
+     ver seccion 7.1 cuaderno corto plasmones sin kz - invisibilidad---> 
+     RESULTA SER CASI LO MISMO: cambiar Re(epsi1) + epsi2 por Re(epsi1) - epsi2)
+   
     """
     TK = 300               	# temperature in K
 #    hbargama = 0.0001      	# collision frequency in eV
@@ -211,7 +217,7 @@ def omegac_cuasi_aprox(modo,R,re_epsi1,hbaramu):
     intra = intra*alfac*c
     omega02 = -4*pi*1j*intra*modo/R
     
-    num = -omega02
+    num = omega02
     den = re_epsi1 - epsi2
     # rta2 = term1 + term2*(omega0 - term3)
 

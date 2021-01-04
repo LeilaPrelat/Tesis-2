@@ -163,11 +163,8 @@ def im_epsi1_cuasi_aprox(omegac,modo,R,hbaramu):
     den = omega**3
 
     rta = -num/den
-    
     if rta.imag == 0:
         rta = rta.real
-    return rta 
-
     return rta 
 
 def omegac_cuasi_aprox(modo,R,re_epsi1,hbaramu):

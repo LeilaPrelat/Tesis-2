@@ -57,17 +57,12 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 re_epsi1 = 3.9
-R = 0.5              #micrones
-list_modos = [3,4]
+R = 0.1              #micrones
+list_modos = [1,2,3,4]
 Ao = 1
 
 list_mu =  np.linspace(0.3,0.9,6001)  
 # list_mu = [0.3]
-
-#%%
-
-if R != 0.5:
-    raise TypeError('Wrong value for radium')
     
 #%%
 
@@ -75,7 +70,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_data_opt==1:
 
-    path_det = r'/re_epsi1_%.2f_vs_mu' %(re_epsi1)
+    path_det = r'/re_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
     path = path_basic + path_det
 
     if not os.path.exists(path):
@@ -91,6 +86,7 @@ def fcond_inicial(hbaramu,modo):
     Parameters
     ----------
     hbaramu : potencial quimico del grafeno en eV
+    modo : modo entero
 
     Returns
     -------
@@ -109,6 +105,9 @@ print('Minimizacion del determinante de 4x4 para un barrido en kz')
 mu0 = list_mu[0]
 tol_NM = 1e-13
 ite_NM = 1150
+label_graph = 'Opt det sin kz'
+label_QE = 'QE approx sin perdidas'
+labelx = '$\mu_c$ [eV]'
 
 for modo in list_modos:
     cond_inicial = fcond_inicial(mu0,modo)
@@ -153,11 +152,8 @@ for modo in list_modos:
         header1 = 'mu [eV]     Omega/c [1/micrones]    Im(epsi1)     Eq(det)' + info + ', ' + name_this_py
         np.savetxt('opt_det_sinkz_inv_vs_mu_modo%i.txt' %(modo), tabla, fmt='%1.11e', delimiter='\t', header = header1)
     
-    label_graph = 'Opt det sin kz'
-    label_QE = 'QE approx sin perdidas'
-    title = 'Modo = %i, R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f' %(modo,R,re_epsi1) +  ', ' + name_this_py
+    title = 'Modo = %i, R = %.2f $\mu$m, Re($\epsilon_1$) = %.2f' %(modo,R,re_epsi1) +  ', ' + name_this_py
     title2 = 'Sin kz invibilidad' + '\n' + title
-    labelx = '$\mu_c$ [eV]'
     
     im_epsi1_QE = []
     omegac_QE = []

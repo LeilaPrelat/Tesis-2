@@ -12,5 +12,9 @@ hallar los valores criticos que mnimizan el numerador/minimizar el scattering, e
 
 ---> misma eq 14 pero cambia la de la freq 
 
+IMPORTANTE:
 
-otro paper relevante de (ver biblio invisibilidad0.pdf) mismo trabajo con nanolayer en lugar de cilindro y sin aproximacion QE
+	-lo unico que hay que cambiar respecto del cason sin kz es:
+		- minimizar el numerador de an (antes era el denominador)
+		- reemplazar de QE_lossless.py la constante Re(epsilon1) + epsilon2 por Re(epsilon1) - epsilon2
+	-otro paper relevante de (ver biblio invisibilidad0.pdf) mismo trabajo con nanolayer en lugar de cilindro y sin aproximacion QE

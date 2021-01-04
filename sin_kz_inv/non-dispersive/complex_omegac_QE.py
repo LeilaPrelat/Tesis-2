@@ -31,7 +31,7 @@ except ModuleNotFoundError:
 
 pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
-def omegac_QE(im_epsi1,modo,re_epsi1,R,hbaramu):
+def omegac_QE_inv(im_epsi1,modo,re_epsi1,R,hbaramu):
     """
     Parameters
     ----------
@@ -45,6 +45,7 @@ def omegac_QE(im_epsi1,modo,re_epsi1,R,hbaramu):
     -------
     complex frequency (pole) omega/c QE approximation
     non-dispersive case para el caso de INVISIBILIDAD
+    RESULTA SER CASI LO MISMO: cambiar epsi1 + epsi2 por epsi1 - epsi2
 
     """
 
@@ -62,7 +63,7 @@ def omegac_QE(im_epsi1,modo,re_epsi1,R,hbaramu):
     # term1 = omega02n/(epsi1 + epsi2)
     # term = (term1 - (gamma/2)**2)**(1/2) - 1j*gamma/2
     epsi1 = re_epsi1 + 1j*im_epsi1
-    cte = -epsi1 + epsi2
+    cte = epsi1 - epsi2
     term = (omega02n/cte)**(1/2) - 1j*gamma/2
     
     return term/c
