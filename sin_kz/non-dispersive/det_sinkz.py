@@ -29,7 +29,7 @@ try:
     sys.path.insert(1, path_graphene)
     from graphene_sigma import sigma
 except ModuleNotFoundError:
-    print('graphene_sigma.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('graphene_sigma.py no se encuentra en ' + path_graphene)
     path_graphene2 = input('path de la carpeta donde se encuentra graphene_sigma.py')
     sys.path.insert(1, path_graphene2)
     from graphene_sigma import sigma
@@ -38,7 +38,7 @@ try:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
 except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('constantes.py no se encuentra en ' + path_graphene)
     path_graphene3 = input('path de la carpeta donde se encuentra constantes.py')
     sys.path.insert(1, path_graphene3)
     from constantes import constantes

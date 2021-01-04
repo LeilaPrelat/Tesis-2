@@ -25,7 +25,6 @@ from scipy import optimize
 save_graphs = 1
 find_degenerations = 1 #encontrar degeneraciones en frecuencia: modos con el mismo omega/c
 
-
 tamfig = (12,7)
 tamlegend = 20
 tamletra = 20
@@ -57,8 +56,8 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
-R = 0.35              #micrones
-Ep = 0.9
+R = 0.4              #micrones
+Ep = 0.7
 gamma_DL = 0.01 #unidades de energia
 
 path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)

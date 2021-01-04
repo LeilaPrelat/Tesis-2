@@ -11,6 +11,13 @@ adimensionalizada
     
 (determinante de 4x4 sin kz)
 
+en lugar de minimizar el denominador de los coef
+an y cn (caso sin kz no dispersivo) al que llamamos
+gn, ahora vamos a minimizar al numerador de an
+(an es el coef de Hz1, medio interior del cilindro)
+
+sol no trivial: Ao =! 0
+
 """
 
 # import numpy as np
@@ -23,13 +30,13 @@ from scipy import special #funciones de Bessel
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_graphene = path_basic.replace('/sin_kz/non-dispersive','') 
+path_graphene = path_basic.replace('/sin_kz_inv/non-dispersive','') 
 
 try:
     sys.path.insert(1, path_graphene)
     from graphene_sigma import sigma
 except ModuleNotFoundError:
-    print('graphene_sigma.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('graphene_sigma.py no se encuentra en ' + path_graphene)
     path_graphene2 = input('path de la carpeta donde se encuentra graphene_sigma.py')
     sys.path.insert(1, path_graphene2)
     from graphene_sigma import sigma
@@ -38,7 +45,7 @@ try:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
 except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('constantes.py no se encuentra en ' + path_graphene)
     path_graphene3 = input('path de la carpeta donde se encuentra constantes.py')
     sys.path.insert(1, path_graphene3)
     from constantes import constantes
@@ -47,7 +54,7 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 
-def determinante(omegac,epsi1,mode,R,mu_c,Ao):
+def determinante(omegac,epsi1,mode,R,mu_c):
     """
     Parameters
     ----------
@@ -69,6 +76,7 @@ def determinante(omegac,epsi1,mode,R,mu_c,Ao):
     sol no trivial: Ao =! 0
 
     """
+    Ao = 1
     mode = int(mode)
     energy = omegac*c*hb
     
@@ -95,8 +103,8 @@ def determinante(omegac,epsi1,mode,R,mu_c,Ao):
     Sigma_ad = 4*pi*alfac*sigmatot #sigma devuelve la conductividad teniendo que multiplicar por alfac*c ---> no hay que dividir por c
     
     def Bessel(modo):
-        J = special.jn(modo,x1t*Rbarra)+0j
-        derJ = special.jvp(modo,x1t*Rbarra)+0j
+        J1 = special.jn(modo,x1t*Rbarra)+0j
+        derJ1 = special.jvp(modo,x1t*Rbarra)+0j
         J2 =  special.jn(modo,x2t*Rbarra)+0j
         derJ2 =  special.jvp(modo,x2t*Rbarra)+0j
         return [J1,derJ1,J2,derJ2]
@@ -107,7 +115,7 @@ def determinante(omegac,epsi1,mode,R,mu_c,Ao):
     
     # print((x1t*Rbarra/1j).real>=0,(x2t*Rbarra/1j).real>=0)
     
-    cte_aux = -Ao*(1j**modo)
+    cte_aux = -Ao*(1j**mode)
     return det_ad*cte_aux
 
 #%%

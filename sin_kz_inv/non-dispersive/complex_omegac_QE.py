@@ -4,6 +4,11 @@
 Created on Mon Dec 21 10:58:12 2020
 
 @author: leila
+
+
+complex frequency (pole) omega/c QE approximation
+non-dispersive case para el caso de INVISIBILIDAD
+(reemplazar epsilon1 por -epsilon1 )
 """
 
 import numpy as np
@@ -39,7 +44,7 @@ def omegac_QE(im_epsi1,modo,re_epsi1,R,hbaramu):
     Returns
     -------
     complex frequency (pole) omega/c QE approximation
-    non-dispersive case
+    non-dispersive case para el caso de INVISIBILIDAD
 
     """
 
@@ -57,7 +62,7 @@ def omegac_QE(im_epsi1,modo,re_epsi1,R,hbaramu):
     # term1 = omega02n/(epsi1 + epsi2)
     # term = (term1 - (gamma/2)**2)**(1/2) - 1j*gamma/2
     epsi1 = re_epsi1 + 1j*im_epsi1
-    cte = epsi1 + epsi2
+    cte = -epsi1 + epsi2
     term = (omega02n/cte)**(1/2) - 1j*gamma/2
     
     return term/c

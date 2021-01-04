@@ -7,6 +7,8 @@ Created on Wed May 20 08:58:35 2020
 
 barrido en R. Hallar omega/c real y im(epsilon1) que minimizan
 el determinante sin kz para diferentes valores de R
+utilizar como condicion inicial los datos obtenidos con el 
+barrido en Ep 
 """
 
 import numpy as np

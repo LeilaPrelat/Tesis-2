@@ -1,0 +1,2 @@
+{'modes': '', 'mu_c deg': '', 'omega/c deg': '', 'im_epsi1 del modo 1': '', 'im_epsi1 del modo 2': ''}
+{'modes': '', 'mu_c deg': '', 'omega/c deg': '', 'im_epsi1 del modo 1': '', 'im_epsi1 del modo 2': ''}

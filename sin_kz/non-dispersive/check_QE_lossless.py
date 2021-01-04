@@ -133,7 +133,7 @@ for mu in list_mu:
     sol = fsolve(im_omegac_QE,cond_inicial,xtol=tol_NM,maxfev=ite_NM)[0]
 
     epsi1 = re_epsi1 + 1j*sol
-    omegac = omegac_QE(sol,modo,R,mu)
+    omegac = omegac_QE(sol,modo,re_epsi1,R,mu)
     re_omegac_opt.append(omegac.real)
     im_omegac_opt.append(omegac.imag)
     epsi1_imag_opt.append(sol)

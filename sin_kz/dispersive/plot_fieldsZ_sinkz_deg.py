@@ -73,17 +73,17 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 Ao,Bo = 1,1
-R = 0.35              #micrones
+R = 0.4              #micrones
 
 
-Ep = 0.9
+Ep = 0.7
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 nmax = 10
 
 if save_graphs==1:
-    path_save0 = 'fields'  + '/' + 'degenerations'
+    path_save0 = 'fields'  + '/' + 'degenerations' + '/' + 'R_%.2f' %(R) + '/' + 'Ep_%.1f' %(Ep)
     if paper == 0:
         path_save = path_basic + '/' + path_save0
     else:
@@ -94,8 +94,14 @@ if save_graphs==1:
         
 #%%
 
-# if R != 0.5:
-#     raise TypeError('Wrong value for radium')
+deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]]
+
+
+if [R,Ep] not in deg_values:
+    raise TypeError('R y Ep no son valores en los que hay degeneracion')
+
+if epsiinf_DL != 3.9:
+    raise TypeError('Wrong value for epsilon infinito')
 
 if gamma_DL != 0.01:
     raise TypeError('Wrong value for gamma_DL')
@@ -135,11 +141,13 @@ index1 = 0 # len(barrido_mu) == len(omega_opt)
 hbaramu = list_mu[index1]
 omegac = list_omegac[index1]
 
-index2 = 0 # len(list_modes) == len(delta_ci)
+index2 = 1
+ # len(list_modes) == len(delta_ci)
 delta_ci = list_epsi1_imag_tot[index1][index2]
 modo = list_modes_tot[index1][index2]
 list_modes = list_modes_tot[index1]
-name_graph = '_modos%i%i.png' %(list_modes[0],list_modes[1]) 
+print('Degeneracion de los modos:',list_modes,'cerca del modo ', modo)
+name_graph = '_modos%i%i_modo%i.png' %(list_modes[0],list_modes[1],modo) 
 
 info1 = 'R = %.2f $\mu$m, $\mu_c$ = %.4f eV, $\epsilon_\infty$ = %.1f, Ep = %.1f eV, $\gamma_{DL}$ = %.2f eV' %(R,hbaramu,epsiinf_DL,Ep,gamma_DL)
 info2 = '$\Delta_{ci}$ = %.5e del modo = %i y $\omega/c$ = %.5e 1/$\mu$m , nmax = %i' %(delta_ci,modo,omegac,nmax)
@@ -154,6 +162,21 @@ if non_active_medium == 1:
     title1_loss = 'Ao = %i, ' %(Ao) + info1 + '\n' + info2_loss  + '\n' + name_this_py
     title2_loss = 'Bo = %i, ' %(Bo) + info1 + '\n' + info2_loss  + '\n' + name_this_py
 
+#%%
+
+def circle(radius):
+    listx = []
+    listy = []
+    listphi = np.linspace(0,2*np.pi,100)
+    for phi in listphi:
+        x = radius*np.cos(phi)
+        y = radius*np.sin(phi)
+        listx.append(x)
+        listy.append(y)
+    return listx,listy
+
+circlex,circley = circle(R)
+    
 print('Graficar el campo Hz para el medio 1 y 2')
 
 n2 = 250
@@ -185,6 +208,7 @@ if non_active_medium == 1: #epsi_ci = 0 ---> no hay medio activo
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
     plt.ylabel(labely,fontsize=tamletra)
+    plt.plot(circlex,circley)
     plt.tick_params(labelsize = tamnum)
     if paper == 0:
         plt.title(title1_loss,fontsize=int(tamtitle*0.9))
@@ -219,6 +243,7 @@ if non_active_medium == 1:
 plt.figure(figsize=tamfig)
 plt.xlabel(labelx,fontsize=tamletra)
 plt.ylabel(labely,fontsize=tamletra)
+plt.plot(circlex,circley)
 plt.tick_params(labelsize = tamnum)
 if paper == 0:
     plt.title(title1,fontsize=int(tamtitle*0.9))
@@ -232,7 +257,8 @@ if save_graphs==1:
         plt.savefig('modHz' + name_graph, format='png') 
     else:
         plt.savefig('reHz' + name_graph, format='png') 
-        
+
+#%%
 
 print('Graficar el campo Ez para el medio 1 y 2')
 
@@ -259,6 +285,7 @@ if non_active_medium == 1: #epsi_ci = 0 ---> no hay medio activos
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
     plt.ylabel(labely,fontsize=tamletra)
+    plt.plot(circlex,circley)
     plt.tick_params(labelsize = tamnum)
     if paper == 0:
         plt.title(title2_loss,fontsize=int(tamtitle*0.9))
@@ -269,9 +296,9 @@ if non_active_medium == 1: #epsi_ci = 0 ---> no hay medio activos
     if save_graphs==1:
         os.chdir(path_save)
         if modulo==1:
-            plt.savefig('modEz_loss.png', format='png') 
+            plt.savefig('modEz_loss' + name_graph, format='png') 
         else:
-            plt.savefig('reEz_loss.png', format='png') 
+            plt.savefig('reEz_loss' + name_graph, format='png') 
 
 def Ez_2variable(x,y):   
     phi = np.arctan2(y,x)
@@ -295,6 +322,7 @@ if non_active_medium == 1:
 plt.figure(figsize=tamfig)
 plt.xlabel(labelx,fontsize=tamletra)
 plt.ylabel(labely,fontsize=tamletra)
+plt.plot(circlex,circley)
 plt.tick_params(labelsize = tamnum)
 if paper == 0:
     plt.title(title2,fontsize=int(tamtitle*0.9))

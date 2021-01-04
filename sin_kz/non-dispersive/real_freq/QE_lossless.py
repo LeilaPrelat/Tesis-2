@@ -77,6 +77,9 @@ def im_epsi1_cuasi(omegac,modo,R,hbaramu):
     den = (omega**2 + (gamma_c/2)**2)**2
 
     rta = -num/den
+    
+    if rta.imag == 0:
+        rta = rta.real
     return rta 
 
 def omegac_cuasi(modo,R,re_epsi1,hbaramu):
@@ -118,7 +121,10 @@ def omegac_cuasi(modo,R,re_epsi1,hbaramu):
     # rta2 = term1 + term2*(omega0 - term3)
 
     omega_n = (rta1)**(1/2)
-    return omega_n/c #omega/c
+    omegac_n = omega_n/c
+    if omegac_n.imag == 0:
+    	omegac_n = omegac_n.real
+    return omegac_n #omega/c
         
 #%%
 
@@ -157,6 +163,11 @@ def im_epsi1_cuasi_aprox(omegac,modo,R,hbaramu):
     den = omega**3
 
     rta = -num/den
+    
+    if rta.imag == 0:
+        rta = rta.real
+    return rta 
+
     return rta 
 
 def omegac_cuasi_aprox(modo,R,re_epsi1,hbaramu):
@@ -191,6 +202,10 @@ def omegac_cuasi_aprox(modo,R,re_epsi1,hbaramu):
     # rta2 = term1 + term2*(omega0 - term3)
 
     omega_n = (num/den)**(1/2)
-    return omega_n/c #omega/c
+    omegac_n = omega_n/c
+    if omegac_n.imag == 0:
+    	omegac_n = omegac_n.real
+    
+    return omegac_n #omega/c
 
 #%%

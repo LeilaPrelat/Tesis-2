@@ -1,7 +1,7 @@
 Viste el mínimo de la figura 2 de tunable? En ese paper observamos que "the observation of these minima is relevant in the context of invisibility cloaks."
 
 
-No le dimos importancia, pero otra gente, como los autores de este paper, https://www.nature.com/articles/s41598-017-12413-4,  siguió nuestra observación y encontró fórmulas QE para la posición de este mínimo (ver eqs. 6 y 8)
+No le dimos importancia, pero otra gente, como los autores de este paper, https://www.nature.com/articles/s41598-017-12413-4 (ver biblio invisibilidad.pdf),  siguió nuestra observación y encontró fórmulas QE para la posición de este mínimo (ver eqs. 6 y 8)
 
 
 Obviamente el valor de la frecuencia que hace cero la sección eficaz (o la amplitud dipolar) es complejo. Recién hablando con Mauro se nos ocurrió que el valor de la frecuencia "de invisibilidad" se puede hacer real poniendo ganancia. Como las expresiones para el cero y el polo son muy parecidas, ver esto debe ser un cambio mínimo en tu código, cuando puedas nos gustaría si podés hacer unas pruebitas.
@@ -11,3 +11,6 @@ Obviamente el valor de la frecuencia que hace cero la sección eficaz (o la ampl
 hallar los valores criticos que mnimizan el numerador/minimizar el scattering, en lugar del denominador ---> eq 8 de zapata (cambiar epsilon por -epsilon) pero separar en parte real e imaginaria 
 
 ---> misma eq 14 pero cambia la de la freq 
+
+
+otro paper relevante de (ver biblio invisibilidad0.pdf) mismo trabajo con nanolayer en lugar de cilindro y sin aproximacion QE

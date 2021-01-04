@@ -20,8 +20,8 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
 save_graphs = 0 #guardar los graficos 2D/1D del campo
-graph_2D = 1    #graficos 2D
-graph_1D = 0   #graficos 1D
+graph_2D = 0    #graficos 2D
+graph_1D = 1   #graficos 1D
 save_data = 0
 
 #%%
