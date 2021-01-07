@@ -117,7 +117,7 @@ if R != 0.5:
     raise TypeError('Wrong value for R')
     
 if modo in [3,4]:
-    print('Ojo: Modo ' + modo + ' no excitado')
+    print('Ojo: Modo ', modo, ' no excitado')
     
 #%%
 

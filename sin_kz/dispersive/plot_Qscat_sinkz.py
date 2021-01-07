@@ -17,10 +17,12 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
-save_graphs = 0 #guardar los graficos 2D/1D del campo
-graph_2D = 1    #graficos 2D
-graph_1D = 0    #graficos 1D
-save_data = 0
+save_graphs = 1 #guardar los graficos 2D/1D del campo
+graph_2D = 0    #graficos 2D
+graph_1D = 1    #graficos 1D
+
+if graph_2D == 1:
+    save_data = 1
 
 #%%
 
@@ -51,10 +53,10 @@ tamnum = 16
 
 print('Definir parametros del problema')
 
-R = 0.5              #micrones
+R = 0.4              #micrones
 modo = 1
 
-Ep = 0.6
+Ep = 0.7
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
@@ -97,7 +99,7 @@ data_load = np.transpose(data_load)
 [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
 
 m = len(barrido_mu)
-index = int(m/2)
+index = 3887
 hbaramu = barrido_mu[index]
 omegac = omegac_opt[index]
 delta_ci = epsi1_imag_opt[index]
@@ -107,7 +109,7 @@ info2 = ', $\Delta_{ci}$ = %.5e y $\omega/c$ = %.5e 1/$\mu$m del modo = %i, nmax
 
 labelx = '$\omega/c$ [$\mu m^{-1}$]'
 labely = 'Qscat$_{ad}$'
-title = info1 +'\n' + info2 + name_this_py
+title = info1 +'\n' + info2  +'\n' + name_this_py
 inf_tot = info1 + ', ' + info2  + ', ' + name_this_py
 
 #%%
@@ -116,7 +118,7 @@ if gamma_DL != 0.01:
     raise TypeError('Wrong value for gamma_DL')
     
 if modo in [2,3,4]:
-    print('Ojo: Modo ' + modo + ' no excitado')
+    print('Ojo: Modo ', modo, ' no excitado')
     
 #%%
 
@@ -128,10 +130,10 @@ if graph_1D==1:
     list_im_epsi1_grueso = [0,-delta_ci,0.5,-0.001,-0.01,delta_ci,-0.5]
     
     N = int(1e3)               
-    omegac1,omegac2 = omegac*0.97,omegac*1.03
-    if modo ==3 or modo ==4: 
-        omegac1,omegac2 = omegac*0.9999,omegac*1.0001
-    # lambda1,lambda2 = lambbda_real*0.999998,lambbda_real*1.000002
+    omegac1,omegac2 = omegac*0.5,omegac*1.4
+    # if modo ==3 or modo ==4: 
+    #     omegac1,omegac2 = omegac*0.9999,omegac*1.0001
+    # # lambda1,lambda2 = lambbda_real*0.999998,lambbda_real*1.000002
     list_omegac = np.linspace(omegac1,omegac2,N)
     
     list_Qscat_tot1 = []
@@ -143,6 +145,8 @@ if graph_1D==1:
             Qscatt = Qscat(omeggac,Ep,epsiinf_DL,gamma_DL,im_epsi1,nmax,R,hbaramu,Ao)
             list_Qscat1.append(Qscatt)  
         list_Qscat_tot1.append(list_Qscat1)  
+        if im_epsi1 == 0:
+            norm = np.max(list_Qscat1)
     
     del list_Qscat1
                 
@@ -157,7 +161,9 @@ if graph_1D==1:
         list_Qscat_tot2.append(list_Qscat2)  
         
     del list_Qscat2
-    
+
+    list_Qscat_tot2 = np.array(list_Qscat_tot2)/norm
+    list_Qscat_tot1 = np.array(list_Qscat_tot1)/norm    
     
     colores = ['coral','yellowgreen','midnightblue','green','darkred','aquamarine','hotpink','steelblue','purple']
     

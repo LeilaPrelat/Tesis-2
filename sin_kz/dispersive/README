@@ -4,3 +4,7 @@ cruce de frequencias (degeneracion) puede tener que ver con el superscattering
 Es un tema de mucha actualidad, asociado con la degeneración de las resonancias, el resultado que encontraste podria tener importancia por si mismo en este contexto, ademas de lo controlable que podria ser con el grafeno    
 
 https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.063901
+
+valores de degeneracion observados (ver plot_fieldsZ_sinkz_deg) para R y Ep son: 
+
+	deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]]

@@ -19,10 +19,12 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
-save_graphs = 0 #guardar los graficos 2D/1D del campo
+save_graphs = 1 #guardar los graficos 2D/1D del campo
 graph_2D = 0    #graficos 2D
 graph_1D = 1   #graficos 1D
-save_data = 0
+
+if graph_2D == 1:
+    save_data = 1
 
 #%%
 
@@ -87,7 +89,7 @@ data_load = np.transpose(data_load)
 [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
 
 m = len(barrido_mu)
-index = 0
+index = -1
 hbaramu = barrido_mu[index]
 omegac = omegac_opt[index]
 im_epsi1c = epsi1_imag_opt[index]
@@ -101,13 +103,34 @@ labely = 'Qscat$_{ad}$'
 title = info1 +'\n' + info2 + name_this_py
 inf_tot = info1 + ', ' + info2  + ', ' + name_this_py
 
+del barrido_mu,omegac_opt,epsi1_imag_opt,eq_det
+
+if zoom == 0 and modo == 1: #aparece el modo 2 
+    name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(2)
+    
+    try:
+        data_load = np.loadtxt(name,delimiter = '\t', skiprows=1)
+        for line in (l.strip() for l in open(name) if l.startswith('#')):
+            print('valores de ', name, ':', line)
+    except OSError or IOError:
+        print('El archivo ' + name + ' no se encuentra en ' + path_load)
+
+    data_load = np.transpose(data_load)
+    [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
+        
+    hbaramu2 = barrido_mu[index]
+    if hbaramu2 != hbaramu :
+        raise TypeError('mu del modo 1 y mu del modo 2 no coinciden')
+    omegac_mod2 = omegac_opt[index]
+    im_epsi12 = epsi1_imag_opt[index]
+    
 #%%
 
 if R != 0.5:
     raise TypeError('Wrong value for R')
     
-if modo in [2,3,4]:
-    print('Ojo: Modo ' + modo + ' no excitado')
+if modo in [3,4]:
+    print('Ojo: Modo ', modo, ' no excitado')
     
 #%%
 
@@ -118,11 +141,12 @@ if graph_1D==1:
     list_im_epsi1_fino = [0,im_epsi1c + 3*tol,im_epsi1c + 2*tol,im_epsi1c + tol,im_epsi1c,im_epsi1c - tol,im_epsi1c - 2*tol]
     list_im_epsi1_grueso = [0,-im_epsi1c,0.5,-0.001,-0.01,im_epsi1c,-0.5]
     
-    N = int(3*1e3)               
-    omegac1,omegac2 = omegac*0.5,omegac*1.5
-    if modo ==3 or modo ==4: 
-        omegac1,omegac2 = omegac*0.9999,omegac*1.0001
-    # lambda1,lambda2 = lambbda_real*0.999998,lambbda_real*1.000002
+    if zoom == 0 and modo == 1:
+        list_im_epsi1_fino.append(im_epsi12)
+        list_im_epsi1_grueso.append(im_epsi12)
+    
+    N = int(5*1e3)               
+    omegac1,omegac2 = omegac*0.7,omegac*1.7
     list_omegac = np.linspace(omegac1,omegac2,N)
     
     list_Qscat_tot1 = []
@@ -159,6 +183,8 @@ if graph_1D==1:
     plt.figure(figsize=tamfig)
     plt.title(title, fontsize = int(tamtitle*0.9))
     labelomegac = '$\omega/c$ = %.4f$\mu m^{-1}$' %(omegac)
+    if zoom == 0 and modo == 1:
+        labelomegac2 = '$\omega/c$ = %.4f$\mu m^{-1}$' %(omegac_mod2)
 
     
     for j in range(len(list_Qscat_tot1)):
@@ -178,6 +204,8 @@ if graph_1D==1:
     mini,maxi = np.min(list_Qscat_tot1),np.max(list_Qscat_tot1)
     eje_Lambda2 = np.linspace(mini,maxi,n)
     plt.plot(omegac*np.ones(n),eje_Lambda2,'-k',lw = 1,label = labelomegac)
+    if zoom == 0 and modo == 1:
+        plt.plot(omegac_mod2*np.ones(n),eje_Lambda2,'-k',lw = 1,label = labelomegac2)
     plt.ylabel(labely,fontsize=tamletra)
     plt.xlabel(labelx,fontsize=tamletra)
     plt.tick_params(labelsize = tamnum)
@@ -211,6 +239,8 @@ if graph_1D==1:
     mini,maxi = np.min(list_Qscat_tot2),np.max(list_Qscat_tot2)
     eje_Lambda2 = np.linspace(mini,maxi,n)
     plt.plot(omegac*np.ones(n),eje_Lambda2,'-k',lw = 1,label = labelomegac)
+    if zoom == 0 and modo == 1:
+        plt.plot(omegac_mod2*np.ones(n),eje_Lambda2,'-k',lw = 1,label = labelomegac2)
     plt.ylabel(labely,fontsize=tamletra)
     plt.xlabel(labelx,fontsize=tamletra)
     plt.tick_params(labelsize = tamnum)
