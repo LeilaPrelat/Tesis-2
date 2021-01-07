@@ -37,7 +37,7 @@ name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
 path_basic2 = path_basic.replace('/' + 'real_freq','')
-path_graphene = path_basic.replace('/sin_kz/dispersive/real_freq','') 
+path_graphene = path_basic.replace('/sin_kz_inv/dispersive/real_freq','') 
 
 
 try:
@@ -56,8 +56,8 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
-R = 0.4              #micrones
-Ep = 0.7
+R = 0.3              #micrones
+Ep = 0.9
 gamma_DL = 0.01 #unidades de energia
 
 path_load = path_basic + '/R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
@@ -100,7 +100,7 @@ labely = '$\epsilon_{ci}$'
 k = 0
 for modo in [1,2,3,4]:
     os.chdir(path_load)
-    name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)
+    name = 'opt_det_sinkz_inv_vs_mu_modo%i.txt' %(modo)
     tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
     tabla = np.transpose(tabla)
     [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
@@ -168,7 +168,7 @@ plt.figure(figsize=tamfig)
 k = 0
 for modo in [1,2,3,4]:
     os.chdir(path_load)
-    name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)
+    name = 'opt_det_sinkz_inv_vs_mu_modo%i.txt' %(modo)
     tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
     tabla = np.transpose(tabla)
     [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
@@ -195,6 +195,22 @@ if save_graphs==1:
 #%%
 
 if find_degenerations == 1:
+    
+    for modo in [1,2,3]:
+
+        os.chdir(path_load)
+        name = 'opt_det_sinkz_inv_vs_mu_modo%i.txt' %(modo)      
+        tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
+        tabla = np.transpose(tabla)
+        [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla   
+        
+        name2 = 'opt_det_sinkz_inv_vs_mu_modo%i.txt' %(modo + 1)      
+        tabla2 = np.loadtxt(name2, delimiter='\t', skiprows=1)
+        tabla2 = np.transpose(tabla2)
+        [list_mu_opt2,omegac_opt2,epsi1_imag_opt2,eq_det2] = tabla2
+        
+        if list_mu_opt2[0] != list_mu_opt[0]:
+            raise TypeError('Warning: mu del modo', modo, 'distinto del mu del modo', modo + 1)        
     
     def salto_modo1(modo):
         if type(modo) != int:
@@ -234,10 +250,11 @@ if find_degenerations == 1:
         """
         
         os.chdir(path_load)
-        name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)      
+        name = 'opt_det_sinkz_inv_vs_mu_modo%i.txt' %(modo)      
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla    
+        
         f = interp1d(list_mu_opt,omegac_opt)
         return float(f(x))   
 
@@ -255,7 +272,7 @@ if find_degenerations == 1:
         """
         
         os.chdir(path_load)
-        name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)      
+        name = 'opt_det_sinkz_inv_vs_mu_modo%i.txt' %(modo)      
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla    
@@ -313,8 +330,8 @@ if find_degenerations == 1:
         return np.abs(f1 - f2)
         
     list_modo = [1,2,3,4]
-    cond_init = 0.5
-    tol = 1e-13
+    cond_init = 0.31
+    tol = 1e-9
     ite = 1150
     my_dict = {'modes': '','mu_c deg' : '','omega/c deg' : '', 'im_epsi1 del modo 1' : '', 'im_epsi1 del modo 2' : ''}
     
@@ -366,12 +383,14 @@ if find_degenerations == 1:
         my_dict2[key2_im_epsi1] = im_epsi1_crit(sol2,nu2)
         my_dict2['im_epsi1 del modo %i' %(nu2)] = my_dict2.pop(key2_im_epsi1)    
     
-    deg_txt = 'info_degenerations_dispR_%.2f.txt' %(R)
-    np.savetxt(deg_txt, [], fmt='%s')    
-    with open(deg_txt, 'w+') as file: 
-        file.write('{}\n{}'.format(str(my_dict),str(my_dict2)))
-        # file.writelines([inf_tot,str(my_dict),str(my_dict2)])
-    file.close()
+    if my_dict['omega/c deg'] != '' or my_dict2['omega/c deg'] != '' :
+    
+        deg_txt = 'info_degenerations_dispR_%.2f.txt' %(R)
+        np.savetxt(deg_txt, [], fmt='%s')    
+        with open(deg_txt, 'w+') as file: 
+            file.write('{}\n{}'.format(str(my_dict),str(my_dict2)))
+            # file.writelines([inf_tot,str(my_dict),str(my_dict2)])
+        file.close()
     
 #%%  
 
