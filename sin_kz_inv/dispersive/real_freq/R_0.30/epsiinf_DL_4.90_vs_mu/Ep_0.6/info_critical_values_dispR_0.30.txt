@@ -1,0 +1,1 @@
+Invisbilidad, R = 0.30 $\mu$m, $\epsilon_\infty$ = 4.90, Ep = 0.6, $\gamma_{DL}$ = 0.01,$gamma_c$ = 0.0001 eV, $\mu_1$ = 1, $\mu_2$ = 1, $\epsilon_2$ = 1. Ver critical_values.py

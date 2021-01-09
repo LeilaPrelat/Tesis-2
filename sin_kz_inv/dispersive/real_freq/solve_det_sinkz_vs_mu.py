@@ -14,7 +14,7 @@ import os
 import sys
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize   
-from scipy.interpolate import interp1d
+# from scipy.interpolate import interp1d
 
 #%% 
 
@@ -58,15 +58,16 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 0.5             #micrones
-list_modos = [1,2,3,4]
+R = 0.3             #micrones
+list_modos = [1,2,3]
 # list_modos = [4]
 
 # Ep = 0.7                               
-epsiinf_DL = 3.9
+epsiinf_DL = 4.9
 gamma_DL = 0.01 #unidades de energia
 
 list_Ep = [0.7,0.4,0.5,0.3,0.8,0.6,0.9]
+list_Ep = [0.9]
 list_mu =  np.linspace(0.9,0.3,6001)  
 # list_mu = [0.3]
 

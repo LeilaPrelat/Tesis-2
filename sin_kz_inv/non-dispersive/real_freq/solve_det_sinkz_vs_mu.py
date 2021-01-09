@@ -57,7 +57,7 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 re_epsi1 = 3.9
-R = 1              #micrones
+R = 50              #micrones
 list_modos = [1,2,3,4]
 Ao = 1
 

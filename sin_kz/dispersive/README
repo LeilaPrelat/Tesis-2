@@ -1,10 +1,15 @@
-cruce de frequencias (degeneracion) puede tener que ver con el superscattering
+cruce de frequencias (degeneracion) ---> superscattering
 
 
-Es un tema de mucha actualidad, asociado con la degeneración de las resonancias, el resultado que encontraste podria tener importancia por si mismo en este contexto, ademas de lo controlable que podria ser con el grafeno    
+Es un tema de mucha actualidad, asociado con la degeneración de las resonancias, el resultado que encontraste podria tener importancia por si mismo en este contexto, ademas de lo controlable que podria ser con el grafeno
 
 https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.063901
 
-valores de degeneracion observados (ver plot_fieldsZ_sinkz_deg) para R y Ep son: 
+valores de degeneracion observados (ver plot_fieldsZ_sinkz_deg) para R (en micrometros) y Ep (en eV) son:
 
-	deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]]
+		deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]] = [R,Ep] ---> hallados en critical_values.py dentro de la carpeta real_freq
+
+
+calcular la distribucion angular de la potencia emitida (antes de integrar Qscat en theta) que depende de theta pero no del rho.
+
+buscar paper de ricardo con gigins de superscattering para esfericas
