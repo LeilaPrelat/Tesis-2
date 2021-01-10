@@ -7,9 +7,13 @@ https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.063901
 
 valores de degeneracion observados (ver plot_fieldsZ_sinkz_deg) para R (en micrometros) y Ep (en eV) son:
 
-		deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]] = [R,Ep] ---> hallados en critical_values.py dentro de la carpeta real_freq
+		deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]] = [R,Ep] ---> hallados en critical_values.py dentro de la carpeta real_freq para epsilon infinito = 3.9
 
 
-calcular la distribucion angular de la potencia emitida (antes de integrar Qscat en theta) que depende de theta pero no del rho.
+tarea reunion 8/1/2021:
 
-buscar paper de ricardo con gigins de superscattering para esfericas
+1 - calcular la distribucion angular de la potencia emitida (antes de integrar Qscat en theta, cuando hay doble sumatoria) que depende de theta pero no del rho.(creo que hay que evaluar rho en R porque rho aparece en exponenciales) 
+		---> ver potencia.py para ver que pasa con los campos en el caso degenerado 
+			(super scattering y super invisibilidad)
+
+2 - buscar paper de ricardo con gigins de superscattering para esfericas

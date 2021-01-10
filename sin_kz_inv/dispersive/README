@@ -9,7 +9,7 @@ valores de degeneracion observados (ver plot_fieldsZ_sinkz_deg) para R (en micro
 
 		deg_values = [] = [R,Ep] ---> hallados en critical_values.py dentro de la carpeta real_freq
 
-
+		
 calcular la distribucion angular de la potencia emitida (antes de integrar Qscat en theta) que depende de theta pero no del rho.
 
 buscar paper de ricardo con gigins de superscattering para esfericas
