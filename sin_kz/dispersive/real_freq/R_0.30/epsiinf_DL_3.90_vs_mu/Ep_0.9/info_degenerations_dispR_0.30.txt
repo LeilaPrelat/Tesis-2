@@ -1,2 +1,1 @@
-{'modes': (1, 2), 'mu_c deg': 0.482563235, 'omega/c deg': 2.0471479768421, 'im_epsi1 del modo 1': -0.7712763254046849, 'im_epsi1 del modo 2': -0.15509871483994}
-{'modes': '', 'mu_c deg': '', 'omega/c deg': '', 'im_epsi1 del modo 1': '', 'im_epsi1 del modo 2': ''}
+{'modes': [[1, 2]], 'mu_c deg': [0.482563235], 'omega/c deg': [2.0471479768421], 'im_epsi1 del modo 1 con 2': -0.7712763254046849, 'im_epsi1 del modo 2 con 1': -0.15509871483994}

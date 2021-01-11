@@ -222,7 +222,7 @@ def omegac_cuasi_aprox(modo,epsiinf_DL,gamma_DL,R,hbaramu):
     rta = rta_energy2**(1/2) #energy
     omegac_n = rta/(hb*c) #energy/hb da omega --> luego divido por c
     if omegac_n.imag == 0:
-    	omegac_n == omegac_n.real
+    	omegac_n = omegac_n.real
     return omegac_n #omega/c
         
 #%%

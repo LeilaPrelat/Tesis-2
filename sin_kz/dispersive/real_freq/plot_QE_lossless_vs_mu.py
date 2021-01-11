@@ -37,7 +37,7 @@ try:
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi,im_epsi1_cuasi_aprox,omegac_cuasi_aprox
 except ModuleNotFoundError:
-    print('QE_lossless.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('QE_lossless.py no se encuentra en ' + path_basic)
     path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi,im_epsi1_cuasi_aprox,omegac_cuasi_aprox

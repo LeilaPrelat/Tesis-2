@@ -5,7 +5,7 @@ Created on Wed May 20 08:58:35 2020
 
 @author: leila
 
-polos complejos del caso no dispersivo
+polos complejos del caso dispersivo
 sin kz 
 
 """
@@ -244,18 +244,18 @@ if break_axes==1:
 
 for i in [0,1,2]:
 
-    if modo==1:
-        ticks = ticks_mod1[i]
-    elif modo==2:
-        ticks = ticks_mod2[i]
-    elif modo==3:
-        ticks = ticks_mod3[i]     
-    elif modo==4:
-        ticks = ticks_mod4[i]
+    # if modo==1:
+    #     ticks = ticks_mod1[i]
+    # elif modo==2:
+    #     ticks = ticks_mod2[i]
+    # elif modo==3:
+    #     ticks = ticks_mod3[i]     
+    # elif modo==4:
+    #     ticks = ticks_mod4[i]
     
-    if R == 0.05:
-        ax[i].set_xticks(ticks)
-        ax[i].set_xticklabels(ticks)
+    # if R == 0.05:
+    #     ax[i].set_xticks(ticks)
+    #     ax[i].set_xticklabels(ticks)
     
     ax[i].legend(loc=[0.25,1],markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
 

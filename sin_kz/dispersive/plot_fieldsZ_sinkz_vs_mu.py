@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 
 #%%
 
-save_graphs = 1
+save_graphs = 0
 modulo = 1 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
@@ -104,7 +104,7 @@ for modo in list_modos:
     
     path_load = path_basic + '/' + 'real_freq' + '/' + 'R_%.2f/epsiinf_DL_%.2f_vs_mu' %(R,epsiinf_DL)
     os.chdir(path_load)
-    name = 'info_critical_values_dispR_%.2f.txt' %(R)
+    name = 'opt_det_sinkz_vs_mu_modo%i.txt' %(modo)
     
     try:
         data_load = np.loadtxt(name,delimiter = '\t', skiprows=1)

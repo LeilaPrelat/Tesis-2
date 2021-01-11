@@ -108,7 +108,7 @@ if gamma_DL != 0.01:
 
 #%%
 
-print('Importar los valores de SPASER')
+print('Importar los valores de SPASER de deg')
 
 path_load = path_basic + '/' + 'real_freq' + '/' + 'R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
 os.chdir(path_load)

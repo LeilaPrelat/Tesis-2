@@ -57,7 +57,7 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
-R = 0.5       #micrones
+R = 0.4       #micrones
 # Ep = 0.6
 gamma_DL = 0.01 #unidades de energia
 list_Ep = [0.7,0.4,0.5,0.3,0.8,0.6,0.9]
@@ -379,14 +379,25 @@ for Ep in list_Ep:
             my_dict2['im_epsi1 del modo %i con %i' %(nu,nu2)] = im_epsi1_crit(sol2,nu) 
             my_dict2['im_epsi1 del modo %i con %i' %(nu2,nu)] = im_epsi1_crit(sol2,nu2) 
         
-        if len(my_dict['omega/c deg']) + len(my_dict2['omega/c deg']) != 0 :
-        
-            deg_txt = 'info_degenerations_dispR_%.2f.txt' %(R)
+        deg_txt = 'info_degenerations_inv_dispR_%.2f.txt' %(R)
+        if len(my_dict['omega/c deg'])*len(my_dict2['omega/c deg']) != 0 :
             np.savetxt(deg_txt, [], fmt='%s')    
             with open(deg_txt, 'w+') as file: 
                 file.write('{}\n{}'.format(str(my_dict),str(my_dict2)))
                 # file.writelines([inf_tot,str(my_dict),str(my_dict2)])
             file.close()
+        elif len(my_dict2['omega/c deg']) == 0 and len(my_dict['omega/c deg'])!= 0 :
+            np.savetxt(deg_txt, [], fmt='%s')    
+            with open(deg_txt, 'w+') as file: 
+                file.write('{}'.format(str(my_dict)))
+                # file.writelines([inf_tot,str(my_dict),str(my_dict2)])
+            file.close()            
+        elif len(my_dict['omega/c deg']) == 0 and len(my_dict2['omega/c deg'])!= 0 :
+            np.savetxt(deg_txt, [], fmt='%s')    
+            with open(deg_txt, 'w+') as file: 
+                file.write('{}'.format(str(my_dict2)))
+                # file.writelines([inf_tot,str(my_dict),str(my_dict2)])
+            file.close()    
     
 #%%  
 

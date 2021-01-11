@@ -70,8 +70,8 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 Ao,Bo = 1,1
-R = 0.35              #micrones
-list_modos = [4]
+R = 0.4              #micrones
+list_modos = [1,2,3,4]
 
 Ep = 0.9
 epsiinf_DL = 3.9

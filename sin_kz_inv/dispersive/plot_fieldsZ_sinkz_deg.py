@@ -76,7 +76,7 @@ Ao,Bo = 1,1
 R = 0.4              #micrones
 
 
-Ep = 0.7
+Ep = 0.9
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
@@ -94,11 +94,11 @@ if save_graphs==1:
         
 #%%
 
-deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]]
+#deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]]
 
 
-if [R,Ep] not in deg_values:
-    raise TypeError('R y Ep no son valores en los que hay degeneracion')
+# if [R,Ep] not in deg_values:
+#     raise TypeError('R y Ep no son valores en los que hay degeneracion')
 
 if epsiinf_DL != 3.9:
     raise TypeError('Wrong value for epsilon infinito')

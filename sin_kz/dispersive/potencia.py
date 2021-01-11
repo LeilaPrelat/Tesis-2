@@ -50,7 +50,7 @@ print('Definir el coeficiente Qscat y Qabs')
 
 #Ojo: aca solo van frecuencias reales
 
-def potencia(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,R,hbaramu,Ao,phi): 
+def potencia(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,hbaramu,Ao,rho,phi): 
     """
     Parameters
     ----------
@@ -60,11 +60,10 @@ def potencia(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,R,hbaramu,Ao,phi):
     gamma_DL : gamma (Drude-Lorentz) de permeabilidad del medio 1
             en unidades eV de energia
     epsi_ci: Im(epsilon1) del colorante (dye)
-    
     nmax: sumatoria en modos desde -nmax hasta +nmax (2*nmax+1 modos)
-    R: radio del cilindro en micrometros
     hbaramu: potencial quimico del grafeno en eV
     Ao: amplitud del Hz incidente (solo pol p)
+    rho: coordenada radial en micrometros
     phi : variable angular de las coordenadas polares (de 0 a 2pi)
     
     Returns
@@ -83,7 +82,7 @@ def potencia(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,R,hbaramu,Ao,phi):
     sigmatot, inter, intra = sigma(energy,hbaramu,hbargama) 
         
     k0 = omegac #=omega/c
-    Rbarra = R*k0 #adimensional
+    Rbarra = rho*k0 #adimensional
     x1,x2 = (epsi1*mu1)**(1/2)+0j,(epsi2*mu2)**(1/2)+0j
     
     if (x1*Rbarra).real>=0:
@@ -145,6 +144,6 @@ def potencia(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,R,hbaramu,Ao,phi):
     
             potencia = potencia + 1j*(mu2/x2)*term1*np.e**(1j*nu*phi) + term2
     
-    return potencia
+    return potencia.real
 
 #%%

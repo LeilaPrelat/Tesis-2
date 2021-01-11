@@ -56,10 +56,10 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 5              #micrones
+R = 0.4              #micrones
 # modo = 4
 
-Ep = 0.6
+Ep = 0.9
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
@@ -81,7 +81,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_data_opt==1 or save_graphs ==1:
 
-    path_det = r'/complex_freq/epsiinf_DL_%.2f_vs_mu/R_%.2f' %(epsiinf_DL,R)
+    path_det = r'/complex_freq/epsiinf_DL_%.2f_vs_mu/R_%.2f/Ep_%.1f/find_critical_values' %(epsiinf_DL,R,Ep)
     path = path_basic + path_det
 
     if not os.path.exists(path):
