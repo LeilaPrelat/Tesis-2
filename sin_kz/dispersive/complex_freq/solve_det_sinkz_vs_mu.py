@@ -64,7 +64,7 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 0.05              #micrones
+R = 0.1             #micrones
 modo = 4
 
 Ep = 0.6
@@ -80,13 +80,12 @@ if R >= 0.5 :
         list_im_epsi1 = np.linspace(0,-0.2,201) 
 else:
     if modo==1:
-        list_im_epsi1 = np.linspace(0,-0.3,301) 
+        list_im_epsi1 = np.linspace(0,-0.35,351) 
     else :
-        list_im_epsi1 = np.linspace(0,-0.2,201)     
+        list_im_epsi1 = np.linspace(0,-0.3,301)     
     
-# list_mu =  np.linspace(0.3,0.9,601)  
-list_mu = np.linspace(0.38,0.3,81)  
-list_im_epsi1 = np.linspace(-0.14,-0.2,61) 
+list_mu =  np.linspace(0.9,0.3,601)   
+# list_im_epsi1 = np.linspace(0,-1.1,1101) 
 
 info1 = 'R = %.2f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
 info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
@@ -142,10 +141,10 @@ omegac_inicial = omegac_QE(modo,Ep,epsiinf_DL,gamma_DL,epsi_ci0,R,mu0)
 cond_inicial = 2*np.pi/omegac_inicial
 cond_inicial0 = [cond_inicial.real,cond_inicial.imag]
 
-if mu0 == 0.3:
-    cond_inicial0 = [cond_inicial.real,cond_inicial.imag]
-else:
-    cond_inicial0 = [3.872985919e+00, 5.619039143e-02] #mu anterior
+# if mu0 == 0.3:
+#     cond_inicial0 = [cond_inicial.real,cond_inicial.imag]
+# else:
+#     cond_inicial0 = [3.872985919e+00, 5.619039143e-02] #mu anterior
 
 if graficar==0:
     os.chdir(path_d)

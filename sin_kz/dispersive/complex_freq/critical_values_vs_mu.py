@@ -55,14 +55,14 @@ tamnum = 16
 
 print('Definir parametros del problema')
 
-R = 0.05              #micrones
-modo = 1
+R = 0.1              #micrones
+modo = 4
 
-Ep = 0.6
+Ep = 0.3
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
-barrido_mu = np.linspace(0.3,0.9,601)
+barrido_mu = np.linspace(0.9,0.3,601)
 
 info1 = 'R = %.1f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
 info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
@@ -119,7 +119,7 @@ rta_Re_omega_c = []
 rta_Re_omega_c_cuasi = [] #eq 16 del paper 2, aprox cuasi
 
 if modo == 1:
-    cond_inicial1 = -0.8
+    cond_inicial1 = -0.2
 else:
     cond_inicial1 = -0.17
     
@@ -165,12 +165,12 @@ for mu in barrido_mu:
     ejey3 = f3(ejex3)
     
 
-    # sol1 = fsolve(f2,cond_inicial1, xtol=1e-19,maxfev=1700)
+    sol1 = fsolve(f2,cond_inicial1, xtol=1e-19,maxfev=1700)
     
     # sol1 = minimize(f2, cond_inicial1,method='Nelder-Mead', tol=tol_NM, 
     #         options={'maxiter':ite_NM})
     
-    sol1 = root_scalar(f2,bracket = bounds,method = 'brentq')
+    # sol1 = root_scalar(f2,bracket = bounds,method = 'brentq')
     
     # sol1 = minimize_scalar(f2, bounds=bounds, method='bounded',tol = 1e-18)
         
@@ -182,10 +182,10 @@ for mu in barrido_mu:
     # rta_Im_omega_c.append(float(f2(sol1[0])))
     # rta_Re_omega_c.append(float(f3(sol1[0])))
 
-    print('Miminizar Im(omega/c):', sol1.root,f2(sol1.root))   
-    rta_Im_epsi1.append(sol1.root)
-    rta_Im_omega_c.append(float(f2(sol1.root)))
-    rta_Re_omega_c.append(float(f3(sol1.root)))
+    print('Miminizar Im(omega/c):', sol1[0],f2(sol1[0]))   
+    rta_Im_epsi1.append(sol1[0])
+    rta_Im_omega_c.append(f2(sol1[0]))
+    rta_Re_omega_c.append(f3(sol1[0]))
     
     
     rta_Im_epsi1_cuasi.append(sol3[0])

@@ -65,7 +65,7 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 R = 0.4              #micrones
-modo = 1
+modo = 2
 
 Ep = 0.9
 epsiinf_DL = 3.9
@@ -82,7 +82,7 @@ else:
     if modo==1:
         list_im_epsi1 = np.linspace(0,-0.1,501) 
     else :
-        list_im_epsi1 = np.linspace(0,-0.2,201)     
+        list_im_epsi1 = np.linspace(0,-0.1,501)     
     
 list_mu =  np.linspace(0.9,0.3,601)  
 
