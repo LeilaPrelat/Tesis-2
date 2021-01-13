@@ -46,10 +46,10 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 0.4              #micrones
+R = 0.1              #micrones
 modo = 4
 
-Ep = 0.9
+Ep = 0.3
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 

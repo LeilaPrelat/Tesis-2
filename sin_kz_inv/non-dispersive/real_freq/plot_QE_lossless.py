@@ -48,10 +48,10 @@ print('Definir parametros del problema')
 
 re_epsi1 = 4.9
 R = 0.5              #micrones
-modo = 4
+modo = 3
 
 list_mu =  np.linspace(0.3,0.9,6001)  
-path_save = path_basic + '/re_epsi1_%.2f_vs_mu' %(re_epsi1)
+path_save = path_basic + '/re_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
 
 #%%
 

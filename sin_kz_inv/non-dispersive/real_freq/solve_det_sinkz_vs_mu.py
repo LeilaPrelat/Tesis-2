@@ -56,12 +56,12 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-re_epsi1 = 3.9
-R = 50              #micrones
+re_epsi1 = 4.9
+R = 0.5              #micrones
 list_modos = [1,2,3,4]
 Ao = 1
 
-list_mu =  np.linspace(0.3,0.9,6001)  
+list_mu =  np.linspace(0.9,0.3,6001)  
 # list_mu = [0.3]
     
 #%%

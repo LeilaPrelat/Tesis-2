@@ -9,11 +9,18 @@ sobre Tesis-corregido : estaba mal la conductividad del grafeno, el sigma del pa
 
 -graphene-check: comparacion del grafeno viejo (Tesis-1) con el grafeno nuevo (Tesis-2) 
 
--sin_kz: minimizacion del denominador gn, con freq compleja y real, agregando medio activo y hallan dos los valores criticos de omega/c real y de im_epsi1 que minimizan las perdidas (representadas en este caso por im(omega/c)). 
+-sin_kz: (resonancia) minimizacion del denominador gn, con freq compleja y real, agregando medio activo y hallan dos los valores criticos de omega/c real y de im_epsi1 que minimizan las perdidas (representadas en este caso por im(omega/c)). 
 		- dentro de la carpeta real_freq : critical_values.py busca degeneraciones (super scattering)
 
--sin_kz_inv:  invisibilidad ---> minimizar el numerador del coeficiente "an" en lugar del denominador
+-sin_kz_inv: invisibilidad ---> minimizar el numerador del coeficiente "an" en lugar del denominador
 			- dentro de la carpeta real_freq : critical_values.py busca degeneraciones (super invisibilidad)
 
 -con kz: minimizar el determinante de 2x2. ahora hay propagacion en el eje z. (incompleto)
 
+-complex_poles_disp: comparar los polos de resonancia e invisibilidad para el caso dispersivo, para cada modo
+
+-complex_poles_nondisp: comparar los polos de resonancia e invisibilidad para el caso no dispersivo, para cada modo
+
+-modelar_coef_an.py : modelar al coeficiente an como (omega-omega_inv)/(omega-omega_res) (los omegas divididos por c en realidad)
+
+-webhook.py : para los barridos en omega/c complejo (que tardan y son los unicos que tardan) avisar que termino el barrido por discord al grupo de electro

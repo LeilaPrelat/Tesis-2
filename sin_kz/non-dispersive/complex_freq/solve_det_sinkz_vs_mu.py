@@ -17,10 +17,11 @@ from scipy.optimize import minimize
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
+
 #%% 
 
 save_data_opt = 1 #guardar data de la minimizacion
-
+avisar_fin_script = 1 #mandar msj a discord de que termino
 graficar = 0
 save_graphs = 0
 if graficar ==1:
@@ -37,7 +38,7 @@ try:
     sys.path.insert(1, path_det)
     from det_sinkz import determinante
 except ModuleNotFoundError:
-    print('det_sinkz.py no se encuentra en el path_basic2 definido/carpeta de trabajo')
+    print('det_sinkz.py no se encuentra en ' + path_det)
     path_det = input('path de la carpeta donde se encuentra det_sinkz.py')
     sys.path.insert(1, path_det)
     from det_sinkz import determinante
@@ -235,3 +236,12 @@ for mu in list_mu:
     del cond_inicial
     
 #%%
+
+if avisar_fin_script == 1:
+    from discord import Webhook, RequestsWebhookAdapter
+    print('Mandar msj a discord avisando que termino la ejecucion')
+    url = 'https://discord.com/api/webhooks/798651656202878986/ViaIJQ9vQOCZa2U2NbIFYLvOTrNF4vID5GCW5_iB9Ozu1VA0edqH4B7a0Uot2v_syYn-'
+    webhook = Webhook.from_url(url, adapter=RequestsWebhookAdapter())
+    webhook.send('python termino')
+
+

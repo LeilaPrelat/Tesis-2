@@ -55,10 +55,10 @@ tamnum = 16
 
 print('Definir parametros del problema')
 
-R = 0.4              #micrones
-modo = 1
+R = 0.1              #micrones
+modo = 4
 
-Ep = 0.9
+Ep = 0.3
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
@@ -119,9 +119,9 @@ rta_Re_omega_c = []
 rta_Re_omega_c_cuasi = [] #eq 16 del paper 2, aprox cuasi
 
 if modo == 1:
-    cond_inicial1 = -0.05
+    cond_inicial1 = -0.1
 else:
-    cond_inicial1 = -0.05
+    cond_inicial1 = -0.1
     
     
 cond_inicial3 = cond_inicial1
