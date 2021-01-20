@@ -23,8 +23,8 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
 save_graphs = 1 #guardar los graficos 2D/1D del campo
-graph_2D = 0    #graficos 2D
-graph_1D = 1   #graficos 1D
+graph_2D = 1    #graficos 2D
+graph_1D = 0   #graficos 1D
 
 if graph_2D == 1:
     save_data = 1
@@ -70,16 +70,16 @@ print('Definir parametros del problema')
 
 re_epsi1 = 3.9
 Ao = 1          #pol p unicamente
-modo = 2
+modo = 1
 R = 0.5         #micrones 
 nmax = 10        #sumatoria desde -nmax hasta +nmax (se suman 2*nmax + 1 modos)
 
 zoom = 0
-
+index = 0       #value of chemical potential
 
 #%%
 
-print('Importar los valores de SPASER del caso sin kz invisibilidad')
+print('Importar los valores de SPASER del caso sin kz INVISIBILIDAD')
 
 path_load = path_basic + '/' + 'real_freq' + '/' + 're_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
 os.chdir(path_load)
@@ -96,7 +96,6 @@ data_load = np.transpose(data_load)
 [barrido_mu_inv,omegac_opt_inv,epsi1_imag_opt_inv,eq_det_inv] = data_load
 
 m = len(barrido_mu_inv)
-index = 0 #value of chemical potential
 hbaramu_inv = barrido_mu_inv[index]
 omegac_inv = omegac_opt_inv[index]
 im_epsi1_inv = epsi1_imag_opt_inv[index]
@@ -105,7 +104,7 @@ epsi1_inv = re_epsi1 + 1j*im_epsi1_inv
 del barrido_mu_inv,omegac_opt_inv,epsi1_imag_opt_inv,eq_det_inv
 
 if zoom == 0:
-    print('Importar los valores de SPASER')
+    print('Importar los valores de SPASER del caso sin kz RESONANTE')
     
     path_sinkz = path_sinkz + '/re_epsi1_3.90_vs_mu'
     os.chdir(path_sinkz)
@@ -184,7 +183,7 @@ if graph_1D==1:
         list_Qscat1 = []
         for omeggac in list_omegac:
             epsi1 = re_epsi1 + 1j*im_epsi1
-            Qscatt = Qscat(omeggac,epsi1,nmax,R,hbaramu,Ao)
+            Qscatt = Qscat(omeggac,epsi1,nmax,R,hbaramu_inv,Ao)
             list_Qscat1.append(Qscatt)  
         list_Qscat_tot1.append(list_Qscat1)  
     
@@ -197,7 +196,7 @@ if graph_1D==1:
         list_Qscat2 = []
         for omeggac in list_omegac:
             epsi1 = re_epsi1 + 1j*im_epsi1
-            Qscatt = Qscat(omeggac,epsi1,nmax,R,hbaramu,Ao)
+            Qscatt = Qscat(omeggac,epsi1,nmax,R,hbaramu_inv,Ao)
             list_Qscat2.append(Qscatt)  
         list_Qscat_tot2.append(list_Qscat2)  
         
@@ -247,7 +246,7 @@ if graph_1D==1:
     if save_graphs==1:
         os.chdir(path_save)
         # plt.tight_layout(1)
-        plt.savefig('Qscat_fino_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
+        plt.savefig('Qscat_fino_modo%i_mu%.4f.png' %(modo,hbaramu_inv), format='png')  
     
     plt.figure(figsize=tamfig)
     plt.title(title, fontsize = int(tamtitle*0.9))
@@ -282,7 +281,7 @@ if graph_1D==1:
     if save_graphs==1:
         os.chdir(path_save)
         # plt.tight_layout(1)
-        plt.savefig('Qscat_grueso_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
+        plt.savefig('Qscat_grueso_modo%i_mu%.4f.png' %(modo,hbaramu_inv), format='png')  
 
 #%%
 
@@ -291,23 +290,31 @@ if graph_2D==1:
     
     def Qscat2D(Omegac,Im_epsi1): 
         Epsi1 = re_epsi1 + 1j*Im_epsi1
-        Qscatt = Qscat(Omegac,Epsi1,nmax,R,hbaramu,Ao)
+        Qscatt = Qscat(Omegac,Epsi1,nmax,R,hbaramu_inv,Ao)
         return Qscatt
        
-    N = 600
+    N = 450
     
-    if zoom==1:
-        tol = 1e-3
+    if zoom == 1:
+        tol1 = 1e-1
+        tol2 = 0.5
+        omegac12, omegac22 = omegac_inv*(1-tol1), omegac_inv*(1+tol1)
+        im_epsi1_1, im_epsi1_2 = im_epsi1_inv - tol2, im_epsi1_inv + tol2
     else:
-        tol = 0.5
+        omegac0 = np.mean([omegac_inv,omegac])
+        im_epsi10 = np.mean([im_epsi1_inv,im_epsi1])
+        
+        tol1 = 0.3
+        tol2 = 0.8
+        omegac12,omegac22 = omegac0*(1-tol1), omegac0*(1+tol1)
+        im_epsi1_1, im_epsi1_2 = im_epsi10 - tol2, im_epsi10 + tol2
         # tol = 5*1e-1 #para ver el otro polo
     
-    omegac12,omegac22 = omegac_inv*(1-tol),omegac_inv*(1+tol)
     list_omegac = np.linspace(omegac12,omegac22,N)
     delta = (omegac22-omegac12)*0.5
 
     # list_im_epsi1 = np.linspace(im_epsi1c - delta,im_epsi1c + delta,N)
-    list_im_epsi1 = np.linspace(im_epsi1_inv - 5*tol,im_epsi1_inv + 5*tol,N)
+    list_im_epsi1 = np.linspace(im_epsi1_1,im_epsi1_2,N)
 
     x = list_omegac
     y = list_im_epsi1
@@ -326,7 +333,7 @@ if graph_2D==1:
     maxlog = int(np.ceil( np.log10( np.abs(vmax) )))
     minlog = int(np.ceil( np.log10( np.abs(vmin) )))
     
-    if np.abs(maxlog-minlog)>3:
+    if np.abs(maxlog-minlog)>5:
     
         if vmin < 0:
             tick_locations = ( [-(10.0**x) for x in np.linspace(minlog,-1,minlog+2)] 
@@ -337,29 +344,39 @@ if graph_2D==1:
             tick_locations = ( [(10.0**x) for x in np.linspace(minlog,maxlog,maxlog + np.abs(minlog) + 1) ])    
         
         pcm = plt.pcolormesh(X, Y, Z,
-                            norm = SymLogNorm(linthresh=0.03, linscale=0.03,
-                                                vmin=int(vmin), vmax=int(vmax)),cmap='RdBu_r')
+                            norm = SymLogNorm(linthresh=vmin*1e-3,#desde donde hasta donde la escala es lineal (no diverge en el 0)
+                                                vmin=vmin, vmax=vmax),cmap='RdBu_r')
     else:
-        pcm = plt.pcolormesh(X, Y, Z,cmap='RdBu_r')
+        pcm = plt.pcolormesh(X, Y, Z, norm = SymLogNorm(linthresh=vmin*1e-3,#desde donde hasta donde la escala es lineal (no diverge en el 0)
+                                                vmin=vmin, vmax=vmax),cmap='RdBu_r')
         
     plt.plot(x,np.ones(N)*im_epsi1_inv,'--',color = 'green')
     plt.plot(np.ones(N)*omegac_inv,y,'--',color = 'green')
+    cbar = plt.colorbar(pcm, extend='both')
     if zoom == 0:
         plt.plot(x,np.ones(N)*im_epsi1,'--',color = 'magenta')
         plt.plot(np.ones(N)*omegac,y,'--',color = 'magenta')
-    cbar = plt.colorbar(pcm, extend='both')
-    cbar.set_ticks(tick_locations)
+        cbar.set_ticks(tick_locations)
     cbar.ax.tick_params(labelsize = tamnum)
     cbar.set_label(labely,fontsize=tamletra)
     #plt.legend(loc='best',markerscale=2,fontsize=tamlegend)
     if save_graphs==1:
         os.chdir(path_save + '/2D')
-        plt.savefig('Qscat2D_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
+        name = 'Qscat2D_modo%i_mu%.4f' %(modo,hbaramu_inv)
+        if zoom == 1:
+            plt.savefig(name + '_zoom.png', format='png')  
+        elif zoom == 0:
+            plt.savefig(name + '.png', format='png')  
 
     if save_data == 1:
         np.savetxt('info_Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu), [inf_tot + ', se desprecian los campos incidentes en Qscat'],fmt='%s')
-        np.savetxt('x_lambda_Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),x, fmt='%1.5e', delimiter='\t', header = inf_tot)
-        np.savetxt('y_im_epsi1_Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),y, fmt='%1.5e', delimiter='\t', header = inf_tot)
-        np.savetxt('Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),Z,fmt='%1.5e', delimiter='\t', header = inf_tot)
+        if zoom == 1:
+            np.savetxt('x_lambda_Qscat_modo%i_mu%.4f_zoom.txt' %(modo,hbaramu),x, fmt='%1.5e', delimiter='\t', header = inf_tot)
+            np.savetxt('y_im_epsi1_Qscat_modo%i_mu%.4f_zoom.txt' %(modo,hbaramu),y, fmt='%1.5e', delimiter='\t', header = inf_tot)
+            np.savetxt('Qscat_modo%i_mu%.4f_zoom.txt' %(modo,hbaramu),Z,fmt='%1.5e', delimiter='\t', header = inf_tot)
+        else:
+            np.savetxt('x_lambda_Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),x, fmt='%1.5e', delimiter='\t', header = inf_tot)
+            np.savetxt('y_im_epsi1_Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),y, fmt='%1.5e', delimiter='\t', header = inf_tot)
+            np.savetxt('Qscat_modo%i_mu%.4f.txt' %(modo,hbaramu),Z,fmt='%1.5e', delimiter='\t', header = inf_tot)             
     
 #%%
