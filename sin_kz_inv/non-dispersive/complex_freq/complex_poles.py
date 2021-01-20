@@ -252,9 +252,9 @@ for i in [0,1,2]:
     elif modo==4:
         ticks = ticks_mod4[i]
         
-    if re_epsi1 == 4.9:
-        ax[i].set_xticks(ticks)
-        ax[i].set_xticklabels(ticks)
+    # if re_epsi1 == 4.9:
+        # ax[i].set_xticks(ticks)
+        # ax[i].set_xticklabels(ticks)
     
     ax[i].legend(loc=[0.25,1],markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
 

@@ -6,7 +6,7 @@ Created on Sun Apr 19 13:19:41 2020
 """
 
 """
-Sobre paper.py: graficar optical gain y omega/c obtenidos
+Sobre critical_values.py: graficar optical gain y omega/c obtenidos formato paper
 
 """
 

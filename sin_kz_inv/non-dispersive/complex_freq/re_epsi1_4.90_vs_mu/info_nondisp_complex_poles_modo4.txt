@@ -1,0 +1,4 @@
+# mu[eV]     Im(epsi1) inf: Modo = 4, R = 0.50 $\mu$m, Re($\epsilon_1$) = 4.90, complex_poles.py
+0.3 -0.0252
+0.5 -0.0135
+0.7 -0.0093

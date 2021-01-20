@@ -7,9 +7,12 @@ https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.063901
 
 valores de degeneracion observados (ver plot_fieldsZ_sinkz_deg) para R (en micrometros) y Ep (en eV) son:
 
-		deg_values = [] = [R,Ep] ---> hallados en critical_values.py dentro de la carpeta real_freq
+		deg_values = [[0.1, 3.9, 0.9], [0.3, 3.9, 0.9], [0.4, 3.9, 0.9], [0.5, 3.9, 0.9]] = [R,epsiinf_DL,Ep] ---> hallados en critical_values.py dentro de la carpeta real_freq y para ubicar todos se uso find_values_R_Ep_deg.py
 
 		
-calcular la distribucion angular de la potencia emitida (antes de integrar Qscat en theta) que depende de theta pero no del rho.
+-calcular la distribucion angular de la potencia emitida (antes de integrar Qscat en theta) que depende de theta pero no del rho. 
+		---> no salio
 
-buscar paper de ricardo con gigins de superscattering para esfericas
+-buscar paper de ricardo con gigins de superscattering para esfericas (done)
+
+-find_values_R_Ep_deg.py : encontrar todos los [R,Ep] para los que exista degeneracion, buscar en las carpetas y ver si hay un.txt que empiezan con info_degenerations_inv_dispR_%.2f.txt

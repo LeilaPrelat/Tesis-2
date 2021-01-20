@@ -73,8 +73,7 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 Ao,Bo = 1,1
-R = 0.4              #micrones
-
+R = 0.1              #micrones
 
 Ep = 0.9
 epsiinf_DL = 3.9
@@ -94,11 +93,11 @@ if save_graphs==1:
         
 #%%
 
-#deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]]
+deg_values =  [[0.1, 3.9, 0.9], [0.3, 3.9, 0.9], [0.4, 3.9, 0.9], [0.5, 3.9, 0.9]] 
 
 
-# if [R,Ep] not in deg_values:
-#     raise TypeError('R y Ep no son valores en los que hay degeneracion')
+if [R,epsiinf_DL,Ep] not in deg_values:
+    raise TypeError('R, epsiinf_DL, Ep no son valores en los que hay degeneracion')
 
 if epsiinf_DL != 3.9:
     raise TypeError('Wrong value for epsilon infinito')
@@ -112,40 +111,62 @@ print('Importar los valores de SPASER')
 
 path_load = path_basic + '/' + 'real_freq' + '/' + 'R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
 os.chdir(path_load)
-deg_txt = 'info_degenerations_dispR_%.2f.txt' %(R)
-with open(deg_txt, 'r') as file: 
-    list_mu = []
-    list_omegac = []
-    list_epsi1_imag_tot = []
-    list_modes_tot = []
-    
-    for line in file:
-        line.replace('\n','')
-        mydict = ast.literal_eval(line)
-        hbaramu,omegac = mydict['mu_c deg'],mydict['omega/c deg']
-        list_mu.append(hbaramu)
-        list_omegac.append(omegac)
-        
-        list_modes = []
-        list_epsi1_imag = []
-        for nu in mydict['modes']:
-            list_modes.append(nu)
-            delta_ci = mydict['im_epsi1 del modo %i' %(nu)]
-            list_epsi1_imag.append(delta_ci)
-            
-        list_modes_tot.append(list_modes)
-        list_epsi1_imag_tot.append(list_epsi1_imag)
-        
-    
-index1 = 0 # len(barrido_mu) == len(omega_opt)
-hbaramu = list_mu[index1]
-omegac = list_omegac[index1]
+deg_txt1 = 'info_degenerations_dispR_%.2f.txt' %(R)
+deg_txt2 = 'info_degenerations_inv_dispR_%.2f.txt' %(R)
 
+def open_txt(path):
+    
+    with open(path, 'r') as file: 
+    
+        list_mu = []
+        list_omegac = []
+        list_epsi1_imag_tot = []
+        list_modes_tot = []
+        
+        for line in file:
+            line.replace('\n','')
+            mydict = ast.literal_eval(line)
+            hbaramu,omegac = mydict['mu_c deg'],mydict['omega/c deg']
+            list_mu.append(hbaramu)
+            list_omegac.append(omegac)
+            
+            list_modes = []
+            list_epsi1_imag = []
+            for [nu,nu2] in mydict['modes']:
+                list_modes.append([nu,nu2])
+                delta_ci = mydict['im_epsi1 del modo %i con %i' %(nu,nu2)]
+                list_epsi1_imag.append(delta_ci)
+                
+            list_modes_tot.append(list_modes)
+            list_epsi1_imag_tot.append(list_epsi1_imag)
+        
+    return list_mu,list_omegac,list_epsi1_imag_tot,list_modes_tot
+
+try:
+    list_mu,list_omegac,list_epsi1_imag_tot,list_modes_tot = open_txt(deg_txt1)
+    print('deg_txt1 not found')
+except OSError or IOError:
+    list_mu,list_omegac,list_epsi1_imag_tot,list_modes_tot = open_txt(deg_txt2)
+    
+index1 = 1 #0 ---> saltos de a 1 modo, 1 ---> saltos de a 2 modos
 index2 = 1
- # len(list_modes) == len(delta_ci)
-delta_ci = list_epsi1_imag_tot[index1][index2]
-modo = list_modes_tot[index1][index2]
-list_modes = list_modes_tot[index1]
+index3 = 1 # 1 o 0 tiene que ser
+
+try: 
+    hbaramu = list_mu[index1][index2]
+    omegac = list_omegac[index1][index2]
+    delta_ci = list_epsi1_imag_tot[index1][index2]
+    list_modes = list_modes_tot[index1][index2]
+    modo = list_modes_tot[index1][index2][index3] #---> solo si hay 2 diccionarios
+    
+except IndexError: #tenemos solo un diccionario en el deg_txt
+    index2 = 0 
+    hbaramu = list_mu[index1][index2]
+    omegac = list_omegac[index1][index2]
+    delta_ci = list_epsi1_imag_tot[index1][index2]
+    list_modes = list_modes_tot[index1]    
+    modo = list_modes_tot[index1][index2]
+
 print('Degeneracion de los modos:',list_modes,'cerca del modo ', modo)
 name_graph = '_modos%i%i_modo%i.png' %(list_modes[0],list_modes[1],modo) 
 

@@ -56,7 +56,7 @@ list_color = ['purple','darkblue','darkgreen']
 
 print('Definir parametros del problema')
 
-modo = 2
+modo = 4
 R = 0.5 #micrones
 re_epsi1 = 4.9
 mu = 0.3

@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 #%%
 
 save_graphs = 1
-modulo = 1 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
+modulo = 0 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
 paper = 0  # sacar el titulo y guardar la info (formato paper)
@@ -80,7 +80,7 @@ gamma_DL = 0.01 #unidades de energia
 nmax = 10
 
 if save_graphs==1:
-    path_save0 = 'fields'  + '/' + 'barrido_mu'
+    path_save0 = 'fields'  + '/' + 'barrido_mu/R_%.2f/Ep_%.1f' %(R,Ep)
     if paper == 0:
         path_save = path_basic + '/' + path_save0
     else:
@@ -102,9 +102,9 @@ if gamma_DL != 0.01:
 for modo in list_modos:
     print('Importar los valores de SPASER')
     
-    path_load = path_basic + '/' + 'real_freq' + '/' + 'R_%.2f/epsiinf_DL_%.2f_vs_mu' %(R,epsiinf_DL)
+    path_load = path_basic + '/' + 'real_freq' + '/' + 'R_%.2f/epsiinf_DL_%.2f_vs_mu/Ep_%.1f' %(R,epsiinf_DL,Ep)
     os.chdir(path_load)
-    name = 'info_critical_values_dispR_%.2f.txt' %(R)
+    name = 'opt_det_sinkz_inv_vs_mu_modo%i.txt' %(modo)
     
     try:
         data_load = np.loadtxt(name,delimiter = '\t', skiprows=1)
