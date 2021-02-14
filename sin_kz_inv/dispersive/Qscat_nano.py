@@ -20,7 +20,7 @@ from scipy import special as sp #funciones de Bessel
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_graphene = path_basic.replace('/sin_kz_inv/dispersive','')
+path_graphene = path_basic.replace('/sin_kz_inv/dispersive','') 
 
 try:
     sys.path.insert(1, path_graphene)

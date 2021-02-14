@@ -1,4 +1,0 @@
-# mu[eV]     Im(epsi1) inf: caso resonanciaModo = 1, R = 0.50 $\mu$m, Re($\epsilon_1$) = 4.90, complex_poles_nondisp.py
-0.3 -0.0409
-0.5 -0.0335
-0.7 -0.0324

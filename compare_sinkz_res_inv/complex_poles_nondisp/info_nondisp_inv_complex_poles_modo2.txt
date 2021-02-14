@@ -1,0 +1,4 @@
+# mu[eV]     Im(epsi1) inf: caso invisibilidadModo = 2, R = 0.50 $\mu$m, Re($\epsilon_1$) = 4.90, complex_poles_nondisp.py
+0.3 -0.0326
+0.5 -0.0203
+0.7 -0.0155

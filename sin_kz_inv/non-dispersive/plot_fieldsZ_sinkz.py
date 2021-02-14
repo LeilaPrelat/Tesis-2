@@ -32,11 +32,20 @@ paper = 0  # sacar el titulo y guardar la info (formato paper)
 
 print('Definir parametros para graficos')
 
-tamfig = (10,8)
-tamlegend = 18
-tamletra = 18
-tamtitle = 18
-tamnum = 15
+if paper == 1: 
+    tamfig = (3.5,3.5)
+    tamlegend = 7
+    tamletra = 6
+    tamtitle = 6
+    tamnum = 6
+    labelpady = -2
+else:
+    tamfig = (10,8)
+    tamlegend = 18
+    tamletra = 18
+    tamtitle = 18
+    tamnum = 15
+    labelpady = 0  
 
 if modulo==1:
     label = '$|H_z|$'
@@ -154,7 +163,7 @@ for modo in list_modos:
         
         plt.figure(figsize=tamfig)
         plt.xlabel(labelx,fontsize=tamletra)
-        plt.ylabel(labely,fontsize=tamletra)
+        plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
         plt.tick_params(labelsize = tamnum)
         if paper == 0:
             plt.title(title1_loss,fontsize=int(tamtitle*0.9))
@@ -190,7 +199,7 @@ for modo in list_modos:
     
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
-    plt.ylabel(labely,fontsize=tamletra)
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
     plt.tick_params(labelsize = tamnum)
     if paper == 0:
         plt.title(title1,fontsize=int(tamtitle*0.9))
@@ -231,7 +240,7 @@ for modo in list_modos:
         
         plt.figure(figsize=tamfig)
         plt.xlabel(labelx,fontsize=tamletra)
-        plt.ylabel(labely,fontsize=tamletra)
+        plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
         plt.tick_params(labelsize = tamnum)
         if paper == 0:
             plt.title(title2_loss,fontsize=int(tamtitle*0.9))
@@ -265,7 +274,7 @@ for modo in list_modos:
     
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
-    plt.ylabel(labely,fontsize=tamletra)
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
     plt.tick_params(labelsize = tamnum)
     if paper == 0:
         plt.title(title2,fontsize=int(tamtitle*0.9))

@@ -33,13 +33,13 @@ path_basic = path.replace('/' + name_this_py,'')
 path_det = path_basic.replace('/' + 'complex_freq','')
 
 try:
-    sys.path.insert(1, path_det)
-    from det_sinkz import determinante
+    sys.path.insert(1, path_basic2)
+    from find_zero_an import determinante
 except ModuleNotFoundError:
-    print('det_sinkz.py no se encuentra en ' + path_det)
-    path_det = input('path de la carpeta donde se encuentra det_sinkz.py')
-    sys.path.insert(1, path_det)
-    from det_sinkz import determinante
+    print('find_zero_an.py no se encuentra en ' + path_basic2)
+    path_basic2 = input('path de la carpeta donde se encuentra find_zero_an.py')
+    sys.path.insert(1, path_basic2)
+    from find_zero_an import determinante
     
     
 # condiciones iniciales 

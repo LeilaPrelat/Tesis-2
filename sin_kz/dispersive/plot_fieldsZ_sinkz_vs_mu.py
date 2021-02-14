@@ -22,21 +22,30 @@ import matplotlib.pyplot as plt
 
 #%%
 
-save_graphs = 0
+save_graphs = 1
 modulo = 1 #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
-paper = 0  # sacar el titulo y guardar la info (formato paper)
+paper = 1  # sacar el titulo y guardar la info (formato paper)
 
 #%%
 
 print('Definir parametros para graficos')
 
-tamfig = (10,8)
-tamlegend = 18
-tamletra = 18
-tamtitle = 18
-tamnum = 15
+if paper == 1: 
+    tamfig = (3.5,3.5)
+    tamlegend = 7
+    tamletra = 6
+    tamtitle = 6
+    tamnum = 5.5
+    labelpady = -5
+else:
+    tamfig = (10,8)
+    tamlegend = 18
+    tamletra = 18
+    tamtitle = 18
+    tamnum = 15
+    labelpady = 0   
 
 if modulo==1:
     label = '$|H_z|$'
@@ -70,14 +79,16 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 Ao,Bo = 1,1
-R = 0.35              #micrones
-list_modos = [4]
+R = 0.05              #micrones
+list_modos = [1,2,3,4]
 
-Ep = 0.9
+Ep = 0.3
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 nmax = 10
+
+index = 0
 
 if save_graphs==1:
     path_save0 = 'fields'  + '/' + 'barrido_mu'
@@ -123,7 +134,7 @@ for modo in list_modos:
     data_load = np.transpose(data_load)
     [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
     
-    index = 0
+
     hbaramu = barrido_mu[index]
     omegac = omegac_opt[index]
     delta_ci = epsi1_imag_opt[index]        
@@ -171,7 +182,7 @@ for modo in list_modos:
         
         plt.figure(figsize=tamfig)
         plt.xlabel(labelx,fontsize=tamletra)
-        plt.ylabel(labely,fontsize=tamletra)
+        plt.ylabel(labely,fontsize=tamletra,labelpad = labelpady)
         plt.tick_params(labelsize = tamnum)
         if paper == 0:
             plt.title(title1_loss,fontsize=int(tamtitle*0.9))
@@ -205,7 +216,7 @@ for modo in list_modos:
         Z = Z/maxH
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
-    plt.ylabel(labely,fontsize=tamletra)
+    plt.ylabel(labely,fontsize=tamletra,labelpad = labelpady)
     plt.tick_params(labelsize = tamnum)
     if paper == 0:
         plt.title(title1,fontsize=int(tamtitle*0.9))
@@ -245,7 +256,7 @@ for modo in list_modos:
         
         plt.figure(figsize=tamfig)
         plt.xlabel(labelx,fontsize=tamletra)
-        plt.ylabel(labely,fontsize=tamletra)
+        plt.ylabel(labely,fontsize=tamletra,labelpad = labelpady)
         plt.tick_params(labelsize = tamnum)
         if paper == 0:
             plt.title(title2_loss,fontsize=int(tamtitle*0.9))
@@ -281,7 +292,7 @@ for modo in list_modos:
     
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
-    plt.ylabel(labely,fontsize=tamletra)
+    plt.ylabel(labely,fontsize=tamletra,labelpad = labelpady)
     plt.tick_params(labelsize = tamnum)
     if paper == 0:
         plt.title(title2,fontsize=int(tamtitle*0.9))

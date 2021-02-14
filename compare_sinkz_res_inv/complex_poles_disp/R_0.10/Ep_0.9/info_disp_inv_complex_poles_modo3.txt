@@ -1,0 +1,4 @@
+# mu[eV]     Im(epsi1) inf: caso invisibilidad, R = 0.10 $\mu$m, $E_p$ = 0.900 eV, modo = 3, $\epsilon_\infty$ = 3.9, $\gamma_{DL}$ = 0.01 eV, complex_poles_disp.py
+0.3 -0.085
+0.5 -0.0585
+0.7 -0.051

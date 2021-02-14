@@ -1,0 +1,4 @@
+# mu[eV]     Im(epsi1) inf: caso resonancia, R = 0.10 $\mu$m, $E_p$ = 0.900 eV, modo = 1, $\epsilon_\infty$ = 3.9, $\gamma_{DL}$ = 0.01 eV, complex_poles_disp.py
+0.3 -0.202
+0.5 -0.193
+0.7 -0.19

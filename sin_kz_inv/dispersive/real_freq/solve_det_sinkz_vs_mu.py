@@ -35,13 +35,13 @@ path_basic = path.replace('/' + name_this_py,'')
 path_det = path_basic.replace('/' + 'real_freq','')
 
 try:
-    sys.path.insert(1, path_det)
-    from det_sinkz_nano import determinante
+    sys.path.insert(1, path_basic2)
+    from find_zero_an_nano import determinante
 except ModuleNotFoundError:
-    print('det_sinkz_nano.py no se encuentra en ' + path_det)
-    path_basic2 = input('path de la carpeta donde se encuentra det_sinkz_nano.py')
-    sys.path.insert(1, path_det)
-    from det_sinkz_nano import determinante
+    print('find_zero_an_nano.py no se encuentra en ' + path_basic2)
+    path_basic2 = input('path de la carpeta donde se encuentra find_zero_an_nano.py')
+    sys.path.insert(1, path_basic2)
+    from find_zero_an_nano import determinante
 
 #Para condiciones iniciales
 try:

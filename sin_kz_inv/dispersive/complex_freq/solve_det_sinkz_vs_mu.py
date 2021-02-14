@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 #%% 
 
 save_data_opt = 1 #guardar data de la minimizacion
-avisar_fin_script  = 0
+avisar_fin_script  = 1
 
 graficar = 0
 save_graphs = 0
@@ -44,13 +44,13 @@ path_basic = path.replace('/' + name_this_py,'')
 path_det = path_basic.replace('/' + 'complex_freq','')
 
 try:
-    sys.path.insert(1, path_det)
-    from det_sinkz_nano import determinante
+    sys.path.insert(1, path_basic2)
+    from find_zero_an_nano import determinante
 except ModuleNotFoundError:
-    print('det_sinkz_nano.py no se encuentra en ' + path_det)
-    path_det = input('path de la carpeta donde se encuentra det_sinkz_nano.py')
-    sys.path.insert(1, path_det)
-    from det_sinkz_nano import determinante
+    print('find_zero_an_nano.py no se encuentra en ' + path_basic2)
+    path_basic2 = input('path de la carpeta donde se encuentra find_zero_an_nano.py')
+    sys.path.insert(1, path_basic2)
+    from find_zero_an_nano import determinante
 
 try:
     sys.path.insert(1, path_det)
@@ -66,14 +66,14 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 R = 0.1              #micrones
-list_modos = [3,4]
+list_modos = [1,2,3,4]
 
-Ep = 0.3
+Ep = 0.9
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 
-list_im_epsi1 = np.linspace(0,-0.2,401)    # ver el rango necesario en la carpeta real_freq
+list_im_epsi1 = np.linspace(0,-0.15,301)    # ver el rango necesario en la carpeta real_freq
 list_mu =  np.linspace(0.9,0.3,601)  
 
 #%%

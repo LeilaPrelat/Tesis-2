@@ -1,3 +1,13 @@
+
+sin_kz : estudiar los polos (denominadores)
+sin_kz_inv : estudiar los ceros (numeradores)
+		en el caso de los ceros puede ser el cero del medio 1 (numerador del coef "cn" en el cuaderno) 
+		o el cero del medio 2 (numerador del coef "an" en el cuaderno) 
+		---> el numerador del coef del "cn" es proporcional a epsilon1, no tiene sentido minimizarlo y hallar sus ceros
+		sino que tiene sentido hacerlo con el medio 2 y graficar el otro cero, el del medio 1, para garantizarlos que para 
+		alguna frecuencia no se este anulando
+
+#############################################################################################################################################################
 Viste el mínimo de la figura 2 de tunable? En ese paper observamos que "the observation of these minima is relevant in the context of invisibility cloaks."
 
 
@@ -8,7 +18,7 @@ Obviamente el valor de la frecuencia que hace cero la sección eficaz (o la ampl
 
 
 
-hallar los valores criticos que mnimizan el numerador/minimizar el scattering, en lugar del denominador ---> eq 8 de zapata (cambiar epsilon por -epsilon) pero separar en parte real e imaginaria 
+hallar los valores criticos que mnimizan el numerador/minimizar el scattering, en lugar del denominador ---> para la QE (por lo menos para el medio 2) usar eq 8 de zapata (cambiar epsilon por -epsilon) pero separar en parte real e imaginaria 
 
 ---> misma eq 14 pero cambia la de la freq 
 

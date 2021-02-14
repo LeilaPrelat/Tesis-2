@@ -35,12 +35,12 @@ path_basic2 = path_basic.replace('/' + 'real_freq','')
 
 try:
     sys.path.insert(1, path_basic2)
-    from det_sinkz import determinante
+    from find_zero_an import determinante
 except ModuleNotFoundError:
-    print('det_sinkz.py no se encuentra en ' + path_basic2)
-    path_basic2 = input('path de la carpeta donde se encuentra det_sinkz.py')
+    print('find_zero_an.py no se encuentra en ' + path_basic2)
+    path_basic2 = input('path de la carpeta donde se encuentra find_zero_an.py')
     sys.path.insert(1, path_basic2)
-    from det_sinkz import determinante
+    from find_zero_an import determinante
 
 #Para condiciones iniciales
 try:

@@ -65,9 +65,10 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 R = 0.1             #micrones
-modo = 4
+modo = 1
+list_modos = [3,4]
 
-Ep = 0.6
+Ep = 0.9
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
@@ -83,14 +84,11 @@ else:
         list_im_epsi1 = np.linspace(0,-0.35,351) 
     else :
         list_im_epsi1 = np.linspace(0,-0.3,301)     
-    
-list_mu =  np.linspace(0.9,0.3,601)   
-# list_im_epsi1 = np.linspace(0,-1.1,1101) 
 
-info1 = 'R = %.2f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
-info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
-info =  ', ' + info1 + ', ' + info2  + ', ' + name_this_py
-title = info1 +'\n' + info2  + ', ' + name_this_py
+list_im_epsi1 = np.linspace(0,-0.25,251)      
+list_mu =  np.linspace(0.9,0.3,601)   
+
+# list_im_epsi1 = np.linspace(0,-1.1,1101)
 
 #%%
 
@@ -118,15 +116,10 @@ if save_graphs==1 or save_data_opt==1:
         os.chdir(path)
 
     path_g = path + '/' + 'graficos'
-    path_d = path + '/' + 'modo_%i' %(modo)
     
     if not os.path.exists(path_g):
         print('Creating folder to save graphs')
         os.mkdir(path_g)
-        
-    if not os.path.exists(path_d):
-        print('Creating folder to save data')
-        os.mkdir(path_d)
 
 #%%        
 
@@ -135,120 +128,124 @@ print('Usar QE como condiciones iniciales para el metodo de minimizacion')
 
 mu0 = list_mu[0]
 epsi_ci0 = list_im_epsi1[0]
-
-omegac_inicial = omegac_QE(modo,Ep,epsiinf_DL,gamma_DL,epsi_ci0,R,mu0)
-
-cond_inicial = 2*np.pi/omegac_inicial
-cond_inicial0 = [cond_inicial.real,cond_inicial.imag]
-
-# if mu0 == 0.3:
-#     cond_inicial0 = [cond_inicial.real,cond_inicial.imag]
-# else:
-#     cond_inicial0 = [3.872985919e+00, 5.619039143e-02] #mu anterior
-
-if graficar==0:
-    os.chdir(path_d)
-
-cond_inicial_mu = []    
-
-# bounds = Bounds([2, -1e-2], [5, 5.8e-2])
-# ((min_first_var, min_second_var), (max_first_var, max_second_var))
-
 tol_NM = 1e-11
 ite_NM = 1150
-j = 0
-for mu in list_mu:
-    mu = np.round(mu,4)
-    print('')
-    print(mu)
-    if mu == list_mu[0]:
-        cond_inicial = cond_inicial0
-    else:
-        cond_inicial = cond_inicial_mu[j-1]
-           
-    epsi1_imag_opt = []
-    lambda_real_opt = []
-    lambda_imag_opt = []
-    eq_det = []
-    
-    for epsi_ci in list_im_epsi1:
-        
-        epsi_ci = np.round(epsi_ci,4)
-        
-    
-        def det_2variables(lmbd):
-            [Re_lmbd,Im_lmbd] = lmbd
-            lambdda = Re_lmbd + 1j*Im_lmbd      
-            omegac = 2*np.pi/lambdda
-            rta = determinante(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,modo,R,mu)
-            return np.abs(rta)
-        
-        res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=tol_NM, 
-                    options={'maxiter':ite_NM})
-        
-        # res = minimize(det_2variables, cond_inicial, method='SLSQP', jac=False,  
-        #                options={'maxiter':ite_NM,'ftol': tol_NM, 'disp': True},bounds=bounds)
-#        print(res.message)
 
-        if res.message == 'Optimization terminated successfully.':
 
-            lambda_real_opt.append(res.x[0])
-            lambda_imag_opt.append(res.x[1])
-            epsi1_imag_opt.append(epsi_ci)
-            eq_det.append(det_2variables([res.x[0],res.x[1]]))
-            
-            cond_inicial = [res.x[0],res.x[1]]
-            
-        if epsi_ci == epsi_ci0:
-            cond_inicial_mu.append([res.x[0],res.x[1]])
-        
-    if save_data_opt==1:
-        print('Guardar data de minimizacion en .txt')
-        if graficar==1:
-            os.chdir(path_d)
-        tabla = np.array([epsi1_imag_opt,lambda_real_opt,lambda_imag_opt,eq_det])
-        tabla = np.transpose(tabla) 
-        header1 = 'epsi_ci     Re(Lambda)      Im(Lambda)      Eq(det)' + info
-        np.savetxt('opt_det_nano_mu%.4f_modo%i.txt' %(mu,modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
-  
-    if graficar ==1:
-        
-        label_graph = 'Opt det, mu = %.4f' %(mu)
-        labelx = r'$\epsilon_{ci}$'
-        tamtitle = int(tamtitle*0.9)
-        
-        plt.figure(figsize=tamfig)
-        plt.plot(epsi1_imag_opt,lambda_real_opt,'.g',ms = 10,label = label_graph)
-        plt.title(title,fontsize=tamtitle)
-        plt.ylabel('Re($\Lambda$)',fontsize=tamletra)
-        plt.xlabel(labelx,fontsize=tamletra)
-        plt.tick_params(labelsize = tamnum)
-        plt.legend(loc='lower right',markerscale=2,fontsize=tamlegend)
-        plt.grid(1)
-        if save_graphs==1:
-            os.chdir(path_g)
-            plt.savefig('Re_Lambda_mu%.4f_modo%i.png' %(mu,modo), format = 'png')
-            
-        if close_graphs==1:    
-            plt.close()
-            
-        plt.figure(figsize=tamfig)
-        plt.plot(epsi1_imag_opt,lambda_imag_opt,'.g',ms = 10,label = label_graph)
-        plt.title(title,fontsize=tamtitle)
-        plt.ylabel('Im($\Lambda$)',fontsize=tamletra)
-        plt.xlabel(labelx,fontsize=tamletra)
-        plt.tick_params(labelsize = tamnum)
-        plt.legend(loc='lower right',markerscale=2,fontsize=tamlegend)
-        plt.grid(1)
-        if save_graphs==1:
-            plt.savefig('Im_Lambda_mu%.4f_modo%i.png' %(mu,modo), format = 'png')
+for modo in list_modos:
+    path_d = path + '/' + 'modo_%i' %(modo)
+    if not os.path.exists(path_d):
+        print('Creating folder to save data')
+        os.mkdir(path_d)
     
-        if close_graphs==1:    
-            plt.close()
+    info1 = 'R = %.2f $\mu$m, $E_p$ = %.3f eV, modo = %i' %(R,Ep,modo)
+    info2 = '$\epsilon_\infty$ = %.1f, $\gamma_{DL}$ = %.2f eV' %(epsiinf_DL,gamma_DL)
+    info =  ', ' + info1 + ', ' + info2  + ', ' + name_this_py
+    title = info1 +'\n' + info2  + ', ' + name_this_py
     
-    j = j + 1
-
-    del cond_inicial
+    omegac_inicial = omegac_QE(modo,Ep,epsiinf_DL,gamma_DL,epsi_ci0,R,mu0)
+    cond_inicial = 2*np.pi/omegac_inicial
+    cond_inicial0 = [cond_inicial.real,cond_inicial.imag]
+    
+    if graficar==0:
+        os.chdir(path_d)
+    
+    cond_inicial_mu = []    
+    
+    
+    j = 0
+    for mu in list_mu:
+        mu = np.round(mu,4)
+        print('')
+        print(mu)
+        if mu == list_mu[0]:
+            cond_inicial = cond_inicial0
+        else:
+            cond_inicial = cond_inicial_mu[j-1]
+               
+        epsi1_imag_opt = []
+        lambda_real_opt = []
+        lambda_imag_opt = []
+        eq_det = []
+        
+        for epsi_ci in list_im_epsi1:
+            
+            epsi_ci = np.round(epsi_ci,4)
+            
+        
+            def det_2variables(lmbd):
+                [Re_lmbd,Im_lmbd] = lmbd
+                lambdda = Re_lmbd + 1j*Im_lmbd      
+                omegac = 2*np.pi/lambdda
+                rta = determinante(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,modo,R,mu)
+                return np.abs(rta)
+            
+            res = minimize(det_2variables, cond_inicial, method='Nelder-Mead', tol=tol_NM, 
+                        options={'maxiter':ite_NM})
+            
+            # res = minimize(det_2variables, cond_inicial, method='SLSQP', jac=False,  
+            #                options={'maxiter':ite_NM,'ftol': tol_NM, 'disp': True},bounds=bounds)
+    #        print(res.message)
+    
+            if res.message == 'Optimization terminated successfully.':
+    
+                lambda_real_opt.append(res.x[0])
+                lambda_imag_opt.append(res.x[1])
+                epsi1_imag_opt.append(epsi_ci)
+                eq_det.append(det_2variables([res.x[0],res.x[1]]))
+                
+                cond_inicial = [res.x[0],res.x[1]]
+                
+            if epsi_ci == epsi_ci0:
+                cond_inicial_mu.append([res.x[0],res.x[1]])
+            
+        if save_data_opt==1:
+            print('Guardar data de minimizacion en .txt')
+            if graficar==1:
+                os.chdir(path_d)
+            tabla = np.array([epsi1_imag_opt,lambda_real_opt,lambda_imag_opt,eq_det])
+            tabla = np.transpose(tabla) 
+            header1 = 'epsi_ci     Re(Lambda)      Im(Lambda)      Eq(det)' + info
+            np.savetxt('opt_det_nano_mu%.4f_modo%i.txt' %(mu,modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
+      
+        if graficar ==1:
+            
+            label_graph = 'Opt det, mu = %.4f' %(mu)
+            labelx = r'$\epsilon_{ci}$'
+            tamtitle = int(tamtitle*0.9)
+            
+            plt.figure(figsize=tamfig)
+            plt.plot(epsi1_imag_opt,lambda_real_opt,'.g',ms = 10,label = label_graph)
+            plt.title(title,fontsize=tamtitle)
+            plt.ylabel('Re($\Lambda$)',fontsize=tamletra)
+            plt.xlabel(labelx,fontsize=tamletra)
+            plt.tick_params(labelsize = tamnum)
+            plt.legend(loc='lower right',markerscale=2,fontsize=tamlegend)
+            plt.grid(1)
+            if save_graphs==1:
+                os.chdir(path_g)
+                plt.savefig('Re_Lambda_mu%.4f_modo%i.png' %(mu,modo), format = 'png')
+                
+            if close_graphs==1:    
+                plt.close()
+                
+            plt.figure(figsize=tamfig)
+            plt.plot(epsi1_imag_opt,lambda_imag_opt,'.g',ms = 10,label = label_graph)
+            plt.title(title,fontsize=tamtitle)
+            plt.ylabel('Im($\Lambda$)',fontsize=tamletra)
+            plt.xlabel(labelx,fontsize=tamletra)
+            plt.tick_params(labelsize = tamnum)
+            plt.legend(loc='lower right',markerscale=2,fontsize=tamlegend)
+            plt.grid(1)
+            if save_graphs==1:
+                plt.savefig('Im_Lambda_mu%.4f_modo%i.png' %(mu,modo), format = 'png')
+        
+            if close_graphs==1:    
+                plt.close()
+        
+        j = j + 1
+    
+        del cond_inicial
     
 #%%
 

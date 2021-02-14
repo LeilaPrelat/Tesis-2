@@ -1,0 +1,1 @@
+R = 0.10 $\mu$m, $\mu_c$ = 0.3119 eV, $\epsilon_\infty$ = 3.9, $\gamma_{DL}$ = 0.01 eV, Ep = 0.9 eV, $\Delta_{ci}$ = -9.53470e-02 y $\omega/c$ = 2.67596e+00 1/$\mu$m del modo = 3, nmax = 10, Ao = 1, Ver plot_Qscat_sinkz_deg.py, se desprecian los campos incidentes en Qscat

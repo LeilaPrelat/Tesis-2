@@ -18,8 +18,8 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import SymLogNorm
 
 save_graphs = 1 #guardar los graficos 2D/1D del campo
-graph_2D = 0    #graficos 2D
-graph_1D = 1    #graficos 1D
+graph_2D = 1    #graficos 2D
+graph_1D = 0    #graficos 1D
 
 if graph_2D == 1:
     save_data = 1
@@ -53,17 +53,18 @@ tamnum = 16
 
 print('Definir parametros del problema')
 
-R = 0.4              #micrones
+R = 0.05              #micrones
 modo = 1
 
-Ep = 0.7
+Ep = 0.6
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
 nmax = 10
 Ao = 1
 
-zoom = 0
+zoom = 1
+index = 0
 
 #%%
 
@@ -99,7 +100,6 @@ data_load = np.transpose(data_load)
 [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
 
 m = len(barrido_mu)
-index = 3887
 hbaramu = barrido_mu[index]
 omegac = omegac_opt[index]
 delta_ci = epsi1_imag_opt[index]
@@ -273,7 +273,7 @@ if graph_2D==1:
     plt.figure(figsize=tamfig)
     limits = [min(x) , max(x), min(y) , max(y)]
     plt.xlabel(labelx,fontsize=int(tamletra*1.2))
-    plt.ylabel('$\epsilon_{ci}$',fontsize=int(tamletra*1.5))
+    plt.ylabel('$\epsilon_{di}$',fontsize=int(tamletra*1.5))
     plt.tick_params(labelsize = tamnum)
     # plt.title(title,fontsize=int(tamtitle*0.9))
     # im = plt.imshow(Z, extent = limits,  cmap='RdBu', interpolation='bilinear')

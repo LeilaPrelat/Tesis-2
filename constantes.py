@@ -14,6 +14,7 @@ import numpy as np
 #%%
 
 def constantes():
+    global mu1,mu2,epsi2,hbargama ### variables globales ---> no pueden cambiarse
     pi = np.pi
     hb = 6.58211899*10**(-16)     ### Planck constant hbar in eV*s
     c = 3*10**(14)                ### light velocity in micron/seg
@@ -21,17 +22,18 @@ def constantes():
     hbargama = 0.0001             ### collision frequency in eV 
     
     ###medio 2
+
     mu2, epsi2 = 1,1
     mu1 = 1
 
-    if hbargama!=0.0001:
-        raise TypeError('Create new repository')
-    if mu1!=1:
-        raise TypeError('Create new repository')
-    if mu2!=1:
-        raise TypeError('Create new repository')
-    if epsi2!=1:
-        raise TypeError('Create new repository')
+    # if hbargama!=0.0001:
+    #     raise TypeError('Create new repository')
+    # if mu1!=1:
+    #     raise TypeError('Create new repository')
+    # if mu2!=1:
+    #     raise TypeError('Create new repository')
+    # if epsi2!=1:
+    #     raise TypeError('Create new repository')
 
     return pi,hb,c,alfac,hbargama,mu1,mu2,epsi2
 

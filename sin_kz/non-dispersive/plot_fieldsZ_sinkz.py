@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 #%%
 
 save_graphs = 1
-modulo = 1      #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
+modulo = 0      #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
 non_active_medium = 1    #plotear campos con im(epsilon1) = 0
 paper = 1   # sacar el titulo y guardar la info (formato paper)
@@ -30,11 +30,20 @@ paper = 1   # sacar el titulo y guardar la info (formato paper)
 
 print('Definir parametros para graficos')
 
-tamfig = (10,8)
-tamlegend = 18
-tamletra = 18
-tamtitle = 18
-tamnum = 15
+if paper == 1: 
+    tamfig = (3.5,3.5)
+    tamlegend = 7
+    tamletra = 6
+    tamtitle = 6
+    tamnum = 6
+    labelpady = -2
+else:
+    tamfig = (10,8)
+    tamlegend = 18
+    tamletra = 18
+    tamtitle = 18
+    tamnum = 15
+    labelpady = 0   
 
 if modulo==1:
     label = '$|H_z|$'
@@ -85,6 +94,8 @@ nmax = 10
 if R != 0.5:
     raise TypeError('Wrong value for R')
 
+index = 0
+
 #%%
 
 for modo in list_modos:
@@ -105,7 +116,7 @@ for modo in list_modos:
     data_load = np.transpose(data_load)
     [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
     
-    index = 0
+
     hbaramu = barrido_mu[index]
     omegac = omegac_opt[index]
     im_epsi1 = epsi1_imag_opt[index]
@@ -155,14 +166,14 @@ for modo in list_modos:
         
         plt.figure(figsize=tamfig)
         plt.xlabel(labelx,fontsize=tamletra)
-        plt.ylabel(labely,fontsize=tamletra)
+        plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
         plt.tick_params(labelsize = tamnum)
         if paper == 0:
             plt.title(title1_loss,fontsize=int(tamtitle*0.9))
         im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
         cbar = plt.colorbar(im)
         cbar.ax.tick_params(labelsize = tamnum)
-        cbar.set_label(label,fontsize=tamletra)
+        cbar.set_label(label,fontsize=tamlegend,labelpad = 1)
         if save_graphs==1:
             os.chdir(path_save)
             if modulo==1:
@@ -191,14 +202,14 @@ for modo in list_modos:
     
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
-    plt.ylabel(labely,fontsize=tamletra)
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
     plt.tick_params(labelsize = tamnum)
     if paper == 0:
         plt.title(title1,fontsize=int(tamtitle*0.9))
     im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
     cbar.ax.tick_params(labelsize = tamnum)
-    cbar.set_label(label,fontsize=tamletra)
+    cbar.set_label(label,fontsize=tamlegend)
     if save_graphs==1:  
         os.chdir(path_save)
         if modulo==1:
@@ -232,14 +243,14 @@ for modo in list_modos:
         
         plt.figure(figsize=tamfig)
         plt.xlabel(labelx,fontsize=tamletra)
-        plt.ylabel(labely,fontsize=tamletra)
+        plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
         plt.tick_params(labelsize = tamnum)
         if paper == 0:
             plt.title(title2_loss,fontsize=int(tamtitle*0.9))
         im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
         cbar = plt.colorbar(im)
         cbar.ax.tick_params(labelsize = tamnum)
-        cbar.set_label(label2,fontsize=tamletra)
+        cbar.set_label(label2,fontsize=tamlegend)
         if save_graphs == 1:
             if modulo==1:
                 plt.savefig('modEz_loss_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
@@ -266,14 +277,14 @@ for modo in list_modos:
     
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
-    plt.ylabel(labely,fontsize=tamletra)
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
     plt.tick_params(labelsize = tamnum)
     if paper == 0:
         plt.title(title2,fontsize=int(tamtitle*0.9))
     im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
     cbar.ax.tick_params(labelsize = tamnum)
-    cbar.set_label(label2,fontsize=tamletra)
+    cbar.set_label(label2,fontsize=tamlegend)
     if save_graphs==1:
         os.chdir(path_save)
         if modulo==1:

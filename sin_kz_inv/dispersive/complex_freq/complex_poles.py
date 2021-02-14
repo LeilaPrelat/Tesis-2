@@ -33,7 +33,7 @@ tamnum = 14
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_graphene = path_basic.replace('/sin_kz_inv/dispersive','') 
+path_graphene = path_basic.replace('/sin_kz_inv/dispersive/complex_freq','') 
 
 try:
     sys.path.insert(1, path_graphene)
@@ -53,7 +53,7 @@ print('Definir parametros del problema')
 R = 0.1             #micrones
 modo = 4
 
-Ep = 0.3
+Ep = 0.9
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 

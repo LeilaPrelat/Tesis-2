@@ -137,9 +137,9 @@ os.chdir(path_load)
 deg_txt1 = 'info_degenerations_dispR_%.2f.txt' %(R)
 deg_txt2 = 'info_degenerations_inv_dispR_%.2f.txt' %(R)
 
-index1 = 1 #0 ---> saltos de a 1 modo, 1 ---> saltos de a 2 modos
-index2 = 1
-index3 = 1 # 1 o 0 tiene que ser (longitud de list_modes)
+index1 = 0 #0 ---> saltos de a 1 modo, 1 ---> saltos de a 2 modos
+index2 = 3
+index3 = 0 # 1 o 0 tiene que ser (longitud de list_modes)
 
 os.chdir(path_load)
 try:

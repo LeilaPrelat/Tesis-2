@@ -23,7 +23,7 @@ from scipy import optimize
 #%%
 
 save_graphs = 1
-find_degenerations = 1 #encontrar degeneraciones en frecuencia: modos con el mismo omega/c
+find_degenerations = 0 #encontrar degeneraciones en frecuencia: modos con el mismo omega/c
 
 tamfig = (12,7)
 tamlegend = 20
@@ -56,9 +56,13 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
-R = 0.3             #micrones
+R = 0.05             #micrones
 gamma_DL = 0.01 #unidades de energia
-list_Ep = [0.4,0.6,0.7,0.8,0.9] 
+list_Ep = [0.3,0.6,0.9] 
+
+labelx = '$\mu_c$ [eV]'
+labely1 = '$[\epsilon_{di}]_c$'
+labely2 = '$\omega/c$'
 
 #%%
 if gamma_DL != 0.01:
@@ -93,9 +97,7 @@ for Ep in list_Ep:
     
     fig,axs = plt.subplots(3,1, sharex=True, facecolor='w', figsize = (12,10))
     plt.subplots_adjust(hspace =hspace,wspace = wspace)
-    
-    labelx = '$\mu_c$ [eV]'
-    labely = '$\epsilon_{ci}$'
+
     
     k = 0
     for modo in [1,2,3,4]:
@@ -131,12 +133,12 @@ for Ep in list_Ep:
             ticks = [ticks1,ticks2,ticks3]
             axs[i].set_yticks(ticks[i])
             axs[i].set_yticklabels(ticks[i])
-        axs[i].set_ylabel(labely,fontsize = int(tamletra*1.2),labelpad = 6) 
+        axs[i].set_ylabel(labely1,fontsize = int(tamletra*1.2),labelpad = 6) 
         
     # axs[2].set_ylabel(labely,fontsize =  int(tamletra*1.2),labelpad=6) 
     # axs[1].set_ylabel(labely,fontsize =  int(tamletra*1.2),labelpad=6) 
     
-    axs[2].set_xlabel(labelx,fontsize = tamletra,labelpad=4)
+    axs[2].set_xlabel(labelx,fontsize = tamletra,labelpad=6)
     
     legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
     patchList2 = []
@@ -160,8 +162,6 @@ for Ep in list_Ep:
         plt.savefig('Im_epsi1_vs_muR_%.2f.png' %(R),format = 'png')
      
     
-    labely = '$\omega/c$'
-    
     plt.figure(figsize=tamfig)
     
     k = 0
@@ -175,8 +175,8 @@ for Ep in list_Ep:
             
         k = k + 1
     
-    plt.ylabel(labely,fontsize=tamletra)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad=2)
+    plt.ylabel(labely2,fontsize=tamletra)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad=4)
     plt.tick_params(labelsize = tamnum)
     
     legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }

@@ -88,7 +88,7 @@ fig,axs = plt.subplots(2,1, sharex=True, facecolor='w', figsize = tamfig)
 plt.subplots_adjust(hspace =hspace,wspace = wspace)
 
 labelx = '$\mu_c$ [eV]'
-labely = 'Im($\epsilon_1$)'
+labely = '[Im($\epsilon_1$)]$_c$'
 
 k = 0
 for modo in [1,2,3,4]:
@@ -117,9 +117,9 @@ for i in [0,1]:
     axs[i].set_yticks(ticks[i])
     axs[i].set_yticklabels(ticks[i])
 
-axs[0].set_ylabel(labely,fontsize = tamletra,labelpad=0) 
+axs[0].set_ylabel(labely,fontsize = tamletra,labelpad=6) 
 axs[1].set_ylabel(labely,fontsize = tamletra,labelpad=6) 
-axs[1].set_xlabel(labelx,fontsize = tamletra,labelpad=2)
+axs[1].set_xlabel(labelx,fontsize = tamletra,labelpad=4)
 
 legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
 patchList2 = []

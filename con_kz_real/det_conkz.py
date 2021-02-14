@@ -7,6 +7,7 @@ Created on Thu Jun  4 22:07:37 2020
 
 determinante de la matriz de 4x4
     (caso con kz)
+tal como sale de plantear las condiciones de borde
 """
 
 import numpy as np

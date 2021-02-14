@@ -24,6 +24,7 @@ def sigma(hbw,hbmu,hbgama):
 	---> multiplicar despues por fine_structure*c (unidades gaussianas)
 
     """
+    global Tk  ### variables globales ---> no pueden cambiarse
     akb = 8.6173324E-5           ### Boltzman constant in eV/K  
     Tk = 300 			### temperature in K ---> no cambia
     

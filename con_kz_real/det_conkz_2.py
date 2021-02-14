@@ -8,7 +8,8 @@ Created on Thu Jun  4 22:07:37 2020
 determinante de la matriz de 4x4
     (caso con kz) seccion 3.5 del cuaderno corto 
 
-(reescribir matriz para recuperar el caso sin kz cuando kz = 0)
+(reescribir matriz para recuperar el caso sin kz cuando kz = 0, 
+	se multiplico la matriz de det_conkz.py por xt1*xt2) 
     
 """
 
