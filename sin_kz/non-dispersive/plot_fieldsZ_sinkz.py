@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 #%%
 
 save_graphs = 1
-modulo = 0      #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
+modulo = 1      #si modulo == 1 ---> |Hz| (si modulo == 0 ---> Re(Hz))
 
 non_active_medium = 1    #plotear campos con im(epsilon1) = 0
 paper = 1   # sacar el titulo y guardar la info (formato paper)
@@ -161,8 +161,8 @@ for modo in list_modos:
             
         f1 = np.vectorize(Hz_2variable)
         Z = f1(X, Y)
-        maxH = np.max(Z) 
-        Z = Z/maxH
+        maxH1 = np.max(Z) 
+        Z = Z/maxH1
         
         plt.figure(figsize=tamfig)
         plt.xlabel(labelx,fontsize=tamletra)
@@ -197,8 +197,11 @@ for modo in list_modos:
     
     f1 = np.vectorize(Hz_2variable)
     Z = f1(X, Y)
-    if non_active_medium == 1:
-        Z = Z/maxH
+    if non_active_medium == 1 and paper == 0 :
+        Z = Z/maxH1
+    if paper == 1: #normarlizar TODOS los campos : con y sin medio activo
+        maxH2 = np.max(Z) 
+        Z = Z/maxH2
     
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
@@ -238,8 +241,8 @@ for modo in list_modos:
         f2 = np.vectorize(Ez_2variable)
         
         Z = f2(X, Y)
-        maxE = np.max(Z) 
-        Z = Z/maxE
+        maxE1 = np.max(Z) 
+        Z = Z/maxE1
         
         plt.figure(figsize=tamfig)
         plt.xlabel(labelx,fontsize=tamletra)
@@ -272,9 +275,12 @@ for modo in list_modos:
         
     f2 = np.vectorize(Ez_2variable)
     Z = f2(X, Y)
-    if non_active_medium == 1:
-        Z = Z/maxE
-    
+    if non_active_medium == 1 and paper == 0:
+        Z = Z/maxE1
+    if paper == 1: #normarlizar TODOS los campos : con y sin medio activo
+        maxE2 = np.max(Z) 
+        Z = Z/maxE2
+        
     plt.figure(figsize=tamfig)
     plt.xlabel(labelx,fontsize=tamletra)
     plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)

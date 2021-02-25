@@ -43,7 +43,7 @@ try:
     sys.path.insert(1, path_basic2)
     from det_conkz import determinante
 except ModuleNotFoundError:
-    print('det_conkz.py no se encuentra en el path_basic2 definido/carpeta de trabajo')
+    print('det_conkz.py no se encuentra en ' + path_basic2)
     path_basic2 = input('path de la carpeta donde se encuentra det_conkz.py')
     sys.path.insert(1, path_basic2)
     from det_conkz import determinante
@@ -52,7 +52,7 @@ try:
     sys.path.insert(1, path_basic2)
     from def_kt import kt
 except ModuleNotFoundError:
-    print('def_kt.py no se encuentra en el path_basic2 definido/carpeta de trabajo')
+    print('def_kt.py no se encuentra  en ' + path_basic2)
     path_basic2 = input('path de la carpeta donde se encuentra def_kt.py')
     sys.path.insert(1, path_basic2)
     from def_kt import kt
@@ -61,7 +61,7 @@ try:
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
 except ModuleNotFoundError:
-    print('QE_lossless.py no se encuentra en el path_basic2 definido/carpeta de trabajo')
+    print('QE_lossless.py no se encuentra  en ' + path_basic)
     path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi

@@ -58,7 +58,7 @@ print('Definir parametros del problema')
 epsiinf_DL = 3.9
 R = 0.05             #micrones
 gamma_DL = 0.01 #unidades de energia
-list_Ep = [0.3,0.6,0.9] 
+list_Ep = [0.3,0.6] 
 
 labelx = '$\mu_c$ [eV]'
 labely1 = '$[\epsilon_{di}]_c$'
@@ -68,7 +68,8 @@ labely2 = '$\omega/c$'
 if gamma_DL != 0.01:
     raise TypeError('Wrong value for gamma_DL')
     
-list_color = ['darkred','yellowgreen','steelblue','coral']
+colors = ['darkred','yellowgreen','steelblue','coral']
+symbols = ['-','-','--','-.']
 
 #%%
 
@@ -106,13 +107,15 @@ for Ep in list_Ep:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-    
+
         if modo == 1:
-            axs[0].plot(list_mu_opt,epsi1_imag_opt,'-',lw = 5,color = list_color[k])
+            line1, = axs[0].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = 3.5,color = colors[k],label = 'mode %i'%(k+1))
+            line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
         elif modo in [3,4]:
-            axs[2].plot(list_mu_opt,epsi1_imag_opt,'-',lw = 5,color = list_color[k])
-        else:
-            axs[1].plot(list_mu_opt,epsi1_imag_opt,'-',lw = 5,color = list_color[k])
+            axs[2].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = 3.5,color = colors[k],label = 'mode %i'%(k+1))
+        else:    
+            axs[1].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = 3.5,color = colors[k],label = 'mode %i'%(k+1))
+        
         k = k + 1
     
     if R == 0.05 and epsiinf_DL == 3.9 and Ep == 0.6:
@@ -140,14 +143,16 @@ for Ep in list_Ep:
     
     axs[2].set_xlabel(labelx,fontsize = tamletra,labelpad=6)
     
-    legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
-    patchList2 = []
-    for key in legend_mode2:
-            data_key = mpatches.Patch(color=legend_mode2[key], label=key)
-            patchList2.append(data_key)
+    # legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
+    # patchList2 = []
+    # for key in legend_mode2:
+    #         data_key = mpatches.Patch(color=legend_mode2[key], label=key)
+    #         patchList2.append(data_key)
             
-    fig.legend(handles=patchList2,loc=[0.145,0.878],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
+    # fig.legend(handles=patchList2,loc=[0.145,0.878],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
     
+    fig.legend(loc = [0.15,0.88], ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+
     if R == 0.5:
         s1,s2,s3 = 'a)', 'b)', 'c)'
     else:
@@ -171,7 +176,9 @@ for Ep in list_Ep:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-        plt.plot(list_mu_opt,omegac_opt,'-',lw = 5,color = list_color[k])
+        line1, = plt.plot(list_mu_opt,omegac_opt,symbols[k],lw = 3.5,color = colors[k],label = 'mode %i'%(k+1))
+        if k == 0:
+            line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
             
         k = k + 1
     
@@ -179,13 +186,14 @@ for Ep in list_Ep:
     plt.xlabel(labelx,fontsize=tamletra,labelpad=4)
     plt.tick_params(labelsize = tamnum)
     
-    legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
-    patchList2 = []
-    for key in legend_mode2:
-            data_key = mpatches.Patch(color=legend_mode2[key], label=key)
-            patchList2.append(data_key)
+    # legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
+    # patchList2 = []
+    # for key in legend_mode2:
+    #         data_key = mpatches.Patch(color=legend_mode2[key], label=key)
+    #         patchList2.append(data_key)
             
-    plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
+    # plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
+    plt.legend(loc = [0.025,1], ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
     
     if save_graphs==1:
         os.chdir(path_load)

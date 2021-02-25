@@ -57,6 +57,8 @@ def coef(kz_var,omegac,epsi1,mode,R,mu_c,Ao,Bo):
     mode : modo
     R : radio del cilindro en micrometros
     mu_c : potencial quimico del grafeno
+    Ao : Amplitud del campo incidente en Hz
+    Bo : Amplitud del campo incidente en Ez
 
     Returns
     -------

@@ -127,7 +127,7 @@ def Et(kz_var2,omegac,epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z):
         return [J,J2,derJ,derJ2,H,derH]  
     
     
-    def a(j,modo):
+    def a(j,modo):  #no esta incluido el xz
         if modo!=0:
             rta1 = modo
             rta2 = rhobarra*xt2(j)
