@@ -131,7 +131,7 @@ def coef(kz_var,omegac,epsi1,mode,R,mu_c,Ao,Bo):
     H =  special.hankel1(mode,xt(2)*Rbarra) + 0j
     derH =  special.h1vp(mode,xt(2)*Rbarra) + 0j
 
-    cond = sigma(E,mu_c)[0]
+    cond = sigma(E,mu_c,hbargama)[0]
     cond3 = cond*alfac*4*pi  #sigma devuelve la conductividad teniendo que multiplicar por alfac*c ---> no hay que dividir por c
   
     cte = (1j)**mode
