@@ -16,7 +16,7 @@ import sys
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-save_graphs = 0
+save_graphs = 1
 paper = 1
 
 #%%
@@ -31,6 +31,7 @@ if paper == 1:
     labelpady = 0.5
     labelpadx = 0.5
     lw = 1.5
+    pad = -1
     loc1 = [0.03,1]
     loc2 = [0.03,1]
     
@@ -44,6 +45,7 @@ else:
     labelpady = 0
     labelpadx = 0
     lw = 3.5
+    pad = 0
     loc1 = [-0.1,1]
     loc2 = [-0.1,1]
 
@@ -117,7 +119,7 @@ for modo in [1,2,3,4]:
         
     plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
     plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-    plt.tick_params(labelsize = tamnum)
+    plt.tick_params(labelsize = tamnum, pad = pad)
                 
     #fig.legend(handles=patchList2,loc=[0.145,0.87],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
     plt.legend(loc = loc1, ncol = 4,markerscale=1,fontsize=tamlegend,frameon=0,handletextpad=0.2)
@@ -126,7 +128,7 @@ for modo in [1,2,3,4]:
         os.chdir(path_load)
         plt.savefig('Im_epsi1_vs_mu_tot_modo%i.png'%(modo) ,format = 'png')
         
-    labely = '$\omega/c$'
+    labely = '$\omega/c$ [$\mu$m$^{-1}$]'
     
     plt.figure(figsize=tamfig)
     
@@ -145,7 +147,7 @@ for modo in [1,2,3,4]:
     
     plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
     plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-    plt.tick_params(labelsize = tamnum)
+    plt.tick_params(labelsize = tamnum, pad = pad)
             
     #plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
     plt.legend(loc = loc2, ncol = 4,markerscale=1,fontsize=tamlegend,frameon=0,handletextpad=0.2)
@@ -156,7 +158,7 @@ for modo in [1,2,3,4]:
         
 #%%
  
-variacion_im_epsi1 = []
+variacion_im_epsi1 = []  # para la escritura de la tesis
 
 kz1, kz2 = [np.min(list_kz_chicos),np.max(list_kz_chicos)]
 

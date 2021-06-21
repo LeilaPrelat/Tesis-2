@@ -17,8 +17,39 @@ import matplotlib.pyplot as plt
 
 save_graphs = 1 #guardar los graficos 2D del campo
 modulo = 1 #si modulo = 0 ---> grafica partes reales, si modulo = 1 grafica el modulo de los campos
-
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
+paper = 1
+
+#%%
+
+if paper == 1: 
+    tamfig = (3.5,3.5)
+    tamlegend = 7
+    tamletra = 6
+    tamtitle = 6
+    tamnum = 6
+    labelpady = 0.5
+    labelpadx = 0.5
+    pad = -1
+else:
+    tamfig = (10,8)
+    tamlegend = 18
+    tamletra = 18
+    tamtitle = 18
+    tamnum = 15
+    labelpady = 0
+    labelpadx = 0
+    pad = 0
+
+if modulo==1:
+    label = '$|H_z|$'
+else:
+    label = 'Re($H_z$)'
+    
+if modulo==1:
+    label2 = '$|E_z|$'
+else:
+    label2 ='Re($E_z$)'
 
 #%%
 
@@ -52,15 +83,7 @@ except ModuleNotFoundError:
     sys.path.insert(1, path_graphene3)
     from constantes import constantes
 
-pi,hb,c,alfac,mu1,mu2,epsi2 = constantes()
-
-#print('Definir parametros para graficos')
-
-tamfig = (11,9)
-tamlegend = 18
-tamletra = 18
-tamtitle = 18
-tamnum = 16
+pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 
@@ -176,7 +199,7 @@ x = np.linspace(-cota,cota,n2)
 y = np.linspace(-cota,cota,n2)
 X, Y = np.meshgrid(x, y)
 f1 = np.vectorize(Hz_2variable)
-Z = f1(X, Y)
+Z1 = f1(X, Y)
 # Z = Z/np.max(Z)
 labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
 
@@ -184,8 +207,9 @@ plt.figure(figsize=tamfig)
 limits = [min(x) , max(x), min(y) , max(y)]
 plt.xlabel(labelx,fontsize=tamletra)
 plt.ylabel(labely,fontsize=tamletra)
-plt.title(title,fontsize=int(tamtitle*0.9))
-im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+if paper == 0:
+    plt.title(title,fontsize=int(tamtitle*0.9))
+im = plt.imshow(Z1, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
 cbar = plt.colorbar(im)
 if modulo==1:
     cbar.set_label('|Hz|',size=tamlegend)
@@ -212,22 +236,18 @@ if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
         else: #medio2
             return Hz2_tot
         
-    n2 = 100
-    cota = 2*R
-    x = np.linspace(-cota,cota,n2)
-    y = np.linspace(-cota,cota,n2)
     X, Y = np.meshgrid(x, y)
-    f1 = np.vectorize(Hz_2variable)
-    Z = f1(X, Y)
+    f2 = np.vectorize(Hz_2variable)
+    Z2 = f2(X, Y)
     # Z = Z/np.max(Z)
-    labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
     
     plt.figure(figsize=tamfig)
     limits = [min(x) , max(x), min(y) , max(y)]
     plt.xlabel(labelx,fontsize=tamletra)
     plt.ylabel(labely,fontsize=tamletra)
-    plt.title(title_loss,fontsize=int(tamtitle*0.9))
-    im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+    if paper == 0:
+        plt.title(title,fontsize=int(tamtitle*0.9))
+    im = plt.imshow(Z2, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
     if modulo==1:
         cbar.set_label('|Hz|',size=tamlegend)
@@ -239,7 +259,9 @@ if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
             plt.savefig('modHz_loss_modo%i_kz%.4f' %(modo,kz), format='png') 
         else:
             plt.savefig('reHz_loss_modo%i_kz%.4f' %(modo,kz), format='png') 
-            
+
+del X,Y,Z1,Z2            
+
 #%%
 
 print('Graficar el campo Ez para el medio 1 y 2')
@@ -261,16 +283,18 @@ def Ez_2variable(x,y):
 # x = np.linspace(-cota,cota,n2)
 # y = np.linspace(-cota,cota,n2)
 X, Y = np.meshgrid(x, y)
-f2 = np.vectorize(Ez_2variable)
-Z = f2(X, Y)
+f1 = np.vectorize(Ez_2variable)
+Z1 = f1(X, Y)
 # Z = Z/np.max(Z)
 
 plt.figure(figsize=tamfig)
 limits = [min(x) , max(x), min(y) , max(y)]
-plt.xlabel(labelx,fontsize=tamletra)
-plt.ylabel(labely,fontsize=tamletra)
-plt.title(title,fontsize=int(tamtitle*0.9))
-im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum, pad = pad)
+if paper == 0:
+    plt.title(title,fontsize=int(tamtitle*0.9))
+im = plt.imshow(Z1, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
 cbar = plt.colorbar(im)
 if modulo==1:
     cbar.set_label('|Ez|',size=tamlegend)
@@ -302,15 +326,16 @@ if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
     # y = np.linspace(-cota,cota,n2)
     X, Y = np.meshgrid(x, y)
     f2 = np.vectorize(Ez_2variable)
-    Z = f2(X, Y)
+    Z2 = f2(X, Y)
     # Z = Z/np.max(Z)
     
     plt.figure(figsize=tamfig)
     limits = [min(x) , max(x), min(y) , max(y)]
     plt.xlabel(labelx,fontsize=tamletra)
     plt.ylabel(labely,fontsize=tamletra)
-    plt.title(title_loss,fontsize=int(tamtitle*0.9))
-    im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+    if paper == 0:
+        plt.title(title,fontsize=int(tamtitle*0.9))
+    im = plt.imshow(Z2, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
     if modulo==1:
         cbar.set_label('|Ez|',size=tamlegend)
@@ -322,6 +347,10 @@ if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
             plt.savefig('modEz_loss_modo%i_kz%.4f' %(modo,kz), format='png') 
         else:
             plt.savefig('reEz_loss_modo%i_kz%.4f' %(modo,kz), format='png') 
-    
+
+del X,Y,Z1,Z2
+
+if paper == 1:
+    np.savetxt('info_fieldsZ_modo%i_kz%.4f.txt' %(modo,kz), [title], fmt='%s')
 
 #%%

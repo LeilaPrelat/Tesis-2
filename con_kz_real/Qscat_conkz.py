@@ -113,7 +113,7 @@ def Qscat(kz_var,omegac,epsi1,nmax,R,hbaramu,Ao,Bo):
         Dn2 = np.abs(Dn)**2
         Bn2 = np.abs(Bn)**2
 
-        Qscat = Qscat + Dn2/epsi2 - Bn2/mu2
+        Qscat = Qscat + Dn2/epsi2 + Bn2/mu2 # estaba mal el signo de Bn2 ---> ver Tesis, no cuaderno 
      
     ctef = 1/(4*pi*Rbarra)
     Qscatf = Qscat*ctef

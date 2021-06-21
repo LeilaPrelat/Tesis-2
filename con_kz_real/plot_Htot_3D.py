@@ -18,6 +18,28 @@ import matplotlib.pyplot as plt
 
 save_graphs = 1 #guardar los graficos 2D del campo
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
+paper = 1
+
+#%%
+
+if paper == 1: 
+    tamfig = (3.5,3.5)
+    tamlegend = 7
+    tamletra = 6
+    tamtitle = 6
+    tamnum = 6
+    labelpady = 0.5
+    labelpadx = 0.5
+    pad = -1
+else:
+    tamfig = (10,8)
+    tamlegend = 18
+    tamletra = 18
+    tamtitle = 18
+    tamnum = 15
+    labelpady = 0
+    labelpadx = 0
+    pad = 0
 
 #%%
 
@@ -39,14 +61,6 @@ except ModuleNotFoundError:
     path_basic = input('path de la carpeta donde se encuentra Htot_conkz.py')
     sys.path.insert(1, path_basic)
     from Htot_conkz import Htot
-
-#print('Definir parametros para graficos')
-
-tamfig = (11,9)
-tamlegend = 18
-tamletra = 18
-tamtitle = 18
-tamnum = 16
 
 #%%
 
@@ -134,37 +148,13 @@ if R!= 0.5:
 
 print('Graficar el campo |Htot|^2 para el medio 1 y 2')
 
-def Htot_2variable(x,y):   
-    phi = np.arctan2(y,x)
-    rho = (x**2+y**2)**(1/2)
-    [H1_tot,H2_tot] = Htot(kz,omegac,epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z)
-    if np.abs(rho) <= R: #medio1
-        return H1_tot
-    else: #medio2
-        return H2_tot
-
 n2 = 100
 cota = 2*R
 x = np.linspace(-cota,cota,n2)
 y = np.linspace(-cota,cota,n2)
 X, Y = np.meshgrid(x, y)
-f1 = np.vectorize(Htot_2variable)
-Z1 = f1(X, Y)
-# Z = Z/np.max(Z)
 labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
 labelz = '|Htot|$^2$'
-
-plt.figure(figsize=tamfig)
-limits = [min(x) , max(x), min(y) , max(y)]
-plt.xlabel(labelx,fontsize=tamletra)
-plt.ylabel(labely,fontsize=tamletra)
-plt.title(title,fontsize=int(tamtitle*0.9))
-im = plt.imshow(Z1, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
-cbar = plt.colorbar(im)
-cbar.set_label(labelz,size=tamlegend)
-if save_graphs==1:
-    os.chdir(path_save)
-    plt.savefig('|Htot|2_modo%i_kz%.4f' %(modo,kz), format='png') 
 
 if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
     def Htot_2variable(x,y):   
@@ -175,20 +165,19 @@ if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
             return H1_tot
         else: #medio2
             return H2_tot
-        
-
-    # x = np.linspace(-cota,cota,n2)
-    # y = np.linspace(-cota,cota,n2)
+    
     # X, Y = np.meshgrid(x, y)
-    f1 = np.vectorize(Htot_2variable)
-    Z2 = f1(X, Y)
+    f2 = np.vectorize(Htot_2variable)
+    Z2 = f2(X, Y)
     # Z = Z/np.max(Z)
     
     plt.figure(figsize=tamfig)
     limits = [min(x) , max(x), min(y) , max(y)]
     plt.xlabel(labelx,fontsize=tamletra)
     plt.ylabel(labely,fontsize=tamletra)
-    plt.title(title_loss,fontsize=int(tamtitle*0.9))
+    plt.tick_params(labelsize = tamnum, pad = pad)
+    if paper == 0:
+        plt.title(title_loss,fontsize=int(tamtitle*0.9))
     im = plt.imshow(Z2, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
     cbar.set_label(labelz,size=tamlegend)
@@ -196,7 +185,39 @@ if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
     if save_graphs==1:
         plt.savefig('|Htot|2_loss_modo%i_kz%.4f' %(modo,kz), format='png') 
 
+def Htot_2variable(x,y):   
+    phi = np.arctan2(y,x)
+    rho = (x**2+y**2)**(1/2)
+    [H1_tot,H2_tot] = Htot(kz,omegac,epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z)
+    if np.abs(rho) <= R: #medio1
+        return H1_tot
+    else: #medio2
+        return H2_tot
+
+
+f1 = np.vectorize(Htot_2variable)
+Z1 = f1(X, Y)
+# Z = Z/np.max(Z)
+
+
+plt.figure(figsize=tamfig)
+limits = [min(x) , max(x), min(y) , max(y)]
+plt.xlabel(labelx,fontsize=tamletra)
+plt.ylabel(labely,fontsize=tamletra)
+plt.tick_params(labelsize = tamnum, pad = pad)
+if paper == 0:
+    plt.title(title,fontsize=int(tamtitle*0.9))
+im = plt.imshow(Z1, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+cbar = plt.colorbar(im)
+cbar.set_label(labelz,size=tamlegend)
+if save_graphs==1:
+    os.chdir(path_save)
+    plt.savefig('|Htot|2_modo%i_kz%.4f' %(modo,kz), format='png') 
+
 
 del X,Y,Z1,Z2
-           
+          
+if paper == 1:
+    np.savetxt('info_Htot_modo%i_kz%.4f.txt' %(modo,kz), [title], fmt='%s')
+
 #%%

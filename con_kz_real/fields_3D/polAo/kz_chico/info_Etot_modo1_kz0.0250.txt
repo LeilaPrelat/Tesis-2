@@ -1,0 +1,3 @@
+Ao = 1, Bo = 0, kz = 0.0250 1/$\mu$m, z = 0 $\mu$m, R = 0.5 $\mu$m, nmax = 10, $\mu_c$ = 0.3 eV
+$\epsilon_1$ = 3.9 - i3.5553e-02 y $\omega/c$ = 1.3401e-01 1/$\mu$m del modo = 1
+plot_Etot_3D.py

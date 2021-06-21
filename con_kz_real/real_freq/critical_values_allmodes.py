@@ -31,6 +31,7 @@ if paper == 1:
     labelpady = 0.5
     labelpadx = 0.5
     lw = 1.5
+    pad = -1
     loc1 = [0.22,0.88]
     loc2 = [0.1,1]
     
@@ -44,6 +45,7 @@ else:
     labelpady = 0
     labelpadx = 4
     lw = 3.5
+    pad = 0
     loc1 = [0.15,0.88]
     loc2 = [0.025,1]
     
@@ -123,7 +125,7 @@ for kz in list_kz:
     
     for i in [0,1]:
         axs[i].minorticks_on()
-        axs[i].tick_params(labelsize = tamnum)
+        axs[i].tick_params(labelsize = tamnum,pad = pad)
 
     
     axs[0].set_ylabel(labely,fontsize = tamletra,labelpad =labelpady)
@@ -143,7 +145,7 @@ for kz in list_kz:
         os.chdir(path_load)
         plt.savefig('Im_epsi1_vs_mu_kz%.4f.png'%(kz) ,format = 'png')
         
-    labely = '$\omega/c$ [$\mu$m]'
+    labely = '$\omega/c$ [$\mu$m$^{-1}$]'
     
     plt.figure(figsize=tamfig)
     
@@ -162,7 +164,7 @@ for kz in list_kz:
     
     plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
     plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-    plt.tick_params(labelsize = tamnum)
+    plt.tick_params(labelsize = tamnum,pad = pad)
             
     #plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
     plt.legend(loc = loc2, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
