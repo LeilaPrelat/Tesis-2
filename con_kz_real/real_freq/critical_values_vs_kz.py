@@ -16,7 +16,7 @@ import sys
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-save_graphs = 1
+save_graphs = 0
 paper = 1
 
 #%%
@@ -95,6 +95,7 @@ if R != 0.5:
 
 #%%
 
+
 for modo in [1,2,3,4]: 
 
     plt.figure(figsize=tamfig)
@@ -155,3 +156,43 @@ for modo in [1,2,3,4]:
         
 #%%
  
+variacion_im_epsi1 = []
+
+kz1, kz2 = [np.min(list_kz_chicos),np.max(list_kz_chicos)]
+
+for modo in [1,2,3,4]: 
+    os.chdir(path_load)
+    name1 = 'opt_det_conkz_vs_mu_kz%.4f_modo%i.txt' %(kz1,modo)
+    tabla1 = np.loadtxt(name1, delimiter='\t', skiprows=1)
+    tabla1 = np.transpose(tabla1)
+    [list_mu_opt1,omegac_opt1,epsi1_imag_opt1,eq_det1] = tabla1
+    
+    
+    name2 = 'opt_det_conkz_vs_mu_kz%.4f_modo%i.txt' %(kz2,modo)
+    tabla2 = np.loadtxt(name2, delimiter='\t', skiprows=1)
+    tabla2 = np.transpose(tabla2)
+    [list_mu_opt2,omegac_opt2,epsi1_imag_opt2,eq_det2] = tabla2
+    
+    dif = []
+    indmin = np.min([len(epsi1_imag_opt1), len(epsi1_imag_opt2)])
+    for ind in range(indmin):
+        delta = (epsi1_imag_opt1[ind] - epsi1_imag_opt2[ind])
+        dif.append(np.abs(delta/epsi1_imag_opt1[ind]))
+    
+    variacion_im_epsi1.append(np.mean(dif))
+
+#%%
+    
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -143,7 +143,7 @@ for kz in list_kz:
         os.chdir(path_load)
         plt.savefig('Im_epsi1_vs_mu_kz%.4f.png'%(kz) ,format = 'png')
         
-    labely = '$\omega/c$'
+    labely = '$\omega/c$ [$\mu$m]'
     
     plt.figure(figsize=tamfig)
     

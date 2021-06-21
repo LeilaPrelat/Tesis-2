@@ -22,12 +22,32 @@ import seaborn as sns
 #%%
 
 save_graphs = 1
+paper = 1
 
-tamfig = (11,7)
-tamlegend = 18
-tamletra = 20
-tamtitle = 20
-tamnum = 16
+if paper == 1: 
+    tamfig = (5.5,3.5)
+    tamlegend = 7
+    tamletra = 7
+    tamtitle = 6
+    tamnum = 6
+    labelpady = 0
+    labelpadx = 1
+    lw = 1.5
+    pad = -1
+    loc1 = [0.22,0.88]
+    loc2 = [0.14,1]
+else:
+    tamfig = (11,7)
+    tamlegend = 18
+    tamletra = 20
+    tamtitle = 20
+    tamnum = 16
+    labelpady = 0
+    labelpadx = 2
+    lw = 3.5
+    pad = 0
+    loc1 = [0.15,0.88]
+    loc2 = [0.025,1]
 
 #%%
 
@@ -101,10 +121,10 @@ for modo in [1,2,3,4]:
     [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
 
     if modo == 1:
-        line1, = axs[0].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = 3.5,color = colors[k],label = 'mode %i'%(k+1))
+        line1, = axs[0].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = lw,color = colors[k],label = 'mode %i'%(k+1))
         line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
     else:
-        axs[1].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = 3.5,color = colors[k],label = 'mode %i'%(k+1))
+        axs[1].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = lw,color = colors[k],label = 'mode %i'%(k+1))
         
     k = k + 1
 
@@ -116,13 +136,13 @@ ticks = [ticks1,ticks2]
 
 for i in [0,1]:
     axs[i].minorticks_on()
-    axs[i].tick_params(labelsize = tamnum)
+    axs[i].tick_params(labelsize = tamnum,pad = pad)
     axs[i].set_yticks(ticks[i])
     axs[i].set_yticklabels(ticks[i])
 
-axs[0].set_ylabel(labely,fontsize = tamletra,labelpad=6) 
-axs[1].set_ylabel(labely,fontsize = tamletra,labelpad=6) 
-axs[1].set_xlabel(labelx,fontsize = tamletra,labelpad=4)
+axs[0].set_ylabel(labely,fontsize = tamletra,labelpad=labelpady) 
+axs[1].set_ylabel(labely,fontsize = tamletra,labelpad=labelpady) 
+axs[1].set_xlabel(labelx,fontsize = tamletra,labelpad=labelpadx)
 
 legend_mode2 = {'mode 1' : colors[0], 'mode 2' : colors[1],'mode 3' : colors[2], 'mode 4' : colors[3] }
 patchList2 = []
@@ -137,7 +157,7 @@ custom_lines = [Line2D([0], [0], color= colors[0], lw=4, linestyle = symbols[0])
                 Line2D([0], [3], color= colors[3], lw=4, linestyle = symbols[3])]     
 
 #fig.legend(handles=patchList2,loc=[0.145,0.87],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-fig.legend(loc = [0.15,0.88], ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+fig.legend(loc = loc1, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
 
 s1,s2 = 'a)', 'b)'
 xs = 0.133
@@ -151,7 +171,7 @@ if save_graphs==1:
     
 #%% 
 
-labely = '$\omega/c$'
+labely = '$\omega/c$ $[\mu m]^{-1}$'
 
 plt.figure(figsize=tamfig)
 
@@ -162,18 +182,18 @@ for modo in [1,2,3,4]:
     tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
     tabla = np.transpose(tabla)
     [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-    line1, = plt.plot(list_mu_opt,omegac_opt,symbols[k],lw = 3.5,color = colors[k],label = 'mode %i'%(k+1))
+    line1, = plt.plot(list_mu_opt,omegac_opt,symbols[k],lw = lw,color = colors[k],label = 'mode %i'%(k+1))
     if k == 0:
         line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
         
     k = k + 1
 
-plt.ylabel(labely,fontsize=tamletra)
-plt.xlabel(labelx,fontsize=tamletra,labelpad=2)
-plt.tick_params(labelsize = tamnum)
+plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad=labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
         
 #plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-plt.legend(loc = [0.025,1], ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+plt.legend(loc = loc2, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
 
 if save_graphs==1:
     os.chdir(path_load)

@@ -24,13 +24,33 @@ from scipy import optimize
 #%%
 
 save_graphs = 1
-find_degenerations = 1 #encontrar degeneraciones en frecuencia: modos con el mismo omega/c
+find_degenerations = 0 #encontrar degeneraciones en frecuencia: modos con el mismo omega/c
+paper = 1
 
-tamfig = (12,7)
-tamlegend = 20
-tamletra = 20
-tamtitle = 20
-tamnum = 18
+if paper == 1: 
+    tamfig = (5.5,3.5)
+    tamlegend = 7
+    tamletra = 9
+    tamtitle = 6
+    tamnum = 6
+    labelpady = 0
+    labelpadx = 1
+    lw = 1.5
+    pad = -2
+    loc1 = [0.12,1]
+    loc2 = [0.14,1]
+else:
+    tamfig = (12,7)
+    tamlegend = 20
+    tamletra = 20
+    tamtitle = 20
+    tamnum = 18
+    labelpady = 0
+    labelpadx = 2
+    lw = 3.5
+    pad = 0
+    loc1 = [0.02,0.99]
+    loc2 = [0.02,0.99]
 
 #%%
 
@@ -65,6 +85,7 @@ list_Ep = [0.3,0.6,0.9]
 
 #deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]]
 list_color = ['darkred','yellowgreen','steelblue','coral']
+symbols = ['-','-','--','-.']
 
 #%%
 
@@ -180,28 +201,28 @@ for Ep in list_Ep:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-        plt.plot(list_mu_opt,epsi1_imag_opt,'-',lw = 5,color = list_color[k])
+        plt.plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = lw,color = list_color[k],label = 'mode %i'%(k+1))
             
         k = k + 1
     
-    plt.ylabel(labely,fontsize=tamletra)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad=2)
-    plt.tick_params(labelsize = tamnum)
+    plt.ylabel(labely,fontsize=int(tamletra*1.3),labelpad = labelpady)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad=labelpadx)
+    plt.tick_params(labelsize = tamnum,pad = pad)
     
-    legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
-    patchList2 = []
-    for key in legend_mode2:
-            data_key = mpatches.Patch(color=legend_mode2[key], label=key)
-            patchList2.append(data_key)
+    # legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
+    # patchList2 = []
+    # for key in legend_mode2:
+    #         data_key = mpatches.Patch(color=legend_mode2[key], label=key)
+    #         patchList2.append(data_key)
             
-    plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    
+    # plt.legend(handles=patchList2,loc=loc1,ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
+    plt.legend(loc = loc1, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)    
     if save_graphs==1:
         os.chdir(path_load)
         plt.savefig('Im_epsi1_vs_muR_%.2f.png' %(R),format = 'png')
 
 
-    labely = '$\omega/c$'
+    labely = '$\omega/c$ $[\mu m]^{-1}$'
     
     plt.figure(figsize=tamfig)
     
@@ -212,22 +233,24 @@ for Ep in list_Ep:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-        plt.plot(list_mu_opt,omegac_opt,'-',lw = 5,color = list_color[k])
+        plt.plot(list_mu_opt,omegac_opt,symbols[k],lw = lw,color = list_color[k],label = 'mode %i'%(k+1))
             
         k = k + 1
     
-    plt.ylabel(labely,fontsize=tamletra)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad=2)
-    plt.tick_params(labelsize = tamnum)
     
-    legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
-    patchList2 = []
-    for key in legend_mode2:
-            data_key = mpatches.Patch(color=legend_mode2[key], label=key)
-            patchList2.append(data_key)
+    plt.ylabel(labely,fontsize=int(tamletra*1.1),labelpad = labelpady)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad=labelpadx)
+    plt.tick_params(labelsize = tamnum,pad = pad)
+    
+    # legend_mode2 = {'mode 1' : list_color[0], 'mode 2' : list_color[1],'mode 3' : list_color[2], 'mode 4' : list_color[3] }
+    # patchList2 = []
+    # for key in legend_mode2:
+    #         data_key = mpatches.Patch(color=legend_mode2[key], label=key)
+    #         patchList2.append(data_key)
             
-    plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    
+    # plt.legend(handles=patchList2,loc=loc2,ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
+    plt.legend(loc = loc2, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+   
     if save_graphs==1:
         os.chdir(path_load)
         plt.savefig('omegac_vs_muR_%.2f.png' %(R),format = 'png')
