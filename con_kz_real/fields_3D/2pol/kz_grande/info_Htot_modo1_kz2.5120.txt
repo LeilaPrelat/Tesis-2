@@ -1,0 +1,3 @@
+Ao = 1, Bo = 1, kz = 2.5120 1/$\mu$m, z = 0 $\mu$m, R = 0.5 $\mu$m, nmax = 10, $\mu_c$ = 0.3 eV
+$\epsilon_1$ = 3.9 - i8.2859e-01 y $\omega/c$ = 5.7181e+00 1/$\mu$m del modo = 1
+plot_Htot_3D.py
