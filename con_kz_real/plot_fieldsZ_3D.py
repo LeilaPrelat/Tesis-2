@@ -85,7 +85,7 @@ list_ind = [0,50,500,1000,5000,-1]
 
 z = 0
 nmax = 10
-Ao,Bo = 1,0
+Ao,Bo = 1,1
 
 #%%
 
@@ -133,7 +133,7 @@ for modo in list_modos:
         kz = list_kz_opt[ind] #micrones
         print('kz = ', kz)
         print('modo = ', modo)
-        print('')
+
         
         im_epsi1 = epsi1_imag_opt[ind]
         omegac = omegac_opt[ind] 
@@ -329,6 +329,8 @@ for modo in list_modos:
             plt.savefig(labelz2 + '_modo%i_kz%.4f' %(modo,kz), format='png') 
         
         del X,Y,Z1,Z2
+        
+        print('')        
         
         if paper == 1:
             np.savetxt('info_fieldsZ_modo%i_kz%.4f.txt' %(modo,kz), [title], fmt='%s')
