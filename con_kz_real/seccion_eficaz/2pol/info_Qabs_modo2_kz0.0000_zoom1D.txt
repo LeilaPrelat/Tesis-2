@@ -1,0 +1,1 @@
+kz = 0.0000 $\mu m^{-1}$, R = 0.5$\mu$m, nmax = 5, $\mu_c$ = 0.3 eV, Ao = 1, Bo = 1, $\epsilon_1$ = 3.9 - i2.71857e-02 y $\omega/c$ = 1.89642e-01 1/$\mu$m del modo = 2, plot_Qabs_conkz.py
