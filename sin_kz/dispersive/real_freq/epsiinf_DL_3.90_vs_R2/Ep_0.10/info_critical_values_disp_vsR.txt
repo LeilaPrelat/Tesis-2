@@ -1,0 +1,1 @@
+$\mu_c$ = 0.30 eV, $\epsilon_\infty$ = 3.90, Ep = 0.1, $\gamma_{DL}$ = 0.01. Ver crit_values_vs_Rchicos.py

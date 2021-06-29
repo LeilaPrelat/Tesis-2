@@ -72,7 +72,7 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 print('Definir parametros del problema')
 
-re_epsi1 = 4.9
+re_epsi1 = 3.9
 R = 0.5              #micrones
  
 path_load = path_basic + '/re_epsi1_%.2f_vs_mu' %(re_epsi1)
@@ -137,8 +137,9 @@ ticks = [ticks1,ticks2]
 for i in [0,1]:
     axs[i].minorticks_on()
     axs[i].tick_params(labelsize = tamnum,pad = pad)
-    axs[i].set_yticks(ticks[i])
-    axs[i].set_yticklabels(ticks[i])
+    if re_epsi1 == 4.9:
+        axs[i].set_yticks(ticks[i])
+        axs[i].set_yticklabels(ticks[i])
 
 axs[0].set_ylabel(labely,fontsize = tamletra,labelpad=labelpady) 
 axs[1].set_ylabel(labely,fontsize = tamletra,labelpad=labelpady) 

@@ -20,14 +20,14 @@ import matplotlib.pyplot as plt
 #%%
 
 save_graphs = 1 #guardar los graficos 
-graph_2D = 0    #graficos 2D
+graph_2D = 1    #graficos 2D
+zoom = 0
 
-
-graph_1D = 1    #graficos 1D
-paper = 0    # sacar el titulo y guardar la data en un .txt
+graph_1D = 0    #graficos 1D
+paper = 1    # sacar el titulo y guardar la data en un .txt
 
 list_cross_section = ['Qscat', 'Qabs', 'Qext'] 
-cross_section = list_cross_section[2]
+cross_section = list_cross_section[0]
 
 #%% 
 
@@ -76,26 +76,15 @@ else:
 
     try:
         sys.path.insert(1, path_basic)
-        from cross_sections_conkz import Qscat
+        from cross_sections_conkz import Qext
     except ModuleNotFoundError:
         print(err)
         path_basic = input(err2)
         sys.path.insert(1, path_basic)
-        from cross_sections_conkz import Qscat    
-
-    try:
-        sys.path.insert(1, path_basic)
-        from cross_sections_conkz import Qabs
-    except ModuleNotFoundError:
-        print(err)
-        path_basic = input(err2)
-        sys.path.insert(1, path_basic)
-        from cross_sections_conkz import Qabs
+        from cross_sections_conkz import Qext
         
     def Cross_Section(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo):
-        Qabss = Qabs(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo)
-        Qscatt = Qscat(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo) 
-        return Qabss + Qscatt
+        return Qext(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo)
 
 #%%   
 
@@ -106,11 +95,10 @@ re_epsi1 = 3.9
 R = 0.5 #micrones
 hbaramu = 0.3        #eV mu_c
 modo = 1
-Ao,Bo = 1,1
+Ao,Bo = 1,0
 
 nmax = 5
-ind = -1
-zoom = 0
+ind = 0
 
 #%%
 
@@ -207,8 +195,8 @@ if graph_1D==1:
     list_im_epsi1_fino = [0,crit+3*tol,crit+2*tol,crit+tol,crit,crit-tol,crit-2*tol]
     list_im_epsi1_grueso = [0,-crit,0.5,-0.001,-0.01,crit,-0.5]
     
-    N = int(1e3)               
-    omegac1,omegac2 = omegac0*0.97,omegac0*1.03
+    N = int(5*1e3)               
+    omegac1,omegac2 = omegac0*0.98,omegac0*1.02
     # lambda1,lambda2 = lambbda_real*0.999998,lambbda_real*1.000002
     list_omegac = np.linspace(omegac1,omegac2,N)
     
@@ -281,7 +269,7 @@ if graph_1D==1:
         plt.title(title,fontsize=int(tamtitle*0.9))
      
     for j in range(len(list_Qabs_tot2)):
-        list_Qabs2 = np.abs(list_Qabs_tot1[j])
+        list_Qabs2 = np.abs(list_Qabs_tot2[j])
         im_epsi1 = list_im_epsi1_grueso[j]
             
         if im_epsi1 == crit:
@@ -320,27 +308,24 @@ if graph_2D==1:
     def Qscat2D(Omegac,Im_epsi1): 
         Epsi1 = re_epsi1 + 1j*Im_epsi1
         Qscatt = Cross_Section(kz,Omegac,Epsi1,nmax,R,hbaramu,Ao,Bo)
-        return Qscatt
+        return np.log10(Qscatt)
        
     N = 400
     
     if zoom==1:
         tol = 1e-4
     else:
-        tol1 = 1e-3
-        tol2 = 1e-2
+        tol1 = 5*1e-5
+        tol2 = 3*1e-3
     
     # omegac12,omegac22 = omegac0*(1-tol),omegac0*(1+tol)
     # list_omegac = np.linspace(omegac12,omegac22,N)
     # delta = (omegac22-omegac12)*0.5
     # list_im_epsi1 = np.linspace(crit-delta,crit+delta,N)
-
-
     crit1, crit2 = crit*(1+tol2),crit*(1- tol2)
-    list_im_epsi1 = np.linspace(crit1,crit2,N)
-        
-    # list_im_epsi1 = np.linspace(crit - 5*tol2,crit + 5*tol2,N)
-    list_omegac = np.linspace(omegac0 - 5*tol1,omegac0 + 5*tol1,N)    
+
+    list_im_epsi1 = np.linspace(crit - tol2,crit + tol2,N)
+    list_omegac = np.linspace(omegac0 - tol2,omegac0 + tol2,N)    
 
     x = list_omegac
     y = list_im_epsi1
@@ -361,23 +346,24 @@ if graph_2D==1:
     maxlog=int(np.ceil( np.log10( np.abs(vmax) )))
     minlog=int(np.ceil( np.log10( np.abs(vmin) )))
     
-    if vmin < 0 :
-        tick_locations = ( [-(10.0**x) for x in np.linspace(minlog,-1,minlog+2)] 
-                          + [0] 
-                          + [(10.0**x) for x in np.linspace(-1,maxlog,maxlog+minlog+3)] )
-    else:
-        tick_locations = ( [(10.0**x) for x in np.linspace(minlog,maxlog,maxlog + np.abs(minlog) + 1) ])    
+    # if vmin < 0 :
+    #     tick_locations = ( [-(10.0**x) for x in np.linspace(minlog,-1,minlog+2)] 
+    #                       + [0] 
+    #                       + [(10.0**x) for x in np.linspace(-1,maxlog,maxlog+minlog+3)] )
+    # else:
+    #     tick_locations = ( [(10.0**x) for x in np.linspace(minlog,maxlog,maxlog + np.abs(minlog) + 1) ])    
         
-    pcm = plt.pcolormesh(X, Y, Z,
-                        norm=colors.SymLogNorm(linthresh=0.03, linscale=0.03,
-                                            vmin=-1.0, vmax=1.0),cmap='RdBu_r')
+    # pcm = plt.pcolormesh(X, Y, Z,
+    #                     norm=colors.SymLogNorm(linthresh=0.03, linscale=0.03,
+    #                                         vmin=-1.0, vmax=1.0),cmap='RdBu_r')
     
     plt.plot(x,np.ones(N)*crit,'--',color = 'green')
     plt.plot(np.ones(N)*omegac0,y,'--',color = 'green')
-    cbar = plt.colorbar(pcm, extend='both')
-    cbar.set_ticks(tick_locations)
-    cbar.ax.tick_params(labelsize = tamnum)
-    cbar.set_label('Qabs',fontsize=tamlegend)
+    
+    im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+    cbar = plt.colorbar(im)
+    cbar.ax.tick_params(labelsize=tamnum)
+    cbar.set_label('log ' + name,fontsize=tamlegend)
     #plt.legend(loc='best',markerscale=2,fontsize=tamlegend)
     if save_graphs==1:
         os.chdir(path_g)
