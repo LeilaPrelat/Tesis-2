@@ -58,6 +58,15 @@ path_graphene = path_basic.replace('/sin_kz/non-dispersive/real_freq','')
 
 
 try:
+    sys.path.insert(1, path_basic)
+    from QE_lossless import im_epsi1_cuasi,omegac_cuasi
+except ModuleNotFoundError:
+    print('QE_lossless.py no se encuentra en ' + path_basic)
+    path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
+    sys.path.insert(1, path_basic)
+    from QE_lossless import im_epsi1_cuasi,omegac_cuasi
+
+try:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
 except ModuleNotFoundError:
@@ -94,13 +103,6 @@ if R != 0.5:
 
 #%%
 
-
-# colors = sns.set_palette("RdBu_r")
-
-# current_palette = sns.color_palette("RdBu_r", 4)
-# list_color = current_palette
-
-# sns.palplot(current_palette)
 sns.set()
 
 hspace = 0.1
@@ -172,6 +174,37 @@ if save_graphs==1:
     
 #%% 
 
+labely = '[Im($\epsilon_1$)]$_c$ QE'
+plt.figure(figsize=tamfig)
+k = 0
+for modo in [1,2,3,4]:
+    im_epsi1_QE = []
+    omegac_QE = []
+    for mu in list_mu_opt:
+        a = omegac_cuasi(modo,R,re_epsi1,mu)
+        b = im_epsi1_cuasi(a,modo,R,mu) 
+        im_epsi1_QE.append(b)
+        omegac_QE.append(a)
+        
+    line1, = plt.plot(list_mu_opt,im_epsi1_QE,symbols[k],lw = lw,color = colors[k],label = 'mode %i'%(k+1))
+    if k == 0:
+        line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
+        
+    k = k + 1
+
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad=labelpadx)
+    plt.tick_params(labelsize = tamnum,pad = pad)
+            
+    #plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
+    plt.legend(loc = loc2, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+    
+    if save_graphs==1:
+        os.chdir(path_load)
+        plt.savefig('Im_epsi1_vs_muQE')    
+
+#%%
+
 labely = '$\omega/c$ $[\mu m]^{-1}$'
 
 plt.figure(figsize=tamfig)
@@ -201,4 +234,33 @@ if save_graphs==1:
     plt.savefig('omegac_vs_mu')
     
 #%%
- 
+
+plt.figure(figsize=tamfig)
+k = 0
+for modo in [1,2,3,4]:
+    im_epsi1_QE = []
+    omegac_QE = []
+    for mu in list_mu_opt:
+        a = omegac_cuasi(modo,R,re_epsi1,mu)
+        b = im_epsi1_cuasi(a,modo,R,mu) 
+        im_epsi1_QE.append(b)
+        omegac_QE.append(a)
+        
+    line1, = plt.plot(list_mu_opt,omegac_QE,symbols[k],lw = lw,color = colors[k],label = 'mode %i'%(k+1))
+    if k == 0:
+        line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
+        
+    k = k + 1
+
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad=labelpadx)
+    plt.tick_params(labelsize = tamnum,pad = pad)
+            
+    #plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
+    plt.legend(loc = loc2, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+    
+    if save_graphs==1:
+        os.chdir(path_load)
+        plt.savefig('omegac_vs_muQE')    
+
+#%%
