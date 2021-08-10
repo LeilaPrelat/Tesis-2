@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 
 save_graphs = 1 #guardar los graficos 
 graph_2D = 1    #graficos 2D
-zoom = 1        #graficos 2D con o sin zoom
+zoom = 1       #graficos 2D con o sin zoom
 graph_1D = 0    #graficos 1D
 
 if graph_2D == 1:
@@ -319,8 +319,8 @@ if graph_2D==1:
         
     plt.figure(figsize=tamfig)
     limits = [np.min(x) , np.max(x), np.min(y) , np.max(y)]
-    plt.ylabel(labely2,fontsize=tamletra,labelpad =labelpady)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+    plt.ylabel(labely2,fontsize=int(1.4*tamletra),labelpad = labelpady)
+    plt.xlabel(labelx,fontsize=int(1.2*tamletra),labelpad =labelpadx)
     plt.tick_params(labelsize = tamnum, pad = pad)
     if paper == 0:
         plt.title(title,fontsize=int(tamtitle*0.9))
@@ -329,7 +329,7 @@ if graph_2D==1:
     vmin,vmax = np.min(Z), np.max(Z)
     maxlog=int(np.ceil( np.log10( np.abs(vmax) )))
     minlog=int(np.ceil( np.log10( np.abs(vmin) )))
-    
+    arrayy = np.linspace(minlog,maxlog,maxlog - int(np.sign(vmin)*minlog) + 1) 
     
     # if np.abs(maxlog-minlog)>3:
     
@@ -339,8 +339,9 @@ if graph_2D==1:
                           + [(10.0**x) for x in np.linspace(-1,maxlog,maxlog+2)] )
     
     else:
-        tick_locations = ( [(10.0**x) for x in np.linspace(minlog,maxlog,maxlog + np.abs(minlog) + 1) ])    
+        tick_locations = ( [(10.0**x) for x in arrayy ])    
     
+#    tick_locations = ( [(10.0**x) for x in arrayy ])    
     pcm = plt.pcolormesh(X, Y, Z,
                         norm = SymLogNorm(linthresh=0.03, linscale=0.03,
                                             vmin=int(vmin), vmax=int(vmax)),cmap='RdBu_r')
@@ -353,7 +354,7 @@ if graph_2D==1:
 #    im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     
     cbar = plt.colorbar(pcm, extend='both')
-    cbar.set_ticks(tick_locations)
+    cbar.set_ticks(np.sort(tick_locations))
     cbar.ax.tick_params(labelsize = tamnum)
 
     if save_graphs==1:
