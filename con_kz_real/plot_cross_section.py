@@ -21,10 +21,11 @@ import matplotlib.pyplot as plt
 
 save_graphs = 1 #guardar los graficos 
 graph_2D = 1    #graficos 2D
-zoom = 0
-
+zoom = 0        #graficos 2D con o sin zoom
 graph_1D = 0    #graficos 1D
-paper = 1    # sacar el titulo y guardar la data en un .txt
+
+if graph_2D == 1:
+    paper = 1
 
 list_cross_section = ['Qscat', 'Qabs', 'Qext'] 
 cross_section = list_cross_section[0]
@@ -162,6 +163,8 @@ elif Ao == 0:
     path_g = path_g + '/' + 'polBo'
     
 #%%
+
+del list_kz_opt,omegac_opt,epsi1_imag_opt,eq_det
 
 info1 = 'kz = %.4f $\mu m^{-1}$, R = %.1f$\mu$m, nmax = %i, $\mu_c$ = %.1f eV' %(kz,R,nmax,hbaramu) +infAoBo 
 info2 = '$\epsilon_1$ = %.1f - i%.5e y $\omega/c$ = %.5e 1/$\mu$m del modo = %i' %(re_epsi1,-crit,omegac0,modo)
