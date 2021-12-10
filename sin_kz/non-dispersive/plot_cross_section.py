@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 
 save_graphs = 1 #guardar los graficos 
 graph_2D = 1    #graficos 2D
-zoom = 1        #graficos 2D con o sin zoom
+zoom = 0       #graficos 2D con o sin zoom
 graph_1D = 0    #graficos 1D
 
 if graph_2D == 1:
@@ -56,7 +56,7 @@ if save_graphs==1:
         os.mkdir(path_g)
 
 #print('Importar modulos necesarios para este codigo')
-err = 'cross_sections_conkz.py no se encuentra en el path_basic definido/carpeta de trabajo'
+err = 'cross_sections_conkz.py no se encuentra en' + path_basic
 err2 = 'path de la carpeta donde se encuentra cross_sections_conkz.py'
 if cross_section == 'Qscat':
     try:
@@ -103,14 +103,15 @@ else:
 #print('Definir parametros para graficos')
 
 if paper == 1: 
-    tamfig = (3.5,3.5)
-    tamlegend = 7
-    tamletra = 6
-    tamtitle = 6
-    tamnum = 6
+    tamfig = (4.5,3.5)
+    tamlegend = 10
+    tamletra = 11
+    tamtitle = 10
+    tamnum = 9
     labelpady = -2.5
-    labelpadx = 0.7
-    pad = 0.25
+    labelpadx = -0.5
+    pad = 0
+    lw = 1
 else:
     tamfig = (10,8)
     tamlegend = 18
@@ -120,6 +121,7 @@ else:
     labelpady = 0
     labelpadx = 0
     pad = 0 
+    lw = 1
 
 #%%
 
@@ -162,7 +164,16 @@ name = cross_section
 inf_fig = '_modo%i_mu%.4f.png' %(modo,hbaramu)
 if zoom == 1: 
     inf_fig = '_modo%i_mu%.4f_zoom.png' %(modo,hbaramu)
-    
+
+def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad):
+    plt.figure(figsize=tamfig)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+    plt.tick_params(labelsize = tamnum, pad = pad)
+    if paper == 0:
+        plt.title(title,fontsize=int(tamtitle*0.9))
+    return 
+
 #%%
     
 if re_epsi1 != 3.9:
@@ -182,7 +193,7 @@ if graph_1D==1:
     list_im_epsi1_grueso = [0,-crit,0.5,-0.001,-0.01,crit,-0.5]
     
     N = int(5*1e3)               
-    omegac1,omegac2 = omegac0*0.98,omegac0*1.02
+    omegac1,omegac2 = omegac0*0.98, omegac0*1.02
     # lambda1,lambda2 = lambbda_real*0.999998,lambbda_real*1.000002
     list_omegac = np.linspace(omegac1,omegac2,N)
     
@@ -215,10 +226,7 @@ if graph_1D==1:
     colores = ['coral','yellowgreen','midnightblue','green','darkred','aquamarine','hotpink','steelblue','purple']    
     print('Graficar ' + name  + ' para diferentes Im(epsi1)')
     
-    plt.figure(figsize=tamfig)
-    if paper == 0:
-        plt.title(title,fontsize=int(tamtitle*0.9))
-    
+    graph(title,labelx,labely1,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
     for j in range(len(list_Qabs_tot1)):
         list_Qabs2 = np.abs(list_Qabs_tot1[j])
         im_epsi1 = list_im_epsi1_fino[j]
@@ -237,9 +245,6 @@ if graph_1D==1:
     mini,maxi = np.min(list_Qabs_tot1),np.max(list_Qabs_tot1)
     eje_Lambda2 = np.linspace(mini,maxi,n)
     plt.plot(omegac0*np.ones(n),eje_Lambda2,'-k',lw = 1,label = labelomegac)
-    plt.ylabel(labely1,fontsize=tamletra,labelpad =labelpady)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-    plt.tick_params(labelsize = tamnum, pad = pad)
     plt.yscale('log')
     plt.legend(loc='best',markerscale=2,fontsize=int(tamlegend*0.7))
     
@@ -250,10 +255,7 @@ if graph_1D==1:
         if paper == 0:
             np.savetxt('info_' + name + '_modo%i_mu%.4f_zoom1D.txt' %(modo,hbaramu), [inf_tot],fmt='%s')
     
-    plt.figure(figsize=tamfig)
-    if paper == 0:
-        plt.title(title,fontsize=int(tamtitle*0.9))
-     
+    graph(title,labelx,labely1,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
     for j in range(len(list_Qabs_tot2)):
         list_Qabs2 = np.abs(list_Qabs_tot2[j])
         im_epsi1 = list_im_epsi1_grueso[j]
@@ -273,14 +275,10 @@ if graph_1D==1:
     mini,maxi = np.min(list_Qabs_tot2),np.max(list_Qabs_tot2)
     eje_Lambda2 = np.linspace(mini,maxi,n)
     plt.plot(omegac0*np.ones(n),eje_Lambda2,'-k',lw = 1,label = labelomegac)
-    plt.ylabel(labely1,fontsize=tamletra,labelpad =labelpady)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-    plt.tick_params(labelsize = tamnum, pad = pad)
     plt.yscale('log')
     plt.legend(loc='best',markerscale=2,fontsize=int(tamlegend*0.7))
     if save_graphs==1:
         os.chdir(path_g)
-        # plt.tight_layout(1)
         plt.savefig(name + '_grueso' + inf_fig, format='png') 
 
 #%%
@@ -318,13 +316,10 @@ if graph_2D==1:
     f = np.vectorize(Qscat2D)
     Z = f(X, Y)
         
-    plt.figure(figsize=tamfig)
+    
     limits = [np.min(x) , np.max(x), np.min(y) , np.max(y)]
-    plt.ylabel(labely2,fontsize=tamletra,labelpad =labelpady)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-    plt.tick_params(labelsize = tamnum, pad = pad)
-    if paper == 0:
-        plt.title(title,fontsize=int(tamtitle*0.9))
+    graph(title,labelx,labely2,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
+
     # im = plt.imshow(Z, extent = limits,  cmap='RdBu', interpolation='bilinear')
     
     vmin,vmax = np.min(Z), np.max(Z)
@@ -348,8 +343,8 @@ if graph_2D==1:
     # else:
     #     pcm = plt.pcolormesh(X, Y, Z,cmap='RdBu_r')
     
-    plt.plot(x,np.ones(N)*crit,'--',lw = 0.5,color = 'green')
-    plt.plot(np.ones(N)*omegac0,y,'--',lw = 0.5,color = 'green')
+    plt.plot(x,np.ones(N)*crit,'--',lw = lw,color = 'green')
+    plt.plot(np.ones(N)*omegac0,y,'--',lw = lw,color = 'green')
     
 #    im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     
@@ -359,6 +354,8 @@ if graph_2D==1:
 
     if save_graphs==1:
         os.chdir(path_g + '/2D')
+        if paper == 1:
+            plt.tight_layout()
         plt.savefig(name + '2D' + inf_fig, format='png') 
         if paper == 1:
             np.savetxt('info_' + name + '_modo%i_mu%.4f_zoom2D.txt' %(modo,hbaramu), [inf_tot],fmt='%s')

@@ -32,6 +32,7 @@ name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
 path_basic2 = path_basic.replace('/' + 'real_freq','')
+path_graphene = path_basic2.replace('/sin_kz/non-dispersive','') 
 
 try:
     sys.path.insert(1, path_basic2)
@@ -51,6 +52,17 @@ except ModuleNotFoundError:
     path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
     sys.path.insert(1, path_basic)
     from QE_lossless import im_epsi1_cuasi,omegac_cuasi
+
+try:
+    sys.path.insert(1, path_graphene)
+    from constantes import constantes
+except ModuleNotFoundError:
+    print('constantes.py no se encuentra en '+path_graphene)
+    path_graphene3 = input('path de la carpeta donde se encuentra constantes.py')
+    sys.path.insert(1, path_graphene3)
+    from constantes import constantes 
+
+pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 
@@ -159,12 +171,14 @@ labelx = '$\mu_c$ [eV]'
 
 im_epsi1_QE = []
 omegac_QE = []
+energy_QE = []
 for mu in list_mu:
     a = omegac_cuasi(modo,R,re_epsi1,mu)
     b = im_epsi1_cuasi(a,modo,R,mu) 
     im_epsi1_QE.append(b)
     omegac_QE.append(a)
-
+    energy_QE.append(a*c*hb)
+    
 plt.figure(figsize=tamfig)
 plt.plot(list_mu,im_epsi1_QE,'.m',ms=10,label=label_QE)
 plt.plot(list_mu_opt,epsi1_imag_opt,'.-r',ms=10,label=label_graph)
@@ -189,6 +203,20 @@ plt.legend(loc='best',markerscale=2,fontsize=tamlegend)
 plt.grid(1)
 if save_graphs==1:
     plt.savefig('Omegac_vs_mu_%i'%(modo))
+
+plt.figure(figsize=tamfig)
+plt.plot(list_mu,energy_QE,'.m',ms=10,label=label_QE)
+plt.plot(list_mu_opt,np.array(omegac_opt)*c*hb,'.-r',ms=10,label=label_graph)
+plt.title(title,fontsize=tamtitle)
+plt.ylabel(r'Energy [eV]',fontsize=tamletra)
+plt.xlabel(labelx,fontsize=tamletra)
+plt.tick_params(labelsize = tamnum)
+plt.legend(loc='best',markerscale=2,fontsize=tamlegend)
+plt.grid(1)
+if save_graphs==1:
+    plt.savefig('Energy_vs_mu_%i'%(modo))
+
+
     
 plt.figure(figsize=tamfig)
 plt.plot(list_mu_opt,eq_det,'.-r',ms=10,label=label_graph)

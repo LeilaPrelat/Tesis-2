@@ -40,7 +40,7 @@ except ModuleNotFoundError:
     sys.path.insert(1, path_graphene3)
     from constantes import constantes
 
-pi,hb,c,alfac,mu1,mu2,epsi2 = constantes()
+pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 
@@ -130,7 +130,7 @@ def determinante(kz_var,omegac,epsi1,mode,R,mu_c):
     
     [J,derJ,H,derH] = Bessel(mode)   
     
-    cond = sigma(E,mu_c)[0]
+    cond = sigma(E,mu_c,hbargama)[0]
     cond3 = cond*alfac*4*pi  #sigma devuelve la conductividad teniendo que multiplicar por alfac*c ---> no hay que dividir por c
     
     #INTERCAMBIAR LA COLUMNA 2 Y 3 Y LUEGO FILAS 2 CON 4

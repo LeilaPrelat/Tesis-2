@@ -17,23 +17,44 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set()
 
-#%% 
-
 save_graphs = 1 #guardar los graficos
 break_axes = 1
+paper = 1
 
-tamfig = (12,9)
-tamlegend = 16
-tamletra = 16
-tamtitle = 16
-tamnum = 14
+#%% 
+
+if paper == 1: 
+    tamfig = (4.5,5)
+    tamlegend = 7.5
+    tamletra = 8
+    tamtitle = 6
+    tamnum = 6
+    labelpady = -2.5
+    labelpadx = 2.5
+    lw = 1.5
+    padx = 1
+    pady = 0
+    loc1 = [0.22,0.88]
+    loc2 = [0.14,1]
+else:
+    tamfig = (11,7)
+    tamlegend = 18
+    tamletra = 20
+    tamtitle = 20
+    tamnum = 16
+    labelpady = 0
+    labelpadx = 2
+    lw = 3.5
+    pad = 0
+    loc1 = [0.15,0.88]
+    loc2 = [0.025,1]
 
 #%%
 
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_graphene = path_basic.replace('/sin_kz/dispersive','') 
+path_graphene = path_basic.replace('/sin_kz/dispersive/complex_freq','') 
 
 try:
     sys.path.insert(1, path_graphene)
@@ -50,10 +71,10 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 print('Definir parametros del problema')
 
-R = 0.4              #micrones
-modo = 1
+R = 0.05              #micrones
+modo = 4
 
-Ep = 0.9
+Ep = 0.6
 epsiinf_DL = 3.9
 gamma_DL = 0.01 #unidades de energia
 
@@ -163,14 +184,14 @@ for mu in list_mu:
 #    list_im_epsi1.append(epsi1_imag_opt[ind3])
     label_graph_im_eps1_3 = '$\epsilon_{ci}$ = %.7f' %(epsi1_imag_opt[ind3])
     
-    ax[i].plot(omega_c_real,omega_c_imag,'-',lw = 5,color = list_color[i],label = '$\mu_c$ = %.1f' %(mu))
+    ax[i].plot(omega_c_real,omega_c_imag,'-',lw = lw,color = list_color[i],label = '$\mu_c$ = %.1f' %(mu))
     #ax[i].plot(omega_c_real[ind3],omega_c_imag[ind3],'.', color = 'darkred',ms=10) 
     #label = label_graph_im_eps1_3
     #ax[i].set_xscale('log')
     i = i + 1
 
-ax[0].set_ylabel('Im($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad=5)
-ax[1].set_xlabel('Re($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamtitle,labelpad=17)
+ax[0].set_ylabel('Im($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad=labelpady)
+ax[1].set_xlabel('Re($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad=labelpadx)
 
 if R == 0.05:
 
@@ -195,14 +216,14 @@ if R == 0.05:
     ticks_mod3 = [ticks1_mod3,ticks2_mod3,ticks3_mod3]
     ticks_mod4 = [ticks1_mod4,ticks2_mod4,ticks3_mod4]
 
-ax[0].tick_params(axis='y',left=True, right=False,labelsize=tamnum)
-ax[0].tick_params(axis='x',bottom=True, top=False,labelsize=tamnum)
+ax[0].tick_params(axis='y',left=True, right=False,pad = pady,labelsize=tamnum)
+ax[0].tick_params(axis='x',bottom=True, top=False,pad = padx,labelsize=tamnum)
 
 ax[1].tick_params(axis='y', right=False, left = False)
-ax[1].tick_params(axis='x', bottom=True, top=False,labelsize=tamnum)
+ax[1].tick_params(axis='x', bottom=True, top=False,pad = padx,labelsize=tamnum)
 
 ax[2].tick_params(axis='y', right=False, left = False)
-ax[2].tick_params(axis='x', bottom=True, top=False,labelsize=tamnum)
+ax[2].tick_params(axis='x', bottom=True, top=False,pad = padx,labelsize=tamnum)
 
 
 if break_axes==1:
@@ -244,20 +265,20 @@ if break_axes==1:
 
 for i in [0,1,2]:
 
-    # if modo==1:
-    #     ticks = ticks_mod1[i]
-    # elif modo==2:
-    #     ticks = ticks_mod2[i]
-    # elif modo==3:
-    #     ticks = ticks_mod3[i]     
-    # elif modo==4:
-    #     ticks = ticks_mod4[i]
+    if modo==1:
+        ticks = ticks_mod1[i]
+    elif modo==2:
+        ticks = ticks_mod2[i]
+    elif modo==3:
+        ticks = ticks_mod3[i]     
+    elif modo==4:
+        ticks = ticks_mod4[i]
     
-    # if R == 0.05:
-    #     ax[i].set_xticks(ticks)
-    #     ax[i].set_xticklabels(ticks)
+    if R == 0.05:
+        ax[i].set_xticks(ticks)
+        ax[i].set_xticklabels(ticks)
     
-    ax[i].legend(loc=[0.25,1],markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+    ax[i].legend(loc=[0.2,1],markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
 
 if save_graphs==1:
     #plt.tight_layout(pad=wspace)

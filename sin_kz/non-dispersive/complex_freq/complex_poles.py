@@ -17,29 +17,50 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set()
 
-#%% 
-
 save_graphs = 1 #guardar los graficos
 break_axes = 1
+paper = 1
 
-tamfig = (12,9)
-tamlegend = 16
-tamletra = 16
-tamtitle = 16
-tamnum = 14
+#%% 
 
+if paper == 1: 
+    tamfig = (5,5)
+    tamlegend = 9
+    tamletra = 9
+    tamtitle = 9
+    tamnum = 7
+    labelpady = -3
+    labelpadx = 3
+    lw = 1.5
+    padx = 1
+    pady = 0
+    loc1 = [0,0.88]
+    loc2 = [0.17,1]
+else:
+    tamfig = (11,7)
+    tamlegend = 18
+    tamletra = 20
+    tamtitle = 20
+    tamnum = 16
+    labelpady = 0
+    labelpadx = 2
+    lw = 3.5
+    pad = 0
+    loc1 = [0.15,0.88]
+    loc2 = [0.025,1]
+    
 #%%
 
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_graphene = path_basic.replace('/sin_kz/non-dispersive','') 
+path_graphene = path_basic.replace('/sin_kz/non-dispersive/complex_freq','') 
 
 try:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
 except ModuleNotFoundError:
-    print('constantes.py no se encuentra en el path_basic definido/carpeta de trabajo')
+    print('constantes.py no se encuentra en '+path_graphene)
     path_graphene3 = input('path de la carpeta donde se encuentra constantes.py')
     sys.path.insert(1, path_graphene3)
     from constantes import constantes 
@@ -50,9 +71,9 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 print('Definir parametros del problema')
 
-modo = 4
+modo = 2
 R = 0.5 #micrones
-re_epsi1 = 4.9
+re_epsi1 = 3.9
 
 list_mu = [0.3,0.5,0.7]
 
@@ -125,12 +146,13 @@ list_color = ['purple','darkblue','darkgreen']
 
 
 #fig,ax = plt.subplots(1,len(list_mu), sharey=True, gridspec_kw={'hspace': 1, 'wspace': 0.01}, figsize = (12,14))
-wspace = 0.0005
-if break_axes==1:
-    wspace = 0.05
+wspace = 0.05
+hspace = 0.2
+# if break_axes==1:
+#     wspace = 0.1
 
 fig,ax = plt.subplots(1,len(list_mu), sharey=True, facecolor='w', figsize = tamfig)
-plt.subplots_adjust(hspace = 0.001,wspace=wspace)
+plt.subplots_adjust(hspace = hspace,wspace=wspace)
 
 
 
@@ -162,45 +184,60 @@ for mu in list_mu:
 #    list_im_epsi1.append(epsi1_imag_opt[ind3])
     label_graph_im_eps1_3 = 'Im($\epsilon_1)_c$ = %.7f' %(epsi1_imag_opt[ind3])
     
-    ax[i].plot(omega_c_real,omega_c_imag,'-',lw = 5,color = list_color[i],label = '$\mu_c$ = %.1f' %(mu))
+    ax[i].plot(omega_c_real,omega_c_imag,'-',lw = lw,color = list_color[i],label = '$\mu_c$ = %.1f' %(mu))
+    maxi,mini = np.max(omega_c_real),np.min(omega_c_real)
+    delta = maxi - mini
+    print(np.round(mini + delta/4,7),np.round(mini + 3*delta/4,7))
+    
     #ax[i].plot(omega_c_real[ind3],omega_c_imag[ind3],'.', color = 'darkred',ms=10) 
     #label = label_graph_im_eps1_3
     #ax[i].set_xscale('log')
     i = i + 1
 
-ax[0].set_ylabel('Im($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad=5)
-ax[1].set_xlabel('Re($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamtitle,labelpad=17)
+ax[0].set_ylabel('Im($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad =labelpady)
+ax[1].set_xlabel('Re($\omega/c$) [$\mu$m]$^{-1}$',fontsize = tamletra,labelpad =labelpadx)
 
+    
+if re_epsi1 == 4.9:
+    ticks1_mod1 = [0.1221677,0.1221681]
+    ticks2_mod1 = [0.1574907,0.157491]
+    ticks3_mod1 = [0.1860559,0.1860565]
+    
+    ticks1_mod2 = [0.1728754,0.1728758]
+    ticks2_mod2 = [0.2231034,0.2231037]
+    ticks3_mod2 = [0.2637985,0.2637987]
+    
+    ticks1_mod3 = [0.2116442,0.2116446]
+    ticks2_mod3 = [0.2732946,0.2732949]
+    ticks3_mod3 = [0.3232751,0.3232753]
+    
+    ticks1_mod4 = [0.244244,0.2442445]
+    ticks2_mod4 = [0.3155353,0.3155356]
+    ticks3_mod4 = [0.3733461,0.3733463]
 
-ticks1_mod1 = [0.1221677,0.1221681]
-ticks2_mod1 = [0.1574907,0.157491]
-ticks3_mod1 = [0.1860559,0.1860565]
-
-ticks1_mod2 = [0.1728754,0.1728758]
-ticks2_mod2 = [0.2231034,0.2231037]
-ticks3_mod2 = [0.2637985,0.2637987]
-
-ticks1_mod3 = [0.2116442,0.2116446]
-ticks2_mod3 = [0.2732946,0.2732949]
-ticks3_mod3 = [0.3232751,0.3232753]
-
-ticks1_mod4 = [0.244244,0.2442445]
-ticks2_mod4 = [0.3155353,0.3155356]
-ticks3_mod4 = [0.3733461,0.3733463]
+    ticks_mod2 = [ticks1_mod2,ticks2_mod2,ticks3_mod2]
+    ticks_mod3 = [ticks1_mod3,ticks2_mod3,ticks3_mod3]
+    ticks_mod4 = [ticks1_mod4,ticks2_mod4,ticks3_mod4]
+    
+elif re_epsi1 == 3.9 and modo == 1:
+    # ticks1_mod1 = [0.13400535,0.1340059]
+    # ticks2_mod1 = [0.1727476,0.1727488]
+    # ticks3_mod1 = [0.20407335,0.2040764]    
+    ticks1_mod1 = [0.1340055,0.1340059]
+    ticks2_mod1 = [0.1727478,0.1727486]
+    ticks3_mod1 = [0.2040741,0.2040757]  
 
 ticks_mod1 = [ticks1_mod1,ticks2_mod1,ticks3_mod1]
-ticks_mod2 = [ticks1_mod2,ticks2_mod2,ticks3_mod2]
-ticks_mod3 = [ticks1_mod3,ticks2_mod3,ticks3_mod3]
-ticks_mod4 = [ticks1_mod4,ticks2_mod4,ticks3_mod4]
 
-ax[0].tick_params(axis='y',left=True, right=False,labelsize=tamnum)
-ax[0].tick_params(axis='x',bottom=True, top=False,labelsize=tamnum)
+
+ax[0].tick_params(axis='y',left=True, right=False,pad = pady,labelsize=tamnum)
+ax[0].tick_params(axis='x',bottom=True, top=False,pad = padx,labelsize=tamnum)
 
 ax[1].tick_params(axis='y', right=False, left = False)
-ax[1].tick_params(axis='x', bottom=True, top=False,labelsize=tamnum)
+ax[1].tick_params(axis='x', bottom=True, top=False,pad = padx,labelsize=tamnum)
 
 ax[2].tick_params(axis='y', right=False, left = False)
-ax[2].tick_params(axis='x', bottom=True, top=False,labelsize=tamnum)
+ax[2].tick_params(axis='x', bottom=True, top=False,pad = padx,labelsize=tamnum)
 
 
 if break_axes==1:
@@ -251,15 +288,19 @@ for i in [0,1,2]:
         ticks = ticks_mod3[i]     
     elif modo==4:
         ticks = ticks_mod4[i]
-        
-    if re_epsi1 == 4.9:
+    
+    
+    try:
         ax[i].set_xticks(ticks)
         ax[i].set_xticklabels(ticks)
+        # ax[i].set_xlim(ticks_mod1[i])
+    except NameError:
+        continue
     
-    ax[i].legend(loc=[0.25,1],markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+    ax[i].legend(loc=loc2,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
 
 if save_graphs==1:
-    #plt.tight_layout(pad=wspace)
+    plt.tight_layout(pad = hspace)
     os.chdir(path_g)
     plt.savefig('complex_poles%i'%(modo))
 

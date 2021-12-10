@@ -55,7 +55,7 @@ tamnum = 16
 
 print('Definir parametros del problema')
 
-re_epsi1 = 4.9
+re_epsi1 = 3.9
 R = 0.5              #micrones
 modo = 4
 

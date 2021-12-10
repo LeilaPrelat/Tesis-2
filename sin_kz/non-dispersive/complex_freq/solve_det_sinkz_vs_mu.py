@@ -57,7 +57,7 @@ tamnum = 16
 
 print('Definir parametros del problema')
 
-re_epsi1 = 4.9
+re_epsi1 = 3.9
 R = 0.5              #micrones
 modo = 4
 
@@ -67,6 +67,7 @@ else:
     list_im_epsi1 = np.linspace(0,-0.04,401) 
 
 list_mu =  np.linspace(0.3,0.9,601)  
+#list_mu =  np.linspace(0.433,0.9,601-133)  
 # list_mu = [0.3]
 
 #%%
@@ -136,7 +137,7 @@ mu0 = list_mu[0]
 if mu0 == 0.3:
     cond_inicial0 = fcond_inicial(re_epsi1)
 else:
-    cond_inicial0 = [] #mu anterior
+    cond_inicial0 = [2.761135720e+01, 5.331461600e-02] #mu anterior
 
 if graficar==0:
     os.chdir(path_d)

@@ -28,7 +28,7 @@ except ModuleNotFoundError:
     sys.path.insert(1, path_graphene3)
     from constantes import constantes
 
-pi,hb,c,alfac,mu1,mu2,epsi2 = constantes()
+pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 

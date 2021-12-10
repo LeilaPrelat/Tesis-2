@@ -27,15 +27,15 @@ paper = 1
 
 if paper == 1: 
     tamfig = (5.5,3.5)
-    tamlegend = 7
-    tamletra = 6
-    tamtitle = 6
-    tamnum = 6
+    tamlegend = 10
+    tamletra = 10
+    tamtitle = 10
+    tamnum = 9
     
-    labelpady = 0.5
-    labelpadx = 0.5
+    labelpady = -0.5
+    labelpadx = -0.5
     lw = 1.5
-    pad = -1
+    pad = -2
     loc1 = [0.22,0.88]
     loc2 = [0.1,1]
     
@@ -79,7 +79,7 @@ R = 0.05             #micrones
 gamma_DL = 0.01 #unidades de energia
 Ep = 0.1
 mu = 0.3 
-modo = 4
+modo = 3
 
 ind = 50
 
@@ -95,7 +95,7 @@ if gamma_DL != 0.01:
     raise TypeError('Wrong value for gamma_DL')
     
 colors = ['darkred','yellowgreen','steelblue','coral']
-symbols = ['-','-','--','-.']
+symbols = ['-','--','-','--']
 sns.set()
 
 #%%
@@ -117,6 +117,9 @@ for R in barrido_R:
 
 #%%
 
+label1 = 'Rigurosa'
+label2 = 'Aproximada'
+
 labelx = 'R [$\mu$m]'
 labely1 = '$[\epsilon_{di}]_c$'
 labely2 = '$\omega/c$ [$\mu$m$^{-1}$]'
@@ -124,8 +127,8 @@ labely2 = '$\omega/c$ [$\mu$m$^{-1}$]'
 print('Graficar Im(epsi1) vs R') 
 
 plt.figure(figsize=tamfig)
-plt.plot(barrido_R,epsi1_imag_opt,symbols[0],lw =lw,color = colors[0],label='sol num')
-plt.plot(barrido_R,im_epsi1_QE_lossless,symbols[1],lw =lw,color = colors[1],label='Aprox QE')
+plt.plot(barrido_R,epsi1_imag_opt,symbols[0],lw =lw,color = colors[0],label=label1)
+plt.plot(barrido_R,im_epsi1_QE_lossless,symbols[1],lw =lw,color = colors[1],label=label2)
 plt.ylabel(labely1,fontsize=int(tamletra*1.3),labelpad =labelpady)
 plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
 plt.tick_params(labelsize = tamnum,pad = pad)
@@ -136,8 +139,8 @@ if save_graphs==1:
  
 
 plt.figure(figsize=tamfig)
-plt.plot(barrido_R,omegac_opt,symbols[2],lw =lw,color = colors[2],label='sol num')
-plt.plot(barrido_R,omegac_QE_lossless,symbols[3],lw =lw,color = colors[3],label='Aprox QE')
+plt.plot(barrido_R,omegac_opt,symbols[2],lw =lw,color = colors[2],label=label1)
+plt.plot(barrido_R,omegac_QE_lossless,symbols[3],lw =lw,color = colors[3],label=label2)
 plt.ylabel(labely2,fontsize=int(tamletra*1.1),labelpad =labelpady)
 plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
 plt.tick_params(labelsize = tamnum,pad = pad)

@@ -71,18 +71,19 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 re_epsi1 = 3.9
-R = 0.5              #micrones
+R = 0.05              #micrones
 hbaramu = 0.3        #eV mu_c
-modo = 1
+modo = 4
     
-list_kz = np.linspace(0,4,8001) 
+#list_kz = np.linspace(0,4,8001) 
+list_kz = np.linspace(0,0.5,1001) 
 # list_kz = np.linspace(0.105,1.5,1395+1)
 # list_kz = [0]
 
 #%%
 
-if R != 0.5:
-    raise TypeError('Wrong value for radium')
+if R not in [0.5,0.05]:
+    raise TypeError('Mal el valor de R')
 
 if list_kz[0]!= 0:
     raise TypeError('El barrido en kz debe empezar de 0 para usar el QE_approx del caso sin kz')
@@ -115,6 +116,7 @@ def fcond_inicial(hbaramu):
     [re(omega/c), im(epsilon1)]
     
     Uso como condiciones iniciales las funciones de QE_lossless.py (ver seccion 1.7 del cuaderno corto)
+    --> el barrido en kz debe empezar en 0
     """
     a = omegac_cuasi(modo,R,re_epsi1,hbaramu)
     b = im_epsi1_cuasi(a,modo,R,hbaramu) 
@@ -164,7 +166,7 @@ if save_data_opt==1:
 
     tabla = np.array([list_kz_opt,omegac_opt,epsi1_imag_opt,eq_det])
     tabla = np.transpose(tabla)
-    info = '.Opt det con kz, R=%.1f \mum, Re(epsi1)=%.2f, $\mu_c$ = %.3f eV' %(R,re_epsi1,hbaramu) 
+    info = '.Opt det con kz, R=%.2f \mum, Re(epsi1)=%.2f, $\mu_c$ = %.3f eV' %(R,re_epsi1,hbaramu) 
     header1 = 'kz [eV]     Omega/c [1/micrones]    Im(epsi1)     Eq(det)' + info + ', ' + name_this_py
     np.savetxt('opt_det_conkz_vs_kz_modo%i.txt' %(modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
 
@@ -173,7 +175,7 @@ if save_data_opt==1:
 label_graph = 'Opt det con kz'
 labelx = '$k_z$ [1/$\mu$m]'
 labelpng = '_vs_kz_%i' %(modo)
-title = 'Modo = %i, R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f, $\mu_c$ = %.3f eV' %(modo,R,re_epsi1,hbaramu) 
+title = 'Modo = %i, R = %.2f $\mu$m, Re($\epsilon_1$) = %.2f, $\mu_c$ = %.3f eV' %(modo,R,re_epsi1,hbaramu) 
 title2 = title + '\n' + name_this_py
 a = omegac_cuasi(modo,R,re_epsi1,hbaramu)
 b = im_epsi1_cuasi(a,modo,R,hbaramu) 

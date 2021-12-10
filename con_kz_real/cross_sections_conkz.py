@@ -284,3 +284,114 @@ def Qext(kz_var,omegac,epsi1,nmax,R,hbaramu,Ao,Bo):
 
 
 #%%
+
+def Qscat2(kz_var,rho,phi,z,omegac,epsi1,nmax,R,hbaramu,Ao,Bo): 
+    """
+    Parameters
+    ----------
+    kz : kz en 1/micrometros
+    rho: coordenada radial rho en micrometros
+    phi: coordenada angular 
+    z: coordenada longitudinal en micrometros
+    omegac : omega/c en 1/micrometros
+    epsi1 : permeabilidad electrica del medio 1
+    
+    nmax: sumatoria en modos desde -nmax hasta +nmax (2*nmax+1 modos)
+    R: radio del cilindro en micrometros
+    hbaramu: potencial quimico del grafeno en eV
+    
+    Ao: pol p dentro de Hz
+    Bo: pol s dentro de Ez
+
+    Returns
+        formula del Qscat antes de integrar en theta (pregunta de Claudio
+                                                      en la defensa)
+    -------
+    """
+    k0 = omegac #=omega/c
+    xz = kz_var/k0
+    Rbarra = R*k0 #adimensional
+    rhobarra = rho*k0
+    zbar = z*k0
+    xt2 = -xz**2 + mu2*epsi2
+
+    if k0.imag != 0:
+        raise TypeError('input: Freq reales, no complejas')
+        
+    if kz_var.imag != 0:
+        raise TypeError('input: kz real, no complejo')
+        
+    def coef_an_bn(mode):
+        
+        coeff = coef(kz_var,omegac,epsi1,mode,R,hbaramu,Ao,Bo)
+    
+        coef_A1,coef_B2,coef_C1,coef_D2 = coeff  #intercambio de la columna 2 con 3
+        
+        coef_D2 = complex(coef_D2)
+        coef_B2 = complex(coef_B2)
+        
+        
+        # if Ao == 0:
+        #     coef_D2 = 0
+        # if Bo== 0:
+        #     coef_B2 = 0
+                 
+        # print(coef_D2,coef_B2)
+        return coef_D2,coef_B2
+
+    #xt2 = -xz**2 + mu2*epsi2 #xt**2
+
+    Qscat = 0
+    list_modos = np.linspace(-nmax,nmax,2*nmax+1)
+    # list_modos = np.linspace(0,nmax,nmax+1)
+    # list_modos =  [nmax]
+    
+    cte = (2/np.pi)**(1/2)
+    
+    for nu in list_modos: 
+        nu = int(nu)
+        for nu2 in list_modos: #nu prima
+            nu2 = int(nu2)
+
+            den1 = xt2*((xt2*rhobarra)**(1/2))
+            den2 = (xt2*rhobarra)**(1/2)
+            xt3 = xt2.conjugate()
+            den3 = xt3*((xt3*rhobarra)**(1/2))
+                
+            Dn,Bn = coef_an_bn(nu)
+            Dn2,Bn2 = coef_an_bn(nu2)
+            Dn2A = np.abs(Dn)**2
+            Bn2A = np.abs(Bn)**2
+            
+            Dn2B = np.abs(Dn2)**2 #nu prima
+            Bn2B = np.abs(Bn2)**2 #nu prima
+            Dn2B = Dn2B.conjugate()
+            Bn2B = Bn2B.conjugate()
+            
+            exp0 = np.e**(1j*nu*phi)
+            exp1 = np.e**(1j*zbar*xz)
+            exp2 = np.e**(1j*(xt2*rhobarra -nu*np.pi/2 - np.pi/4))            
+            expA = exp0*exp1*exp2
+
+            exp3 = np.e**(-1j*nu2*phi)
+            exp4 = np.e**(-1j*zbar*xz)
+            exp5 = np.e**(-1j*(xt3*rhobarra -nu2*np.pi/2 - np.pi/4))
+            expB = exp3*exp4*exp5            
+            
+
+            term1A = Dn2A*expA*mu2/den1
+            term1B = Dn2B*expB/den2
+            
+            term1 = term1A*term1B
+            
+            term2A = Bn2A*expA/den2
+            term2B = Bn2B*expB*epsi2/den3
+    
+            term2 = term2A*term2B
+            
+            Qscat = Qscat + term1 - term2
+     
+    ctef = cte/(4*pi*Rbarra*xt2)
+    Qscatf = Qscat*ctef
+    
+    return Qscatf # ---> esta dividido por c el resultado

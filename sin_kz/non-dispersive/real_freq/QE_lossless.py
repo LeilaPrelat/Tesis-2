@@ -158,6 +158,9 @@ def im_epsi1_cuasi_aprox(omegac,modo,R,hbaramu):
     intra = intra*alfac*c
     omega02 = -4*pi*1j*intra*modo/R
 
+    omega02 =  4*hbaramu*modo/(hb*R) ###NUEVO
+    omega02 = omega02*alfac*c  #equivale a e^2/hb
+
     gamma_c = hbargama/hb   #en unidades de frecuencia
     num = omega02*gamma_c
     den = omega**3
@@ -193,6 +196,75 @@ def omegac_cuasi_aprox(modo,R,re_epsi1,hbaramu):
     intra = 2j*(1/pi)*akb*TK*np.log(aux)/(hb)
     intra = intra*alfac*c
     omega02 = -4*pi*1j*intra*modo/R
+    
+    omega02 =  4*hbaramu*modo/(hb*R) ###NUEVO
+    omega02 = omega02*alfac*c  #equivale a e^2/hb
+    
+    num = omega02
+    den = re_epsi1 + epsi2
+    # rta2 = term1 + term2*(omega0 - term3)
+
+    omega_n = (num/den)**(1/2)
+    omegac_n = omega_n/c
+    if omegac_n.imag == 0:
+    	omegac_n = omegac_n.real
+    
+    return omegac_n #omega/c
+
+#%%
+
+
+def im_epsi1_cuasi_Mauro(modo,R,re_epsi1,hbaramu):
+ 
+    """
+    Parameters
+    viene de jn(x)--> n/x1**2
+    y de hn(x)--> -n/x2**2
+    ----------
+    omegac : omega/c en 1/micrones
+    modo: modo
+    R: radio del cilindro en micrones
+    hbaramu : potencial quimico del grafeno mu_c en eV
+
+    Returns
+    -------
+    im(epsilon1) para la aprox QE tal que no hay perdidas
+    (formula que calculo Mauro en el paper y se usa para la Tesis)
+
+    """
+
+    omega02 =  4*hbaramu*modo/(hb*R) ###NUEVO
+    omega02f = omega02*alfac*c  #equivale a e^2/hb
+    omega0 = omega02f**(1/2)
+    gamma_c = hbargama/hb   #en unidades de frecuencia
+
+    num = (re_epsi1 + epsi2)**(3/2)
+    rta = -num*gamma_c/omega0
+    
+    if rta.imag == 0:
+        rta = rta.real
+    return rta 
+
+def omegac_cuasi_Mauro(modo,R,re_epsi1,hbaramu):
+    """
+    Parameters
+    viene de jn(x)--> n/x1**2
+    y de hn(x)--> -n/x2**2
+    ----------
+    modo : modo
+    R : radio del cilindro en micrones
+    re_epsi1 : re(epsilon1)
+    hbaramu : potencial quimico del grafeno mu_c en eV
+
+    Returns
+    -------
+    omega/c en 1/micrones para la aprox QE tal que no hay perdidas
+    (formula que calculo Mauro en el paper y se usa para la Tesis)
+    """
+
+    
+    omega02 =  4*hbaramu*modo/(hb*R) ###NUEVO
+    omega02 = omega02*alfac*c  #equivale a e^2/hb
     
     num = omega02
     den = re_epsi1 + epsi2

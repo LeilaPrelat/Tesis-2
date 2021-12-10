@@ -31,12 +31,14 @@ paper = 1   # sacar el titulo y guardar la info (formato paper)
 print('Definir parametros para graficos')
 
 if paper == 1: 
-    tamfig = (3.5,3.5)
-    tamlegend = 7
-    tamletra = 6
-    tamtitle = 6
-    tamnum = 6
-    labelpady = -2
+    tamfig = (4.5,3.5)
+    tamlegend = 10
+    tamletra = 11
+    tamtitle = 10
+    tamnum = 9
+    labelpady = -1.5
+    labelpadx = -0.5
+    pad = 0.5
 else:
     tamfig = (10,8)
     tamlegend = 18
@@ -90,11 +92,29 @@ Ao,Bo = 1,1
 list_modos = [1,2,3,4]
 R = 0.5      #micrones 
 nmax = 10
+index = 0
+
+#%%
 
 if R != 0.5:
     raise TypeError('Wrong value for R')
 
-index = 0
+labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
+n2 = 250
+cota = 2*R
+x = np.linspace(-cota,cota,n2)
+y = np.linspace(-cota,cota,n2)
+
+def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad):
+    plt.figure(figsize=tamfig)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+    plt.tick_params(labelsize = tamnum, pad = pad)
+    if paper == 0:
+        plt.title(title,fontsize=int(tamtitle*0.9))
+    # if paper == 1:
+    #     plt.tight_layout(1)
+    return 
 
 #%%
 
@@ -116,7 +136,6 @@ for modo in list_modos:
     data_load = np.transpose(data_load)
     [barrido_mu,omegac_opt,epsi1_imag_opt,eq_det] = data_load
     
-
     hbaramu = barrido_mu[index]
     omegac = omegac_opt[index]
     im_epsi1 = epsi1_imag_opt[index]
@@ -127,7 +146,6 @@ for modo in list_modos:
     title1 = 'Ao = %i, ' %(Ao) + info1 + '\n' + info2  + '\n' + name_this_py
     title2 = 'Bo = %i, ' %(Bo) + info1 + '\n' + info2  + '\n' + name_this_py
     
-    labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
     infotot = 'Ao = %i, Bo = %i' %(Ao,Bo) + ', ' + info1 +  ', ' + info2 +  ', ' + name_this_py
     
     if non_active_medium == 1:
@@ -135,13 +153,9 @@ for modo in list_modos:
         title1_loss = 'Ao = %i, ' %(Ao) + info1 + '\n' + info2_loss  + '\n' + name_this_py
         title2_loss = 'Bo = %i, ' %(Bo) + info1 + '\n' + info2_loss  + '\n' + name_this_py
     
-
     print('Graficar el campo Hz para el medio 1 y 2')
 
-    n2 = 250
-    cota = 2*R
-    x = np.linspace(-cota,cota,n2)
-    y = np.linspace(-cota,cota,n2)
+
     limits = [min(x) , max(x), min(y) , max(y)]
     X, Y = np.meshgrid(x, y)
     
@@ -164,16 +178,12 @@ for modo in list_modos:
         maxH1 = np.max(Z) 
         Z = Z/maxH1
         
-        plt.figure(figsize=tamfig)
-        plt.xlabel(labelx,fontsize=tamletra)
-        plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
-        plt.tick_params(labelsize = tamnum)
-        if paper == 0:
-            plt.title(title1_loss,fontsize=int(tamtitle*0.9))
+        graph(title1_loss,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
         im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
         cbar = plt.colorbar(im)
         cbar.ax.tick_params(labelsize = tamnum)
-        cbar.set_label(label,fontsize=tamlegend,labelpad = 1)
+        if paper == 0:
+            cbar.set_label(label,fontsize=tamlegend,labelpad = 1)
         if save_graphs==1:
             os.chdir(path_save)
             if modulo==1:
@@ -181,7 +191,7 @@ for modo in list_modos:
             else:
                 plt.savefig('reHz_loss_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
     
-    
+        del Z
     def Hz_2variable(x,y):   
         phi = np.arctan2(y,x)
         rho = (x**2+y**2)**(1/2)
@@ -203,23 +213,20 @@ for modo in list_modos:
         maxH2 = np.max(Z) 
         Z = Z/maxH2
     
-    plt.figure(figsize=tamfig)
-    plt.xlabel(labelx,fontsize=tamletra)
-    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
-    plt.tick_params(labelsize = tamnum)
-    if paper == 0:
-        plt.title(title1,fontsize=int(tamtitle*0.9))
+    graph(title1,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
     im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
     cbar.ax.tick_params(labelsize = tamnum)
-    cbar.set_label(label,fontsize=tamlegend)
+    if paper == 0:
+        cbar.set_label(label,fontsize=tamlegend,labelpad = 1)
     if save_graphs==1:  
         os.chdir(path_save)
         if modulo==1:
             plt.savefig('modHz_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
         else:
             plt.savefig('reHz_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
-
+    del Z
+  
     print('Graficar el campo Ez para el medio 1 y 2')
         
     if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
@@ -244,22 +251,20 @@ for modo in list_modos:
         maxE1 = np.max(Z) 
         Z = Z/maxE1
         
-        plt.figure(figsize=tamfig)
-        plt.xlabel(labelx,fontsize=tamletra)
-        plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
-        plt.tick_params(labelsize = tamnum)
-        if paper == 0:
-            plt.title(title2_loss,fontsize=int(tamtitle*0.9))
+        graph(title2_loss,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
         im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
         cbar = plt.colorbar(im)
         cbar.ax.tick_params(labelsize = tamnum)
-        cbar.set_label(label2,fontsize=tamlegend)
+        if paper == 0:
+            cbar.set_label(label2,fontsize=tamlegend,labelpad = 1)
+
         if save_graphs == 1:
             if modulo==1:
                 plt.savefig('modEz_loss_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
             else:
                 plt.savefig('reEz_loss_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
-    
+        del Z
+        
     def Ez_2variable(x,y):   
         phi = np.arctan2(y,x)
         rho = (x**2+y**2)**(1/2)
@@ -277,29 +282,25 @@ for modo in list_modos:
     Z = f2(X, Y)
     if non_active_medium == 1 and paper == 0:
         Z = Z/maxE1
-    if paper == 1: #normarlizar TODOS los campos : con y sin medio activo
+    elif paper == 1: #normarlizar TODOS los campos : con y sin medio activo
         maxE2 = np.max(Z) 
         Z = Z/maxE2
         
-    plt.figure(figsize=tamfig)
-    plt.xlabel(labelx,fontsize=tamletra)
-    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
-    plt.tick_params(labelsize = tamnum)
-    if paper == 0:
-        plt.title(title2,fontsize=int(tamtitle*0.9))
+    graph(title2,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
     im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
     cbar = plt.colorbar(im)
     cbar.ax.tick_params(labelsize = tamnum)
-    cbar.set_label(label2,fontsize=tamlegend)
+    if paper == 0:
+        cbar.set_label(label2,fontsize=tamlegend,labelpad = 1)
     if save_graphs==1:
         os.chdir(path_save)
         if modulo==1:
             plt.savefig('modEz_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
         else:
             plt.savefig('reEz_modo%i_mu%.4f.png' %(modo,hbaramu), format='png')  
-    
                 
     if paper == 1:
         np.savetxt('info_fields_nondisp_modo%i_mu%.4f.txt' %(modo,hbaramu), [infotot],fmt='%s')        
-    
+    del Z
+
 #%%

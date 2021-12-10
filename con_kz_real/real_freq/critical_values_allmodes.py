@@ -22,18 +22,18 @@ paper = 1
 #%%
 
 if paper == 1: 
-    tamfig = (5.5,3.5)
-    tamlegend = 7
-    tamletra = 6
-    tamtitle = 6
-    tamnum = 6
+    tamfig = (6,3.5)
+    tamlegend = 10
+    tamletra = 11
+    tamtitle = 10
+    tamnum = 9
     
-    labelpady = 0.5
-    labelpadx = 0.5
+    labelpady = -0.5
+    labelpadx = -0.5
     lw = 1.5
-    pad = -1
-    loc1 = [0.22,0.88]
-    loc2 = [0.1,1]
+    pad = -2.3
+    loc1 = [0.16,0.88]
+    loc2 = [0.05,1]
     
 else:
     tamfig = (11,7)
@@ -115,10 +115,10 @@ for kz in list_kz:
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
     
         if modo == 1:
-            line1, = axs[0].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = 'mode %i'%(k+1))
+            line1, = axs[0].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = 'modo %i'%(k+1))
             line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
         else:
-            axs[1].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = 'mode %i'%(k+1))
+            axs[1].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = 'modo %i'%(k+1))
             
         k = k + 1
     
@@ -133,12 +133,12 @@ for kz in list_kz:
     axs[1].set_xlabel(labelx,fontsize = tamletra,labelpad =labelpadx) 
     
     #fig.legend(handles=patchList2,loc=[0.145,0.87],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    fig.legend(loc = loc1, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+    fig.legend(loc = loc1, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = 2,frameon=0,handletextpad=0.1)
     
-    s1,s2 = 'a)', 'b)'
-    xs = 0.133
-    fig.text(xs,0.83,s1,fontsize = tamletra) 
-    fig.text(xs,0.422,s2,fontsize = tamletra) 
+    # s1,s2 = 'a)', 'b)'
+    # xs = 0.133
+    # fig.text(xs,0.83,s1,fontsize = tamletra) 
+    # fig.text(xs,0.422,s2,fontsize = tamletra) 
     
     
     if save_graphs==1:
@@ -156,7 +156,7 @@ for kz in list_kz:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-        line1, = plt.plot(list_mu_opt,omegac_opt,symbols[k],lw =lw,color = colors[k],label = 'mode %i'%(k+1))
+        line1, = plt.plot(list_mu_opt,omegac_opt,symbols[k],lw =lw,color = colors[k],label = 'modo %i'%(k+1))
         if k == 0:
             line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
             
@@ -167,7 +167,7 @@ for kz in list_kz:
     plt.tick_params(labelsize = tamnum,pad = pad)
             
     #plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    plt.legend(loc = loc2, ncol = 4,markerscale=2,fontsize=tamlegend,frameon=0,handletextpad=0.5)
+    plt.legend(loc = loc2, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = 2,frameon=0,handletextpad=0.1)
     
     if save_graphs==1:
         os.chdir(path_load)

@@ -29,16 +29,17 @@ paper = 1
 
 if paper == 1: 
     tamfig = (5.5,3.5)
-    tamlegend = 7
-    tamletra = 9
-    tamtitle = 6
-    tamnum = 6
-    labelpady = 0
-    labelpadx = 1
+    tamlegend = 10
+    tamletra = 10
+    tamtitle = 10
+    tamnum = 9
+    
+    labelpady = -0.5
+    labelpadx = -0.5
     lw = 1.5
     pad = -2
-    loc1 = [0.12,1]
-    loc2 = [0.14,1]
+    loc1 = [-0.03,1]
+    loc2 = [-0.03,1]
 else:
     tamfig = (12,7)
     tamlegend = 20
@@ -77,11 +78,11 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 epsiinf_DL = 3.9
-R = 0.1       #micrones
+R = 0.05       #micrones
 # Ep = 0.6
 gamma_DL = 0.01 #unidades de energia
 list_Ep = [0.7,0.4,0.5,0.3,0.8,0.6,0.9]
-list_Ep = [0.3,0.6,0.9]
+list_Ep = [0.6,0.9]
 
 #deg_values = [[0.3,0.9],[0.35,0.8],[0.35,0.9],[0.4,0.7]]
 list_color = ['darkred','yellowgreen','steelblue','coral']
@@ -201,11 +202,11 @@ for Ep in list_Ep:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-        plt.plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = lw,color = list_color[k],label = 'mode %i'%(k+1))
+        plt.plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = lw,color = list_color[k],label = 'modo %i'%(k+1))
             
         k = k + 1
     
-    plt.ylabel(labely,fontsize=int(tamletra*1.3),labelpad = labelpady)
+    plt.ylabel(labely,fontsize=int(tamletra*1.4),labelpad = labelpady)
     plt.xlabel(labelx,fontsize=tamletra,labelpad=labelpadx)
     plt.tick_params(labelsize = tamnum,pad = pad)
     
@@ -233,7 +234,7 @@ for Ep in list_Ep:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-        plt.plot(list_mu_opt,omegac_opt,symbols[k],lw = lw,color = list_color[k],label = 'mode %i'%(k+1))
+        plt.plot(list_mu_opt,omegac_opt,symbols[k],lw = lw,color = list_color[k],label = 'modo %i'%(k+1))
             
         k = k + 1
     

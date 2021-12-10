@@ -1,0 +1,3 @@
+Ao = 1, Bo = 1, kz = 0.5180 1/$\mu$m, z = 0 $\mu$m, R = 0.5 $\mu$m, nmax = 10, $\mu_c$ = 0.3 eV
+$\epsilon_1$ = 3.9 - i4.2263e-01 y $\omega/c$ = 1.0185e+01 1/$\mu$m del modo = 2
+plot_fields_3D.py

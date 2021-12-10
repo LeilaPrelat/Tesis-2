@@ -22,18 +22,18 @@ paper = 1
 #%%
 
 if paper == 1: 
-    tamfig = (5.5,3.5)
-    tamlegend = 7
-    tamletra = 6
-    tamtitle = 6
-    tamnum = 6
+    tamfig = (6,3.5)
+    tamlegend = 10
+    tamletra = 11
+    tamtitle = 10
+    tamnum = 9
     
-    labelpady = 0.5
-    labelpadx = 0.5
+    labelpady = -0.5
+    labelpadx = -0.5
     lw = 1.5
-    pad = -1
-    loc1 = [0.03,1]
-    loc2 = [0.03,1]
+    pad = -2.3
+    loc1 = [-0.1,1]
+    loc2 = [-0.1,1]
     
 else:
     tamfig = (11,7)
@@ -112,7 +112,7 @@ for modo in [1,2,3,4]:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-        line1, = plt.plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = lw,color = colors[k],label = 'kz %.2f$\mu m^{-1}$'%(kz))
+        line1, = plt.plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw = lw,color = colors[k],label = 'kz=%.2f $\mu m^{-1}$'%(kz))
         if k == 0:
             line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
         k = k + 1
@@ -122,7 +122,7 @@ for modo in [1,2,3,4]:
     plt.tick_params(labelsize = tamnum, pad = pad)
                 
     #fig.legend(handles=patchList2,loc=[0.145,0.87],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    plt.legend(loc = loc1, ncol = 4,markerscale=1,fontsize=tamlegend,frameon=0,handletextpad=0.2)
+    plt.legend(loc = loc1, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = 0.4,frameon=0,handletextpad=0.1)
     
     if save_graphs==1:
         os.chdir(path_load)
@@ -139,18 +139,18 @@ for modo in [1,2,3,4]:
         tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
         tabla = np.transpose(tabla)
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
-        line1, = plt.plot(list_mu_opt,omegac_opt,symbols[k],lw = lw,color = colors[k],label = 'kz %.2f$\mu m^{-1}$'%(kz))
+        line1, = plt.plot(list_mu_opt,omegac_opt,symbols[k],lw = lw,color = colors[k],label = 'kz=%.2f $\mu m^{-1}$'%(kz))
         if k == 0:
             line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
             
         k = k + 1
     
-    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+    plt.ylabel(labely,fontsize=int(tamletra*1.2),labelpad =labelpady)
     plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
     plt.tick_params(labelsize = tamnum, pad = pad)
             
     #plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    plt.legend(loc = loc2, ncol = 4,markerscale=1,fontsize=tamlegend,frameon=0,handletextpad=0.2)
+    plt.legend(loc = loc2, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = 0.4,frameon=0,handletextpad=0.1)
     
     if save_graphs==1:
         os.chdir(path_load)

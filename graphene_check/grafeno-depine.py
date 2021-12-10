@@ -44,14 +44,14 @@ def sigma(x,hbmu,hbgama): #x = hbw/mu_c  #sigma del libro de depine: comparar co
     Tk = 300               # temperature in K
     TKmu = Tk*akb/hbmu
     if TKmu==0.:
-        intra = 1j*(1/np.pi)*abs(hbmu)/(hbw+1j*hbgama)
-        if hbw-2*abs(hbmu)>0:
-            inter = 0.25
-        else:  
-            inter = 0
+        # intra = 1j*(1/np.pi)*abs(hbmu)/(hbw+1j*hbgama)
+        # if hbw-2*abs(hbmu)>0:
+        #     inter = 0.25
+        # else:  
+        #     inter = 0
          
-        inter = inter + 1j*np.log((hbw-2*abs(hbmu))**2/(hbw+2*abs(hbmu))**2)/(4*np.pi)
-        
+        # inter = inter + 1j*np.log((hbw-2*abs(hbmu))**2/(hbw+2*abs(hbmu))**2)/(4*np.pi)
+        raise ValueError('no se la formula para este caso')
     elif TKmu!=0:
 
         aux2 = hbw + 1j*hbgama
@@ -76,14 +76,16 @@ def sigma2(omega_c,hbmu,hbgama): #sigma del libro de depine: comparar con el del
     Tk = 300               # temperature in K
     TKmu = Tk*akb/hbmu
     if TKmu==0.:
-        intra = 1j*(1/np.pi)*abs(hbmu)/(hbw+1j*hbgama)
-        if hbw-2*abs(hbmu)>0:
-            inter = 0.25
-        else:  
-            inter = 0
+    	# aux0 = hbw+1j*hbgama
+     #    intra = 1j*(1/np.pi)*abs(hbmu)/aux0
+     #    if hbw-2*abs(hbmu)>0:
+     #        inter = 0.25
+     #    else:  
+     #        inter = 0
          
-        inter = inter + 1j*np.log((hbw-2*abs(hbmu))**2/(hbw+2*abs(hbmu))**2)/(4*np.pi)
-        
+#        inter = inter + 1j*np.log((hbw-2*abs(hbmu))**2/(hbw+2*abs(hbmu))**2)/(4*np.pi)
+        # inter = inter + 1j*np.log(aux0-2*abs(hbmu))**2/(hbw+2*abs(hbmu))**2)/(4*np.pi)       
+        raise ValueError('no se la formula para este caso')
     elif TKmu!=0:
         
         aux2 = hbw + 1j*hbgama
@@ -175,8 +177,80 @@ if save_graphs==1:
 
 
 
-#%%
+#%% grafico para la tesis
+
+paper = 1
+
+if paper == 1: 
+    import seaborn as sns
+    sns.set()
+    tamfig = (3.5,3.5)
+    tamlegend = 10
+    tamletra = 10
+    tamtitle = 10
+    tamnum = 9
+    labelpady = -0.5
+    loc2 = [0,1]
+    pad = -2
+    lw = 1.5
+else:
+    tamfig = (10,8)
+    tamlegend = 18
+    tamletra = 18
+    tamtitle = 18
+    tamnum = 15
+    labelpady = 0 
+    loc2 = [0.3,1]
+    lw = 10
+
+hbargama = 0.0001      # collision frequency in eV
+list_mu = np.linspace(0.3,0.9,6001)
+colors = ['darkred','steelblue','coral','yellowgreen']
+list_hbar_omega = [0.05,0.1,0.2,0.3]
+
+plt.figure(figsize=tamfig)
+k = 0
+for hbar_omega in list_hbar_omega: 
     
+
+    omega_c = hbar_omega/(c*hb)
+    
+    sigma_inter = []
+    sigma_intra = []
+    for mu in list_mu:
+        
+        tot, inter, intra= sigma2(omega_c,mu,hbargama)
+        sigma_inter.append(np.abs(inter))
+        sigma_intra.append(np.abs(intra))
+        
+
+    plt.plot(list_mu,sigma_inter,'-r',color = colors[k],ms = lw,label = '$\hbar \omega$ = %.2f eV' %(hbar_omega))
+    plt.plot(list_mu,sigma_intra,'-m',color = colors[k],ms = lw)
+    k = k + 1
+#plt.title('$\sigma$ con $\hbar \omega$ = %.2f eV, $\gamma$ = %.4f eV' %(hbar_omega,hbargama),fontsize=tamtitle)
+#plt.ylabel('Conductividad',fontsize=tamletra)
+plt.xlabel('$\mu_c$ [eV]',fontsize=tamletra, labelpad = -1)
+plt.yscale('log')
+plt.tick_params(labelsize = tamnum,pad = pad)
+plt.legend(loc = loc2, ncol = 2,markerscale=1,fontsize=tamlegend,frameon=False,handletextpad=0.05)
+plt.grid(1)
+if save_graphs==1:
+    plt.savefig('grafeno-tesis')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     

@@ -23,21 +23,21 @@ non_active_medium = 1 #plotear campos con im(epsilon1) = 0
 paper = 1
 
 list_field = ['Ez', 'Hz', 'Etot', 'Htot'] 
-type_field = list_field[2]
+type_field = list_field[1]
 if type_field == 'Ez' or type_field == 'Hz':
-    modulo = 1 #if modulo == 1 graficar |Hz| o |Ez| y si vale 0 grafica la parte real
+    modulo = 0 #if modulo == 1 graficar |Hz| o |Ez| y si vale 0 grafica la parte real
 
 #%%
 
 if paper == 1: 
-    tamfig = (3.5,3.5)
-    tamlegend = 7
-    tamletra = 6
-    tamtitle = 6
-    tamnum = 6
-    labelpady = 0
-    labelpadx = 0.7
-    pad = 0
+    tamfig = (4.5,3.5)
+    tamlegend = 10
+    tamletra = 11
+    tamtitle = 10
+    tamnum = 9
+    labelpady = -1.5
+    labelpadx = -0.5
+    pad = 0.5
 else:
     tamfig = (10,8)
     tamlegend = 18
@@ -61,7 +61,7 @@ if save_graphs==1:
         os.mkdir(path_save0)
 
 #print('Importar modulos necesarios para este codigo')
-err = 'fields_conkz.py no se encuentra en el path_basic definido/carpeta de trabajo'
+err = 'fields_conkz.py no se encuentra en ' + path_basic
 err2 = 'path de la carpeta donde se encuentra fields_conkz.py'
 if type_field == 'Ez':
     try:
@@ -74,12 +74,12 @@ if type_field == 'Ez':
         from fields_conkz import Ez
 
     def fields(kz,omegac,re_epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z):
-        rta = Ez(kz,omegac,re_epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z)
+        [rta1,rta2] = Ez(kz,omegac,re_epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z)
         if modulo == 1:
-            rta2 = np.abs(rta)
+            [rta3,rta4] = [np.abs(rta1),np.abs(rta2)] 
         else:
-            rta2 = rta.real
-        return rta2
+            [rta3,rta4] = [rta1.real,rta2.real] 
+        return [rta3,rta4]
     
 elif type_field == 'Hz':
     try:
@@ -92,12 +92,12 @@ elif type_field == 'Hz':
         from fields_conkz import Hz
 
     def fields(kz,omegac,re_epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z):
-        rta = Hz(kz,omegac,re_epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z)
+        [rta1,rta2] = Hz(kz,omegac,re_epsi1,nmax,R,hbaramu,Ao,Bo,rho,phi,z)
         if modulo == 1:
-            rta2 = np.abs(rta)
+            [rta3,rta4] = [np.abs(rta1),np.abs(rta2)] 
         else:
-            rta2 = rta.real
-        return rta2
+            [rta3,rta4] = [rta1.real,rta2.real] 
+        return [rta3,rta4]
 
 
 elif type_field == 'Htot':
@@ -133,11 +133,11 @@ print('Definir parametros del problema')
 
 #valores de minimizo perdidas (ver header)
 re_epsi1 = 3.9
-R = 0.5              # micrones
+R = 0.05              # micrones
 hbaramu = 0.3        # eV mu_c
-list_modos = [1,2,3,4]
+list_modos = [3]
 list_ind = [0,50,500,1000,5000,-1]
-
+list_ind = [83]
 z = 0
 nmax = 10
 Ao,Bo = 1,1
@@ -148,26 +148,43 @@ n2 = 100
 cota = 2*R
 x = np.linspace(-cota,cota,n2)
 y = np.linspace(-cota,cota,n2)
+X, Y = np.meshgrid(x, y)
+limits = [min(x) , max(x), min(y) , max(y)]
+
 labelx,labely = 'x [$\mu$m]', 'y [$\mu$m]'
 if type_field == 'Htot':
     labelz = '|Htot|$^2$'
-    name = 'Htot'
+    campo = 'Htot'
 elif type_field == 'Etot':
     labelz = '|Etot|$^2$'
-    name = 'Etot'
+    campo = 'Etot'
 else: 
     if modulo == 1:
         labelz = '|' + type_field + '|'
+        campo = labelz
     else:
         labelz = 'Re(' + type_field + ')'
-    name = type_field
+        campo  =  'Re' + type_field 
+#    name = type_field
+
+
+def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad):
+    plt.figure(figsize=tamfig)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+    plt.tick_params(labelsize = tamnum, pad = pad)
+    if paper == 0:
+        plt.title(title,fontsize=int(tamtitle*0.9))
+    if paper == 1:
+        plt.tight_layout()
+    return   
 
 #%%
 
 if hbaramu!= 0.3:
     raise TypeError('Wrong value for chemical potential of graphene')
     
-if R!= 0.5:
+if R not in [0.5,0.05]:
     raise TypeError('Wrong value for radium')
 
 #%%
@@ -176,7 +193,7 @@ for modo in list_modos:
     for ind in list_ind: 
         print('Importar los valores de SPASER')
         
-        path_load = path_basic  + '/' + 'real_freq' + '/' + 're_epsi1_%.2f_vs_kz/mu_%.1f' %(re_epsi1,hbaramu) 
+        path_load = path_basic  + '/' + 'real_freq' + '/' + 're_epsi1_%.2f_vs_kz/R_%.2f/mu_%.1f' %(re_epsi1,R,hbaramu) 
         os.chdir(path_load)
         name = 'opt_det_conkz_vs_kz_modo%i.txt' %(modo)
         
@@ -239,8 +256,8 @@ for modo in list_modos:
                 print('Creating folder to save graphs')
                 os.mkdir(path_save2)
     
-        
-        print('Graficar el campo |Htot|^2 para el medio 1 y 2')
+  
+        print('Graficar el campo ' + labelz + ' para el medio 1 y 2')
           
         if non_active_medium == 1: #epsi1 = re_epsi1 ---> no hay medio activo
                
@@ -252,31 +269,23 @@ for modo in list_modos:
                     return E1_tot
                 else: #medio2
                     return E2_tot
-                
-            # x = np.linspace(-cota,cota,n2)
-            # y = np.linspace(-cota,cota,n2)
-            X, Y = np.meshgrid(x, y)
+            
             f2 = np.vectorize(Etot_2variable)
             Z2 = f2(X, Y)
             maxi = np.max(Z2)
             Z2 = Z2/maxi
             
-            plt.figure(figsize=tamfig)
-            limits = [min(x) , max(x), min(y) , max(y)]
-            plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
-            plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-            plt.tick_params(labelsize = tamnum, pad = pad)
-                    
-            if paper == 0:
-                plt.title(title_loss,fontsize=int(tamtitle*0.9))
+            graph(title_loss,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
             im = plt.imshow(Z2, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
             cbar = plt.colorbar(im)
-            cbar.set_label(labelz,size=tamlegend)
-            cbar.ax.tick_params(labelsize=tamnum)
+            cbar.ax.tick_params(labelsize = tamnum)
+            if paper == 0:
+                cbar.set_label(labelz,fontsize=tamlegend,labelpad = 1)
             
             if save_graphs==1:
+                plt.tight_layout(1)
                 os.chdir(path_save2)
-                plt.savefig(name + '_loss_modo%i_kz%.4f.png' %(modo,kz), format='png')
+                plt.savefig(campo + '_loss_modo%i_kz%.4f.png' %(modo,kz), format='png')
         
         def Etot_2variable(x,y):   
             phi = np.arctan2(y,x)
@@ -288,31 +297,29 @@ for modo in list_modos:
                 return E2_tot
             
         
-        X, Y = np.meshgrid(x, y)
         f1 = np.vectorize(Etot_2variable)
         Z1 = f1(X, Y)
-        if non_active_medium == 1: 
+        if non_active_medium == 1 and paper == 0:
             Z1 = Z1/maxi
-        # Z = Z/np.max(Z)
+        elif paper == 1: #normarlizar TODOS los campos : con y sin medio activo
+            maxi2 = np.max(Z1) 
+            Z1 = Z1/maxi2
         
-        plt.figure(figsize=tamfig)
-        limits = [min(x) , max(x), min(y) , max(y)]
-        plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
-        plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-        plt.tick_params(labelsize = tamnum, pad = pad)
-                
-        if paper == 0:
-            plt.title(title,fontsize=int(tamtitle*0.9))
+            
+        graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
         im = plt.imshow(Z1, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
         cbar = plt.colorbar(im)
-        cbar.set_label(labelz,size=tamlegend)
-        cbar.ax.tick_params(labelsize=tamnum)
-        if save_graphs==1:
-            os.chdir(path_save2)
-            plt.savefig(name + '_modo%i_kz%.4f.png' %(modo,kz), format='png')
+        cbar.ax.tick_params(labelsize = tamnum)
+        if paper == 0:
+            cbar.set_label(labelz,fontsize=tamlegend,labelpad = 1)
         
-        del X,Y,Z1,Z2
+        if save_graphs==1:
+            plt.tight_layout(1)
+            os.chdir(path_save2)
+            plt.savefig(campo + '_modo%i_kz%.4f.png' %(modo,kz), format='png')
+        
+        del Z1,Z2
         if paper == 1:
-            np.savetxt('info_'+ name + '_modo%i_kz%.4f.txt' %(modo,kz), [title], fmt='%s')
+            np.savetxt('info_'+ campo + '_modo%i_kz%.4f.txt' %(modo,kz), [title], fmt='%s')
 
 #%%

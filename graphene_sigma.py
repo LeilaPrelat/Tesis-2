@@ -30,14 +30,14 @@ def sigma(hbw,hbmu,hbgama):
     
     TKmu = Tk*akb/hbmu
     if TKmu==0.:
-        intra = 1j*(1/np.pi)*abs(hbmu)/(hbw+1j*hbgama)
-        if hbw-2*abs(hbmu)>0:
-            inter1 = 0.25
-        else: 
-            inter1 = 0
+        # intra = 1j*(1/np.pi)*abs(hbmu)/(hbw+1j*hbgama)
+        # if hbw-2*abs(hbmu)>0:
+        #     inter1 = 0.25
+        # else: 
+        #     inter1 = 0
          
-        inter = inter1 + 1j*np.log((hbw-2*abs(hbmu))**2/(hbw+2*abs(hbmu))**2)/(4*np.pi)
-        
+        # inter = inter1 + 1j*np.log((hbw-2*abs(hbmu))**2/(hbw+2*abs(hbmu))**2)/(4*np.pi)
+        raise ValueError('no se la formula para este caso')
     elif TKmu!=0:
 
         aux2 = hbw + 1j*hbgama

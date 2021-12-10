@@ -29,8 +29,8 @@ import matplotlib.pyplot as plt
 save_data_opt = 1 #guardar data de la minimizacion
 
 graficar = 0
-save_graphs = 0
 if graficar ==1:
+    save_graphs = 1
     close_graphs = 0
 
 #%%
@@ -58,6 +58,15 @@ except ModuleNotFoundError:
     path_basic2 = input('path de la carpeta donde se encuentra det_conkz.py')
     sys.path.insert(1, path_basic2)
     from det_conkz import determinante
+    
+try:
+    sys.path.insert(1, path_basic)
+    from complex_omegac_QE import omegac_QE
+except ModuleNotFoundError:
+    print('QE_lossless.py no se encuentra  en ' + path_basic)
+    path_basic = input('path de la carpeta donde se encuentra QE_lossless.py')
+    sys.path.insert(1, path_basic)
+    from complex_omegac_QE import omegac_QE
 
 #%%
 
@@ -66,7 +75,7 @@ print('Definir parametros del problema')
 re_epsi1 = 3.9
 R = 0.5              #micrones
 hbaramu = 0.3        #eV mu_c
-modo = 1
+modo = 4
 
 if modo==1:
     list_im_epsi1 = np.linspace(0,-0.04,401) 
@@ -76,7 +85,7 @@ elif modo==2 or modo==3:
 elif modo==4:
     list_im_epsi1 = np.linspace(0,-0.03,301) 
     
-list_kz = np.linspace(0.1277,0.134,64) 
+list_kz = np.linspace(0,0.134,135) 
 # list_kz = np.linspace(0.105,1.5,1395+1)
 # list_kz = [0]
 
@@ -95,9 +104,9 @@ if modo not in [1,2,3,4]:
 
 print('Definir en donde vamos a guardar los datos de la minimizacion')
 
-if save_graphs==1 or save_data_opt==1:
+if save_data_opt==1:
     try:
-        path_det = r'/re_epsi1_%.2f/find_Lambda_vs_kz/modo_%i' %(re_epsi1,modo)
+        path_det = r'/re_epsi1_%.2f/find_Lambda/modo_%i' %(re_epsi1,modo)
         path = path_basic + path_det
         os.chdir(path) 
     except OSError or IOError as error:
@@ -119,7 +128,7 @@ if save_graphs==1 or save_data_opt==1:
 
 print('Definir las condiciones iniciales para el metodo de minimizacion')
 
-def fcond_inicial(re_epsi1):
+def fcond_inicial(hbaramu):
     """
     Parameters
     ----------
@@ -127,21 +136,13 @@ def fcond_inicial(re_epsi1):
 
     Returns
     -------
-    [re(lambda), im(lambda)]
+    [re(omega/c), im(epsilon1)]
     
-    El barrido empieza con kz = 0 entonces puedo usar las condiciones iniciales
-    halladas en la seccion1 sin_kz, barrido_re_epsi1. Estas condiciones
-    iniciales son validas cuando R = 0.5 micrones, Im(epsi1)=0, kz=0
+    Uso como condiciones iniciales las funciones de QE_lossless.py (ver seccion 1.7 del cuaderno corto)
     """
-    os.chdir(path_basic)
-    cond_init = np.loadtxt('cond_init_modo%i.txt' %(modo),delimiter='\t', skiprows = 1)
-    cond_init = np.transpose(cond_init)
-    [list_re_epsi1,list_re_lambda,list_im_lambda] = cond_init
-    f1 = interp1d(list_re_epsi1,list_re_lambda)
-    f2 = interp1d(list_re_epsi1,list_im_lambda)
-    a = float(f1(re_epsi1))
-    b = float(f2(re_epsi1))
-    return [a,b]    
+    a = omegac_QE(0,modo,re_epsi1,R,hbaramu)
+#    b = im_epsi1_cuasi(a,modo,R,hbaramu) 
+    return [a.real,a.imag]    
 
 #%%        
 
@@ -149,9 +150,9 @@ print('Minimizacion del determinante de 4x4 para un barrido en kz')
 
 kz0 = list_kz[0]
 if kz0 == 0:
-    cond_inicial0 = fcond_inicial(re_epsi1)
+    cond_inicial0 = fcond_inicial(hbaramu)
 else:
-    cond_inicial0 = [4.686774571e+01, 2.004216225e-01] #kz anterior
+    cond_inicial0 = [] #kz anterior
 
 if graficar==0:
     os.chdir(path_d)
@@ -169,8 +170,8 @@ for kz in list_kz:
         cond_inicial = cond_inicial_kz[j-1]
            
     epsi1_imag_opt = []
-    lambda_real_opt = []
-    lambda_imag_opt = []
+    omegac_real_opt = []
+    omegac_imag_opt = []
     eq_det = []
     
     for im_epsi1 in list_im_epsi1:
@@ -179,10 +180,10 @@ for kz in list_kz:
         
         epsi1 = re_epsi1 + 1j*im_epsi1
     
-        def det_2variables(lmbd):
-            [Re_lmbd,Im_lmbd] = lmbd
-            lambdda = Re_lmbd+1j*Im_lmbd      
-            omegac = 2*np.pi/lambdda
+        def det_2variables(omeggac):
+            # [Re_lmbd,Im_lmbd] = lmbd
+            # lambdda = Re_lmbd+1j*Im_lmbd      
+            omegac = omeggac[0] + 1j*omeggac[1]
             rta = determinante(kz,omegac,epsi1,modo,R,hbaramu)
             return np.abs(rta)
         
@@ -190,8 +191,8 @@ for kz in list_kz:
                        options={'maxiter':1050})
 #        print(res.message)
         if res.message == 'Optimization terminated successfully.':
-            lambda_real_opt.append(res.x[0])
-            lambda_imag_opt.append(res.x[1])
+            omegac_real_opt.append(res.x[0])
+            omegac_imag_opt.append(res.x[1])
             epsi1_imag_opt.append(im_epsi1)
             eq_det.append(det_2variables([res.x[0],res.x[1]]))
             
@@ -203,10 +204,10 @@ for kz in list_kz:
         print('Guardar data de minimizacion en .txt')
         if graficar==1:
             os.chdir(path_d)
-        tabla = np.array([epsi1_imag_opt,lambda_real_opt,lambda_imag_opt,eq_det])
+        tabla = np.array([epsi1_imag_opt,omegac_real_opt,omegac_imag_opt,eq_det])
         tabla = np.transpose(tabla)
         info = '.Opt det CON kz, R=%.1f \mum, mu_c=%.1f, Re(epsi1)=%.2f' %(R,hbaramu,re_epsi1) 
-        header1 = 'Im(epsi1)     Re(Lambda)      Im(Lambda)      Eq(det)' + info + name_this_py
+        header1 = 'Im(epsi1)     Re(omega/c)      Im(omega/c)      Eq(det)' + info + name_this_py
         np.savetxt('opt_det_kz%.4f_modo%i.txt' %(kz,modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
   
     if graficar ==1:
@@ -216,32 +217,32 @@ for kz in list_kz:
         tamtitle = int(tamtitle*0.9)
         
         plt.figure(figsize=tamfig)
-        plt.plot(epsi1_imag_opt,lambda_real_opt,'.g',ms = 10,label = label_graph)
+        plt.plot(epsi1_imag_opt,omegac_real_opt,'.g',ms = 10,label = label_graph)
         plt.plot([],[],'w',label = 'R = %.1f nm' %(R))
         plt.title(title+name_this_py,fontsize=tamtitle)
-        plt.ylabel('Re($\Lambda$)',fontsize=tamletra)
+        plt.ylabel('Re($\omega/c$)',fontsize=tamletra)
         plt.xlabel(r'Im($\epsilon_1$)',fontsize=tamletra)
         plt.tick_params(labelsize = tamnum)
         plt.legend(loc='lower right',markerscale=2,fontsize=tamlegend)
         plt.grid(1)
         if save_graphs==1:
             os.chdir(path_g)
-            plt.savefig('Re_Lambda_kz%i_modo%i'%(kz*1e4,modo))
+            plt.savefig('Re_omgeac_kz%i_modo%i'%(kz*1e4,modo))
             
         if close_graphs==1:    
             plt.close()
             
         plt.figure(figsize=tamfig)
-        plt.plot(epsi1_imag_opt,lambda_imag_opt,'.g',ms = 10,label = label_graph)
+        plt.plot(epsi1_imag_opt,omegac_imag_opt,'.g',ms = 10,label = label_graph)
         plt.plot([],[],'w',label = 'R = %.1f nm' %(R))
         plt.title(title+name_this_py,fontsize=tamtitle)
-        plt.ylabel('Im($\Lambda$)',fontsize=tamletra)
+        plt.ylabel('Im($\omega/c$)',fontsize=tamletra)
         plt.xlabel(r'Im($\epsilon_1$)',fontsize=tamletra)
         plt.tick_params(labelsize = tamnum)
         plt.legend(loc='lower right',markerscale=2,fontsize=tamlegend)
         plt.grid(1)
         if save_graphs==1:
-            plt.savefig('Im_Lambda_kz%i_modo%i'%(kz*1e4,modo))
+            plt.savefig('Im_omgeac_kz%i_modo%i'%(kz*1e4,modo))
     
         if close_graphs==1:    
             plt.close()

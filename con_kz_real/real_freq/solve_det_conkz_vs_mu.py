@@ -51,10 +51,10 @@ except ModuleNotFoundError:
     from det_conkz import determinante
 
 try:
-    sys.path.insert(1, path_basic2)
+    sys.path.insert(1, path_basic2 + '/' + 'extra')
     from def_kt import kt
 except ModuleNotFoundError:
-    print('def_kt.py no se encuentra en ' + path_basic2)
+    print('def_kt.py no se encuentra en ' + path_basic2 + '/' + 'extra')
     path_basic2 = input('path de la carpeta donde se encuentra def_kt.py')
     sys.path.insert(1, path_basic2)
     from def_kt import kt
@@ -64,8 +64,8 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 re_epsi1 = 3.9
-R = 0.5              #micrones
-kz_real = 0.0001     
+R = 0.05              #micrones
+kz_real = 0.05     
 modo = 4
     
 list_mu = np.linspace(0.3,0.9,6001) 
@@ -73,8 +73,8 @@ kzlim = 0.132
 
 #%%
 
-if R != 0.5:
-    raise TypeError('El barrido en kz se hizo para R = 0.5, para usarlo como cond inicial entonces R debe ser 0.5')
+if R not in [0.5,0.05]:
+    raise TypeError('Mal el valor de R: El barrido en kz se hizo para R = 0.5 o 0.05, y se usa como cond inicial')
 
 if list_mu[0]!= 0.3:
     raise TypeError('El barrido en kz se hizo para mu = 0.3, para usarlo como cond inicial list_mu debe empezar en 0.3')
@@ -85,7 +85,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_data_opt==1:
 
-    path_det = r'/re_epsi1_%.2f_vs_mu' %(re_epsi1)
+    path_det = r'/re_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
     path = path_basic + path_det
 
     if not os.path.exists(path):
@@ -98,20 +98,21 @@ path_sinkz = path_sinkz + r'/re_epsi1_%.2f_vs_mu' %(re_epsi1)
 
 print('Definir las condiciones iniciales para el metodo de minimizacion: usar las funciones de QE_lossless.py')
 
-def fcond_inicial(kz_real):
+def fcond_inicial(kz_real,R,mu0):
     """
     Parameters
     ----------
-    Ep : hbar*omega_p (unidades eV)
+    Re(kz) : componente z de k (unidades 1/micrones)
+    mu : potencial quimico (unidades eV)
 
     Returns
     -------
     [re(omega/c), im(epsilon1)]
     
-    Uso como condiciones iniciales el barrido en Ep hecho
-    para R = 0.5 $\mu$m, $\mu_c$ = 0.3 eV
+    Uso como condiciones iniciales el barrido en kz hecho
+    para R = 0.50 $\mu$m o R = 0.05 $\mu$m, $\mu_c$ = 0.3 eV o 0.6 eV
     """
-    os.chdir(path_basic + '/' + 're_epsi1_%.2f_vs_kz/mu_0.3' %(re_epsi1))
+    os.chdir(path_basic + '/' + 're_epsi1_%.2f_vs_kz/R_%.2f/mu_%.1f' %(re_epsi1,R,mu0))
     cond_init = np.loadtxt('opt_det_conkz_vs_kz_modo%i.txt' %(modo),delimiter='\t', skiprows = 1)
     cond_init = np.transpose(cond_init)
     [list_kz_opt,omegac_opt,epsi1_imag_opt,eq_det] = cond_init
@@ -126,7 +127,8 @@ def fcond_inicial(kz_real):
 print('Minimizacion del determinante de 4x4 para un barrido en kz')
 
 labeltxt = '_vs_mu_kz%.4f_modo%i' %(kz_real,modo)
-cond_inicial = fcond_inicial(kz_real)
+mu0 = list_mu[0]
+cond_inicial = fcond_inicial(kz_real,R,mu0)
 
 epsi1_imag_opt = []
 omegac_opt = []
@@ -166,7 +168,7 @@ if save_data_opt==1:
 
     tabla = np.array([list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det])
     tabla = np.transpose(tabla)
-    info = '.Opt det con kz, R=%.1f \mum, Re(epsi1)=%.2f, kz = %.4f 1/\mum' %(R,re_epsi1,kz_real) 
+    info = '.Opt det con kz, R=%.2f \mum, Re(epsi1)=%.2f, kz = %.4f 1/\mum' %(R,re_epsi1,kz_real) 
     header1 = 'mu [eV]     Omega/c [1/micrones]    Im(epsi1)     Eq(det)' + info + ', ' + name_this_py
     np.savetxt('opt_det_conkz' + labeltxt, tabla, fmt='%1.11e', delimiter='\t', header = header1)
 
@@ -176,7 +178,7 @@ label_graph = 'Opt det con kz = %.4f 1/$\mu$m' %(kz_real)
 labelsinkz = 'Opt sin kz'
 labelx = '$\mu_c$ [eV]'
 labelpng = '_vs_mu_kz%.4f_%i' %(kz_real,modo)
-title = 'Modo = %i, R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f' %(modo,R,re_epsi1) 
+title = 'Modo = %i, R = %.2f $\mu$m, Re($\epsilon_1$) = %.2f' %(modo,R,re_epsi1) 
 title2 = title + '\n' + name_this_py
 
 kt_imag = [] # Imag(kt)
