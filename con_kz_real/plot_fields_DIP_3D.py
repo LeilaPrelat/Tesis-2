@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 save_graphs = 1 #guardar los graficos 2D del campo
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
 paper = 0
+normalizar = 0 #normalizar los campos
 
 list_field = ['Ez', 'Hz', 'Etot', 'Htot'] 
 type_field = list_field[1]
@@ -145,7 +146,8 @@ R = 0.05              # micrones
 hbaramu = 0.3        # eV mu_c
 list_modos = [1,2,3,4]
 list_ind = [0,50,500,1000,5000,-1]
-list_ind = [500, -1]
+list_ind = [0, -1]
+#list_ind = [0]
 z = 0
 nmax = 10
 Ao,Bo = 1,1
@@ -156,11 +158,58 @@ theta_D = 0
 z_D = 0
 rho_D = R/2
 
-px = 1
-py = 0
+px = 1/2
+py = -0.5*1j
 pz = 0
 p1 = px + 1j*py # p+
 p2 = px - 1j*py # p-
+
+#%%
+
+def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad):
+    plt.figure(figsize=tamfig)
+    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+    plt.tick_params(labelsize = tamnum, pad = pad)
+    if paper == 0:
+        plt.title(title,fontsize=int(tamtitle*0.9))
+    if paper == 1:
+        plt.tight_layout()
+    return   
+
+def circle(radio):
+    listx = []
+    listy = []
+    for theta in np.linspace(0,2*np.pi):
+        x = radio*np.cos(theta)
+        y = radio*np.sin(theta)
+        listx.append(x)
+        listy.append(y)
+    return listx,listy
+
+def labelp(pvalue):
+    if pvalue.imag > 0:
+        if pvalue.real > 0:
+            rta = ' = %.2f + i%.2f' %(pvalue.real, pvalue.imag)
+        elif pvalue.real < 0:
+            rta = ' = -%.2f + i%.2f' %(-pvalue.real, pvalue.imag)
+        else:
+            rta = ' = i%i' %(pvalue.imag)
+    elif pvalue.imag < 0:
+        if pvalue.real > 0:
+            rta = ' = %.2f - i%.2f' %(pvalue.real, -pvalue.imag)
+        elif pvalue.real < 0:
+            rta = ' = -%.2f - i%.2f' %(-pvalue.real, -pvalue.imag)
+        else:
+            rta = ' = - i%.2f' %(-pvalue.imag)
+    else:
+        if pvalue.real>0:
+            rta = ' = %.2f' %(pvalue.real)
+        elif pvalue.real<0:
+            rta = ' = -%.2f' %(-pvalue.real)
+        else:
+            rta = ' = 0'
+    return rta
 
 #%%
     
@@ -186,28 +235,12 @@ else:
         labelz = 'Re(' + type_field + ')'
         campo  =  'Re' + type_field 
 #    name = type_field
+labelpx = 'px' + labelp(px)
+labelpy = 'py' + labelp(py)
 
 
-def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad):
-    plt.figure(figsize=tamfig)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
-    plt.tick_params(labelsize = tamnum, pad = pad)
-    if paper == 0:
-        plt.title(title,fontsize=int(tamtitle*0.9))
-    if paper == 1:
-        plt.tight_layout()
-    return   
-
-def circle(radio):
-    listx = []
-    listy = []
-    for theta in np.linspace(0,2*np.pi):
-        x = radio*np.cos(theta)
-        y = radio*np.sin(theta)
-        listx.append(x)
-        listy.append(y)
-    return listx,listy
+labelp1 = 'p+' + labelp(p1)
+labelp2 = 'p-' + labelp(p2)
 
 #%%
 
@@ -241,24 +274,29 @@ for modo in list_modos:
     
         ind = int(ind)
         kz = list_kz_opt[ind] #micrones
+        print('')
+        print(labelp1)
+        print(labelp2)
         print('kz = ', kz)
         print('modo = ', modo)
-        print('')
-        
+       
         im_epsi1 = epsi1_imag_opt[ind]
         omegac = omegac_opt[ind] 
         epsi1 = re_epsi1 + 1j*im_epsi1
-        
+        mu1 = 1
+        k_2 = mu1*epsi1*omegac**2
+        if np.abs(k_2) < np.abs(kz**2):
+            print('fuera del cono de luz')
         # ktot = omegac*((mu1*epsi1)**(1/2))
         
         # ang_theta = np.arcsin(kz/np.abs(ktot))
         # ang2 = np.cos(np.pi/2 - ang_theta) 
         # print(360*ang2/(2*np.pi))
         
-        info1 = r'Ao = %i, Bo = %i, kz = %.4f1/$\mu$m, z = %i$\mu$m' %(Ao,Bo,kz,z)
+        info1 = r'Ao = %i, Bo = %i, kz = %.4f 1/$\mu$m, z = %i$\mu$m' %(Ao,Bo,kz,z)
         info2 = r'R = %.2f$\mu$m, nmax = %i, $\mu_c$ = %.1f eV, $\nu$ = %i' %(R,nmax,hbaramu,modo)
-        info3 = r'$\epsilon_1$ = %.1f - i%.4e, $\omega/c$ = %.4e1/$\mu$m, $\rho_D$ = %.3f$\mu$m' %(re_epsi1,-im_epsi1,omegac,rho_D)
-        infoDIP = r'px = %i, py = %i, pz = %i, $\theta_D$ = %i, $z_D$ = %i$\mu$m' %(px,py,pz,theta_D,z_D)
+        info3 = r'$\epsilon_1$ = %.1f - i%.4e, $\omega/c$ = %.4e 1/$\mu$m, $\rho_D$ = %.3f$\mu$m' %(re_epsi1,-im_epsi1,omegac,rho_D)
+        infoDIP = labelpx + ', ' + labelpy + r', pz = %i, $\theta_D$ = %i, $z_D$ = %i$\mu$m' %(pz,theta_D,z_D)
         title =  info1 + '\n' + info2 + '\n' + info3 + '\n' + infoDIP
         
         if non_active_medium == 1:
@@ -306,8 +344,9 @@ for modo in list_modos:
             
             f2 = np.vectorize(Etot_2variable)
             Z2 = f2(X, Y)
-            maxi = np.max(Z2)
-            Z2 = Z2/maxi
+            if normalizar == 1:
+                maxi = np.max(Z2)
+                Z2 = Z2/maxi
             
             graph(title_loss,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
             im = plt.imshow(Z2, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
@@ -337,9 +376,7 @@ for modo in list_modos:
         
         f1 = np.vectorize(Etot_2variable)
         Z1 = f1(X, Y)
-        if non_active_medium == 1 and paper == 0:
-            Z1 = Z1/maxi
-        elif paper == 1: #normarlizar TODOS los campos : con y sin medio activo
+        if normalizar == 1: #normarlizar TODOS los campos : con y sin medio activo
             maxi2 = np.max(Z1) 
             Z1 = Z1/maxi2
         
