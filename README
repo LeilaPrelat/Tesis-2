@@ -19,7 +19,9 @@ En todas las carpetas: cilindro de 2 medios siendo el medio exterior una lamina 
 	minimizar el numerador del coeficiente "an" en lugar del denominador
 		- dentro de la carpeta real_freq : critical_values.py busca degeneraciones (super invisibilidad)
 
--con kz: minimizar el determinante de 2x2. ahora hay propagacion en el eje z. (incompleto, no muy ordenado)
+-con kz: minimizar el determinante de 2x2. ahora hay propagacion en el eje z. (incompleto, no muy ordenado). 
+		-dentro de kz aparece el caso "_dip" que es con un dipolo adentro del cilindro para excitar los kz fuera 
+		del cono de luz
 
 -webhook.py : para los barridos en omega/c complejo (que tardan y son los unicos que tardan) avisar que termino el barrido por discord al grupo de electro
 

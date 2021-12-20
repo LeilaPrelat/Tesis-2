@@ -1,0 +1,1 @@
+kz = 0.0620 $\mu m^{-1}$, R = 0.05$\mu$m, nmax = 5, $\mu_c$ = 0.3 eV, Ao = 1, Bo = 1, $\epsilon_1$ = 3.9 - i4.13506e-02, $\omega/c$ = 4.21239e-01 1/$\mu$m, modo = 1, $\gamma$ = 1.00, purcell.py
