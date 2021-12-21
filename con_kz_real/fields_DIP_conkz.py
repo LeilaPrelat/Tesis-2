@@ -7,8 +7,8 @@ Created on Thu Jun  4 22:07:37 2020
 
 campos transversales + longitudinales caso con kz:
     
-    seccion 3.2 del cuaderno corto
-
+    con un dipolo interior en el cilindro
+    
 """
 
 import numpy as np

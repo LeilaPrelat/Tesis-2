@@ -1,0 +1,1 @@
+Ao = 1, Bo = 1, kz = 0.5000 1/$\mu$m, R = 0.05$\mu$m, nmax = 5, $\mu_c$ = 0.3 eV, $\nu$ = 1, $\epsilon_1$ = 3.9 - i1.2086e+00, $\omega/c$ = 3.7690e+01 1/$\mu$m, $\rho_D$ = 0.025$\mu$m, px = 0.50, py = - i0.50, pz = 0, $\theta_D$ = 0, $z_D$ = 0$\mu$m

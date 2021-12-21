@@ -24,9 +24,9 @@ paper = 0
 normalizar = 0 #normalizar los campos
 
 list_field = ['Ez', 'Hz', 'Etot', 'Htot'] 
-type_field = list_field[1]
+type_field = list_field[3]
 if type_field == 'Ez' or type_field == 'Hz':
-    modulo = 0 #if modulo == 1 graficar |Hz| o |Ez| y si vale 0 grafica la parte real
+    modulo = 0 #if modulo == 1 graf3icar |Hz| o |Ez| y si vale 0 grafica la parte real
 
 #%%
 
@@ -160,7 +160,10 @@ rho_D = R/2
 
 px = 1/2
 py = -0.5*1j
-pz = 0
+
+px = 0
+py = 0
+pz = 1
 p1 = px + 1j*py # p+
 p2 = px - 1j*py # p-
 
@@ -237,7 +240,6 @@ else:
 #    name = type_field
 labelpx = 'px' + labelp(px)
 labelpy = 'py' + labelp(py)
-
 
 labelp1 = 'p+' + labelp(p1)
 labelp2 = 'p-' + labelp(p2)
