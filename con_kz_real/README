@@ -11,3 +11,5 @@ En todas las carpetas: cilindro de 2 medios siendo el medio exterior una lamina 
 
 
 -webhook.py : para los barridos en omega/c complejo (que tardan y son los unicos que tardan) avisar que termino el barrido por discord al grupo de electro
+
+-seccion_eficaz2 : seccion eficaz con un epsilon que es una lorentziana (paper 2 con Depine). Ver paper de passarelli2019 eq 23. Usar plot_cross_sections2.py que agrega la funcion lorentiziana epsilon(omega)

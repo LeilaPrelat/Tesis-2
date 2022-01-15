@@ -1,0 +1,1 @@
+kz = 0.1000 $\mu m^{-1}$, R = 0.5$\mu$m, nmax = 5, $\mu_c$ = 0.3 eV, Ao = 1, Bo = 1, $\epsilon_1$ = 3.9 - i3.93043e-02 y $\omega/c$ = 1.34006e-01 1/$\mu$m del modo = 1, plot_cross_section2.py

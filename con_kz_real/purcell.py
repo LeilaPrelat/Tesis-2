@@ -11,7 +11,8 @@ Q/Veff: cuantifica la fuerza de acople entre dipolo emisor y cavidad (polariton)
 
 Problema con Qmodo = omega_k/(2*gamma_k) el gamma_k es el factor de damping del modo k-esimo (el medio 
                                                                                               interior es dielectrico, 
-                                                                                              no tiene damping en principio)
+                               Q = Re(omega)/Im(omega)                                                               no tiene damping en principio)
+                               
 Veff: integral de epsilon*|E(r)|^2 d^3r normalizada 
 
 """
