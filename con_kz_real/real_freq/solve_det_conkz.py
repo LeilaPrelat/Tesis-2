@@ -34,6 +34,7 @@ except ModuleNotFoundError:
     path_basic = input('path de la carpeta donde se encuentra det_conkz.py')
     sys.path.insert(1, path_basic)
     from det_conkz import determinante
+    
 #%%
 
 def solve_det(kz,omegac,re_epsi1,list_im_epsi1,modo,R,hbaramu,cond_inicial):   

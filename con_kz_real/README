@@ -5,11 +5,21 @@ En todas las carpetas: cilindro de 2 medios siendo el medio exterior una lamina 
 ############################################################################################################################################################################################
 
 -con kz: minimizar el determinante de 2x2. ahora hay propagacion en el eje z. (incompleto, no muy ordenado).
-		-dentro de kz aparece el caso "_dip" que es con un dipolo adentro del cilindro para excitar los kz fuera
-		del cono de luz
-		hay 2 posibles funciones para e_{zm}: la version con m^2 que me dio a mi (ver overleaf) y la del apunte de Depine sin el m^2 (ver carpeta paper2_Rdep en el Desktop)---> 2 versiones en dipolo_functions.py
-
 
 -webhook.py : para los barridos en omega/c complejo (que tardan y son los unicos que tardan) avisar que termino el barrido por discord al grupo de electro
 
--seccion_eficaz2 : seccion eficaz con un epsilon que es una lorentziana (paper 2 con Depine). Ver paper de passarelli2019 eq 23. Usar plot_cross_sections2.py que agrega la funcion lorentiziana epsilon(omega)
+######## paper 2 #############################################################################################################################################################################
+
+nube https://nube.df.uba.ar/index.php/s/5ao3cTejKBYqdXG?path=%2F
+
+A) DIPOLO
+	-dentro de kz aparece el caso "_dip" que es con un dipolo adentro del cilindro para excitar los kz fuera del cono de luz
+	dipolo_functions.py : hay 2 posibles funciones para e_{zm}: la version con m^2 que me dio a mi (ver overleaf) y la del apunte de Depine sin el m^2 (ver carpeta paper2_Rdep en el Desktop)---> 2 
+	versiones en dipolo_functions.py. El dipolo cambia la inhomogeneidad, entonces hay un .py para los coef de la matriz de 4x4 con el dipolo ---> estos coeficientes se usan para las secciones eficaces con el dipolo y para los campos con el dipolo 
+
+B) LORENTZIANA para epsilon1(omega) 
+	-seccion_eficaz_disp : seccion eficaz con un epsilon que es una lorentziana (paper 2 con Depine). Ver paper de passarelli2019 eq 23. Usar plot_cross_sections2.py que agrega la funcion 	 	lorentiziana epsilon(omega) y usa los valores im_epsi1, omega/c del caso no dispersivo. Esto fue una prueba
+
+	-epsilon_lorentziana.py : epsilon modelo de Nicolas
+
+

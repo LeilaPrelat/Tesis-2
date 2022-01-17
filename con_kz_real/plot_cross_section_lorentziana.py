@@ -13,6 +13,8 @@ VER TESIS
 
 epsilon como funcion de omega: eq 23 del paper 
 passarelli2019
+modelo lorentziana para el epsilon pero con los resultados
+del modelo simple no dispersivo (real_freq)
 
 """
 import numpy as np
@@ -45,7 +47,7 @@ path_basic = path.replace('/' + name_this_py,'')
 path_graphene = path_basic.replace('/' + 'con_kz_real','') 
 
 if save_graphs==1:
-    path_g = path_basic + '/' + 'seccion_eficaz2'
+    path_g = path_basic + '/' + 'seccion_eficaz_lorentziana'
     if not os.path.exists(path_g):
         print('Creating folder to save graphs')
         os.mkdir(path_g)
@@ -93,6 +95,16 @@ else:
     def Cross_Section(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo):
         return Qext(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo)
 
+#freq en THz
+try:
+    sys.path.insert(1, path_basic)
+    from epsilon_lorentziana import epsilon 
+except ModuleNotFoundError:
+    print('epsilon_lorentziana.py no se encuentra en ' + path_basic)
+    path_basic2 = input('path de la carpeta donde se encuentra epsilon_lorentziana.py')
+    sys.path.insert(1, path_basic)
+    from epsilon_lorentziana import epsilon
+
 try:
     sys.path.insert(1, path_graphene)
     from constantes import constantes
@@ -117,9 +129,11 @@ Ao,Bo = 1,1
 gamma = 2  # damping constant en unidades de eV : hbar*omega
 aux_gamma = gamma*0.5/(hb*c) # eq 23 del paper passarelli diviendo arriba y abajo por c^2
 
+#eta = 0.95 # population invertion para el epsilon(omega) lorentziano
+aux_cte = c*1e-12 # freq en THz para epsilon
 nmax = 5
-ind = 99
-ind = -1
+
+ind = 400
 
 #%%
 
@@ -189,7 +203,7 @@ elif Ao == 0:
 
 del list_kz_opt,omegac_opt,epsi1_imag_opt,eq_det
 
-info1 = 'kz = %.4f $\mu m^{-1}$, R = %.1f$\mu$m, nmax = %i, $\mu_c$ = %.1f eV' %(kz,R,nmax,hbaramu) +infAoBo 
+info1 = 'kz = %.4f $\mu m^{-1}$, R = %.1f$\mu$m, nmax = %i, $\mu_c$ = %.1f eV' %(kz,R,nmax,hbaramu) + infAoBo 
 info2 = '$\epsilon_1$ = %.1f - i%.5e y $\omega/c$ = %.5e 1/$\mu$m del modo = %i' %(re_epsi1,-crit,omegac0,modo)
 
 inf_tot = info1 + ', ' + info2  + ', ' + name_this_py
@@ -230,63 +244,44 @@ if graph_1D==1:
     print('Calcular '+ name + ' para diferentes Im(epsi1)')
     
     tol = 1e-3
-    list_im_epsi1_fino = [0,crit+3*tol,crit+2*tol,crit+tol,crit,crit-tol,crit-2*tol]
-    list_im_epsi1_grueso = [0,-crit,0.5,-0.001,-0.01,crit,-0.5]
+    list_eta = [0,0.25,0.5,0.75,1] 
     
     N = int(5*1e3)               
     omegac1,omegac2 = omegac0*0.98,omegac0*1.02
     # lambda1,lambda2 = lambbda_real*0.999998,lambbda_real*1.000002
     list_omegac = np.linspace(omegac1,omegac2,N)
+    freq0 = omegac0*c*1e-12
     
     list_Qabs_tot1 = []
-    for im_epsi1 in list_im_epsi1_fino:
-        im_epsi1 = np.round(im_epsi1,7)
-        print(im_epsi1)
+    for eta in list_eta:
+        eta = np.round(eta,2)
+        dif = epsilon(freq0, eta).imag - crit
+        print(eta, np.round(dif,4) )
         list_Qabs1 = []
         for omeggac in list_omegac:
-            num = (omegac0 - omeggac + 1j*aux_gamma)*aux_gamma
-            den = (omegac0 - omeggac)**2 + aux_gamma**2 
-            epsi1 = re_epsi1 + im_epsi1*num/den
-           
+            # num = (omegac0 - omeggac + 1j*aux_gamma)*aux_gamma
+            # den = (omegac0 - omeggac)**2 + aux_gamma**2 
+            freq = omeggac*aux_cte # freq tiene que estar en THz para la funcion epsilon
+            new_epsi1 = epsilon(freq, eta) 
+            epsi1 = 3.9 + new_epsi1.imag # ver si el problema esta en la parte real 
+             
             Qabss = Cross_Section(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo)
             list_Qabs1.append(Qabss)  
         list_Qabs_tot1.append(list_Qabs1)  
     
     del list_Qabs1
-                
-    list_Qabs_tot2 = []
-    for im_epsi1 in list_im_epsi1_grueso:
-        im_epsi1 = np.round(im_epsi1,7)
-        print(im_epsi1)
-        list_Qabs2 = []
-        for omeggac in list_omegac:
-            num = (omegac0 - omeggac + 1j*aux_gamma)*aux_gamma
-            den = (omegac0 - omeggac)**2 + aux_gamma**2 
-            epsi1 = re_epsi1 + im_epsi1*num/den
-            
-            Qabss = Cross_Section(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo)
-            list_Qabs2.append(Qabss)  
-        list_Qabs_tot2.append(list_Qabs2)  
-    
-    del list_Qabs2
-    
+                    
     colores = ['coral','yellowgreen','midnightblue','green','darkred','aquamarine','hotpink','steelblue','purple']    
     print('Graficar ' + name  + ' para diferentes Im(epsi1)')
     
     graph(title,labelx,labely1,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)    
     for j in range(len(list_Qabs_tot1)):
         list_Qabs2 = np.abs(list_Qabs_tot1[j])
-        im_epsi1 = list_im_epsi1_fino[j]
+        eta = list_eta[j]
             
-        if im_epsi1 == crit:
-            labell = 'Im($\epsilon_1$) = Im($\epsilon_1$)$_c$'
-        elif im_epsi1 == 0:
-            labell = 'Im($\epsilon_1$) = 0'  
-        else:
-            labell = 'Im($\epsilon_1$) = %.7f'%(im_epsi1)
+        labell = '$\eta$ = %.2f' %(eta)
     
         plt.plot(list_omegac,list_Qabs2,'o',color = colores[j],ms = 4,alpha = 0.8,label = labell)
-    
     
     n = 10
     mini,maxi = np.min(list_Qabs_tot1),np.max(list_Qabs_tot1)
@@ -302,33 +297,6 @@ if graph_1D==1:
         if paper == 0:
             np.savetxt('info_' + name + '_modo%i_kz%.4f_zoom1D.txt' %(modo,kz), [inf_tot],fmt='%s')
     
-    graph(title,labelx,labely1,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)   
-    for j in range(len(list_Qabs_tot2)):
-        list_Qabs2 = np.abs(list_Qabs_tot2[j])
-        im_epsi1 = list_im_epsi1_grueso[j]
-            
-        if im_epsi1 == crit:
-            labell = 'Im($\epsilon_1$) = Im($\epsilon_1$)$_c$'
-        elif im_epsi1 == -crit:
-            labell = 'Im($\epsilon_1$) = -Im($\epsilon_1$)$_c$'    
-        elif im_epsi1 == 0:
-            labell = 'Im($\epsilon_1$) = 0'  
-        else:
-            labell = 'Im($\epsilon_1$) = %.3f'%(im_epsi1)
-            
-        plt.plot(list_omegac,list_Qabs2,'o',color = colores[j],ms = 4,alpha = 0.8,label = labell)
-    
-    n = 10
-    mini,maxi = np.min(list_Qabs_tot2),np.max(list_Qabs_tot2)
-    eje_Lambda2 = np.linspace(mini,maxi,n)
-    plt.plot(omegac0*np.ones(n),eje_Lambda2,'-k',lw = 1,label = labelomegac)
-    plt.yscale('log')
-    plt.legend(loc='best',markerscale=2,fontsize=int(tamlegend*0.7))
-    if save_graphs==1:
-        os.chdir(path_g)
-        # plt.tight_layout(1)
-        plt.savefig(name + '_grueso_modo%i_kz%.4f.png' %(modo,kz), format='png') 
-
 #%%
 
 from matplotlib.colors import SymLogNorm
@@ -337,10 +305,15 @@ import matplotlib.colors as colors
 if graph_2D==1:
     print('Graficar '+ name + ' en 2D') 
     
-    def Qscat2D(Omegac,Im_epsi1): 
-        num = (omegac0 - Omegac + 1j*aux_gamma)*aux_gamma
-        den = (omegac0 - Omegac)**2 + aux_gamma**2 
-        Epsi1 = re_epsi1 + Im_epsi1*num/den
+    def Qscat2D(Omegac,Eta): 
+        #num = (omegac0 - Omegac + 1j*aux_gamma)*aux_gamma
+        #den = (omegac0 - Omegac)**2 + aux_gamma**2 
+        #Epsi1 = re_epsi1 + Im_epsi1*num/den
+        
+        Freq = Omegac*aux_cte # freq tiene que estar en THz para la funcion epsilon
+        new_epsi1 = epsilon(Freq, Eta) 
+        Epsi1 = 3.9 + new_epsi1.imag # ver si el problema esta en la parte real 
+            
         Qscatt = Cross_Section(kz,Omegac,Epsi1,nmax,R,hbaramu,Ao,Bo)
         return (Qscatt)
        

@@ -79,12 +79,12 @@ err2 = 'path de la carpeta donde se encuentra cross_sections_DIP_conkz.py'
 if cross_section == 'Qscat':
     try:
         sys.path.insert(1, path_basic)
-        from cross_sections_DIP_conkz import Qscat
+        from cross_sections_conkz_DIP import Qscat
     except ModuleNotFoundError:
         print(err)
         path_basic = input(err2)
         sys.path.insert(1, path_basic)
-        from cross_sections_DIP_conkz import Qscat
+        from cross_sections_conkz_DIP import Qscat
         
     def Cross_Section(kz_var,omegac,epsi1,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         return Qscat(kz_var,omegac,epsi1,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
@@ -92,12 +92,12 @@ if cross_section == 'Qscat':
 elif cross_section == 'Qabs':
     try:
         sys.path.insert(1, path_basic)
-        from cross_sections_DIP_conkz import Qabs
+        from cross_sections_conkz_DIP import Qabs
     except ModuleNotFoundError:
         print(err)
         path_basic = input(err2)
         sys.path.insert(1, path_basic)
-        from cross_sections_DIP_conkz import Qabs
+        from cross_sections_conkz_DIP import Qabs
         
     def Cross_Section(kz_var,omegac,epsi1,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         return Qabs(kz_var,omegac,epsi1,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
@@ -106,12 +106,12 @@ else:
 
     try:
         sys.path.insert(1, path_basic)
-        from cross_sections_DIP_conkz import Qext
+        from cross_sections_conkz_DIP import Qext
     except ModuleNotFoundError:
         print(err)
         path_basic = input(err2)
         sys.path.insert(1, path_basic)
-        from cross_sections_DIP_conkz import Qext
+        from cross_sections_conkz_DIP import Qext
         
     def Cross_Section(kz_var,omegac,epsi1,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         return Qext(kz_var,omegac,epsi1,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)

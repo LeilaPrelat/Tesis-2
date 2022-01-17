@@ -26,12 +26,12 @@ path_graphene = path_basic.replace('/' + 'con_kz_real','')
 
 try:
     sys.path.insert(1, path_basic)
-    from coef_matrix_AoBo_dip import coef
+    from coef_matrix_AoBo_DIP import coef
 except ModuleNotFoundError:
     print('coef_matrix_AoBo.py no se encuentra en ' + path_basic)
-    path_basic = input('path de la carpeta donde se encuentra coef_matrix_AoBo_dip.py')
+    path_basic = input('path de la carpeta donde se encuentra coef_matrix_AoBo_DIP.py')
     sys.path.insert(1, path_basic)
-    from coef_matrix_AoBo_dip import coef
+    from coef_matrix_AoBo_DIP import coef
 
 try:
     sys.path.insert(1, path_graphene)

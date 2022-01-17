@@ -1,0 +1,1 @@
+kz = 4.0000 $\mu m^{-1}$, R = 0.5$\mu$m, nmax = 5, $\mu_c$ = 0.3 eV, Ao = 1, Bo = 1, $\epsilon_1$ = 3.9 - i9.59892e-01 y $\omega/c$ = 6.01376e+00 1/$\mu$m del modo = 1, plot_cross_section_lorentziana.py

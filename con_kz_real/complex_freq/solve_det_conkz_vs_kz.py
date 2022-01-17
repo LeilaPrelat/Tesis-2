@@ -54,7 +54,7 @@ try:
     sys.path.insert(1, path_basic2)
     from det_conkz import determinante
 except ModuleNotFoundError:
-    print('det_conkz.py no se encuentra en el path_basic2 definido/carpeta de trabajo')
+    print('det_conkz.py no se encuentra en ' + path_basic2)
     path_basic2 = input('path de la carpeta donde se encuentra det_conkz.py')
     sys.path.insert(1, path_basic2)
     from det_conkz import determinante
