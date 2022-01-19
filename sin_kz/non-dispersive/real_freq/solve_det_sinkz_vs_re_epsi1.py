@@ -56,11 +56,11 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-R = 0.5
-hbaramu = 0.9           #eV
+R = 0.25
+hbaramu = 0.9          #eV
 modo = 4
 
-list_re_epsi1 =  np.linspace(1,9,801)  
+list_re_epsi1 =  np.linspace(1,20,1901)  
 # list_mu = [0.3]
 
 #%%
@@ -75,7 +75,7 @@ print('Definir en donde vamos a guardar los datos de la minimizacion')
 
 if save_data_opt==1:
 
-    path_det = r'/R_%.1f_vs_re_epsi1/mu_%.1f' %(R,hbaramu)
+    path_det = r'/R_%.2f_vs_re_epsi1/mu_%.1f' %(R,hbaramu)
     path = path_basic + path_det
 
     if not os.path.exists(path):
@@ -146,13 +146,13 @@ if save_data_opt==1:
 
     tabla = np.array([list_re_epsi1_opt,omegac_opt,epsi1_imag_opt,eq_det])
     tabla = np.transpose(tabla)
-    info = '.Opt det SIN kz, mu = %.1f eV, R = %.1f micrones' %(hbaramu,R) 
+    info = '.Opt det SIN kz, mu = %.1f eV, R = %.2f micrones' %(hbaramu,R) 
     header1 = 'Re(epsi1)     Omega/c [1/micrones]    Im(epsi1)     Eq(det)' + info + ', ' + name_this_py
     np.savetxt('opt_det_sinkz_vs_re_epsi1_modo%i.txt' %(modo), tabla, fmt='%1.9e', delimiter='\t', header = header1)
 
 label_graph = 'Opt det sin kz'
 label_QE = 'QE approx sin perdidas'
-title = 'Modo = %i, $\mu$ = %.1f eV, R = %.1f $\mu$m' %(modo,hbaramu,R) +  ', ' + name_this_py
+title = 'Modo = %i, $\mu$ = %.1f eV, R = %.2f $\mu$m' %(modo,hbaramu,R) +  ', ' + name_this_py
 labelx = 'Re($\epsilon_1$)'
 
 im_epsi1_QE = []

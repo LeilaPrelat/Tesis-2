@@ -13,6 +13,10 @@ determinante de 4x4
 
 barrido en kz para mu = 0.3.  Hallar omega/c real y im(epsilon1) que minimizan
 el determinante con kz para diferentes valores de kz
+
+17/01/22 definir otra funcion como condiciones iniciales para poder
+partir de un re(epsi1) = 16
+
 """
 
 import numpy as np
@@ -20,11 +24,14 @@ import os
 import sys
 from scipy.optimize import minimize   
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
 
 #%% 
 
-save_data_opt = 1 #guardar data de la minimizacion
-save_graphs = 1 #guardar los graficos
+save_data_opt = 1 # guardar data de la minimizacion
+save_graphs = 1 # guardar los graficos
+re_epsi1_alto = 1 # definir otra funcion como condiciones iniciales para poder
+                  # partir de un re(epsi1) = 16 (paper 2, usar epsilon lorentziano que tiene un re(epsi1) alto)
 
 tamfig = (11,9)
 tamlegend = 18
@@ -38,6 +45,7 @@ name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
 path_basic2 = path_basic.replace('/' + 'real_freq','')
+path_sinkz = path_basic2.replace('/' + 'con_kz_real','') + '/' + 'sin_kz' + '/' + 'non-dispersive/real_freq'
 
 try:
     sys.path.insert(1, path_basic2)
@@ -49,12 +57,12 @@ except ModuleNotFoundError:
     from det_conkz import determinante
 
 try:
-    sys.path.insert(1, path_basic2)
+    sys.path.insert(1, path_basic2 + '/extra')
     from def_kt import kt
 except ModuleNotFoundError:
-    print('def_kt.py no se encuentra  en ' + path_basic2)
+    print('def_kt.py no se encuentra  en ' + path_basic2 + '/extra')
     path_basic2 = input('path de la carpeta donde se encuentra def_kt.py')
-    sys.path.insert(1, path_basic2)
+    sys.path.insert(1, path_basic2 + '/extra')
     from def_kt import kt
 
 try:
@@ -70,8 +78,8 @@ except ModuleNotFoundError:
 
 print('Definir parametros del problema')
 
-re_epsi1 = 3.9
-R = 0.05              #micrones
+re_epsi1 = 16
+R = 0.25              #micrones
 hbaramu = 0.3        #eV mu_c
 modo = 4
     
@@ -82,12 +90,16 @@ list_kz = np.linspace(0,0.5,1001)
 
 #%%
 
-if R not in [0.5,0.05]:
-    raise TypeError('Mal el valor de R')
+if re_epsi1_alto == 1:
+    if R not in [0.5, 0.25]:
+        raise TypeError('Mal el valor de R')
 
 if list_kz[0]!= 0:
-    raise TypeError('El barrido en kz debe empezar de 0 para usar el QE_approx del caso sin kz')
-    
+    if re_epsi1_alto == 0:
+        raise TypeError('El barrido en kz debe empezar de 0 para usar el QE_approx del caso sin kz')
+    else: 
+        raise TypeError('El barrido en kz debe empezar de 0 para usar el barrido en re(epsi1) para el caso sin kz')
+        
 #%%
 
 print('Definir en donde vamos a guardar los datos de la minimizacion')
@@ -103,31 +115,59 @@ if save_data_opt==1:
         
 #%%
 
-print('Definir las condiciones iniciales para el metodo de minimizacion: usar las funciones de QE_lossless.py')
-
-def fcond_inicial(hbaramu):
-    """
-    Parameters
-    ----------
-    re_epsi1 : parte real de la permeabilidad electrica del medio 1
-
-    Returns
-    -------
-    [re(omega/c), im(epsilon1)]
+if re_epsi1_alto == 0:
+    print('Definir las condiciones iniciales para el metodo de minimizacion: usar las funciones de QE_lossless.py')
+    def fcond_inicial(hbaramu):
+        """
+        Parameters
+        ----------
+        re_epsi1 : parte real de la permeabilidad electrica del medio 1
     
-    Uso como condiciones iniciales las funciones de QE_lossless.py (ver seccion 1.7 del cuaderno corto)
-    --> el barrido en kz debe empezar en 0
-    """
-    a = omegac_cuasi(modo,R,re_epsi1,hbaramu)
-    b = im_epsi1_cuasi(a,modo,R,hbaramu) 
-    return [a,b]    
+        Returns
+        -------
+        [re(omega/c), im(epsilon1)]
+        
+        Uso como condiciones iniciales las funciones de QE_lossless.py (ver seccion 1.7 del cuaderno corto)
+        --> el barrido en kz debe empezar en 0
+        """
+        a = omegac_cuasi(modo,R,re_epsi1,hbaramu)
+        b = im_epsi1_cuasi(a,modo,R,hbaramu) 
+        return [a,b]    
+else:
+    print('Definir las condiciones iniciales para el metodo de minimizacion: usar el barrido en Re(epsi1) del caso sin kz')
+    def fcond_inicial(R,mu0):
+        """
+        Parameters
+        ----------
+        R : radio del cilindro : 0.5 o 0.25 (unidad micrones)
+        mu : potencial quimico (unidades eV)
+    
+        Returns
+        -------
+        [re(omega/c), im(epsilon1)]
+        
+        Uso como condiciones iniciales el barrido en kz hecho
+        para R = 0.50 $\mu$m o R = 0.25 $\mu$m, $\mu_c$ = 0.3 eV o 0.6 eV o 0.9eV
+        """
+        os.chdir(path_sinkz + '/' + 'R_%.2f_vs_re_epsi1/mu_%.1f' %(R,mu0))
+        cond_init = np.loadtxt('opt_det_sinkz_vs_re_epsi1_modo%i.txt' %(modo),delimiter='\t', skiprows = 1)
+        cond_init = np.transpose(cond_init)
+        [list_re_epsi1, omegac_opt, epsi1_imag_opt, eq_det] = cond_init
+        f1 = interp1d(list_re_epsi1,omegac_opt)
+        f2 = interp1d(list_re_epsi1,epsi1_imag_opt)
+        a = float(f1(re_epsi1))
+        b = float(f2(re_epsi1))
+        return [a,b] 
 
 #%%        
 
 print('Minimizacion del determinante de 4x4 para un barrido en kz')
 
-cond_inicial = fcond_inicial(hbaramu)
-
+if re_epsi1_alto == 0:
+    cond_inicial = fcond_inicial(hbaramu)
+else:
+    cond_inicial = fcond_inicial(R,hbaramu)
+    
 epsi1_imag_opt = []
 omegac_opt = []
 eq_det = []

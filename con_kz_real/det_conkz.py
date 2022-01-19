@@ -102,7 +102,7 @@ def determinante(kz_var,omegac,epsi1,mode,R,mu_c):
         else:
     	    xtmedio = -xtmedio
         if medio == 2: 
-            if argument <= 1e-50:
+            if np.abs(argument) <= 1e-50:
             	raise TypeError('El argumento de Hankel es muy chico y Hankel diverge en el 0')
         return xtmedio
     

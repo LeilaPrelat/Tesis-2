@@ -11,6 +11,7 @@ En todas las carpetas: cilindro de 2 medios siendo el medio exterior una lamina 
 ######## paper 2 #############################################################################################################################################################################
 
 nube https://nube.df.uba.ar/index.php/s/5ao3cTejKBYqdXG?path=%2F
+overleaf 2do paper 
 
 A) DIPOLO
 	-dentro de kz aparece el caso "_dip" que es con un dipolo adentro del cilindro para excitar los kz fuera del cono de luz
@@ -21,5 +22,9 @@ B) LORENTZIANA para epsilon1(omega)
 	-seccion_eficaz_disp : seccion eficaz con un epsilon que es una lorentziana (paper 2 con Depine). Ver paper de passarelli2019 eq 23. Usar plot_cross_sections2.py que agrega la funcion 	 	lorentiziana epsilon(omega) y usa los valores im_epsi1, omega/c del caso no dispersivo. Esto fue una prueba
 
 	-epsilon_lorentziana.py : epsilon modelo de Nicolas
+	
+		-Cuesta encontrar soluciones del determinante usando la funcion epsilon1(omega) dado que el parámetro de Im(epsi1) ahora está fijo 
+		 Solucion: dentro de la carpeta real_freq_lorentziana, el archivo plot_det_conkz.py resuelve el determinante y grafica mapas de color
+		 para chequear que el algoritmo Nelder-Mead encuentre correctamente 
 
 

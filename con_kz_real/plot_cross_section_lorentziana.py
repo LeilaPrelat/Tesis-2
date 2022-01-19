@@ -121,11 +121,12 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 print('Definir parametros del problema')
 
 #valores de minimizo perdidas (ver header)
-re_epsi1 = 3.9
-R = 0.5 #micrones
+re_epsi1 = 16
+R = 0.25 #micrones
 hbaramu = 0.3        #eV mu_c
 modo = 1
-Ao,Bo = 1,1
+
+Ao, Bo = 1, 1
 gamma = 2  # damping constant en unidades de eV : hbar*omega
 aux_gamma = gamma*0.5/(hb*c) # eq 23 del paper passarelli diviendo arriba y abajo por c^2
 
@@ -133,7 +134,7 @@ aux_gamma = gamma*0.5/(hb*c) # eq 23 del paper passarelli diviendo arriba y abaj
 aux_cte = c*1e-12 # freq en THz para epsilon
 nmax = 5
 
-ind = 400
+ind = 50
 
 #%%
 
@@ -203,7 +204,7 @@ elif Ao == 0:
 
 del list_kz_opt,omegac_opt,epsi1_imag_opt,eq_det
 
-info1 = 'kz = %.4f $\mu m^{-1}$, R = %.1f$\mu$m, nmax = %i, $\mu_c$ = %.1f eV' %(kz,R,nmax,hbaramu) + infAoBo 
+info1 = 'kz = %.4f $\mu m^{-1}$, R = %.2f$\mu$m, nmax = %i, $\mu_c$ = %.1f eV' %(kz,R,nmax,hbaramu) + infAoBo 
 info2 = '$\epsilon_1$ = %.1f - i%.5e y $\omega/c$ = %.5e 1/$\mu$m del modo = %i' %(re_epsi1,-crit,omegac0,modo)
 
 inf_tot = info1 + ', ' + info2  + ', ' + name_this_py
@@ -227,7 +228,8 @@ def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpad
     return 
 
 #%%
-    
+
+"""
 if re_epsi1 != 3.9:
     raise TypeError('Wrong value for Re(epsi1): Re(epsi1) = 3.9')
     
@@ -236,7 +238,7 @@ if R != 0.5:
     
 if hbaramu != 0.3:
     raise TypeError('Wrong value for chemical potential: mu = 0.3')
-
+"""
 #%%
 
 if graph_1D==1:
@@ -247,10 +249,10 @@ if graph_1D==1:
     list_eta = [0,0.25,0.5,0.75,1] 
     
     N = int(5*1e3)               
-    omegac1,omegac2 = omegac0*0.98,omegac0*1.02
+    omegac1,omegac2 = omegac0*0.98, omegac0*1.02
     # lambda1,lambda2 = lambbda_real*0.999998,lambbda_real*1.000002
     list_omegac = np.linspace(omegac1,omegac2,N)
-    freq0 = omegac0*c*1e-12
+    freq0 = omegac0*aux_cte
     
     list_Qabs_tot1 = []
     for eta in list_eta:
@@ -263,8 +265,8 @@ if graph_1D==1:
             # den = (omegac0 - omeggac)**2 + aux_gamma**2 
             freq = omeggac*aux_cte # freq tiene que estar en THz para la funcion epsilon
             new_epsi1 = epsilon(freq, eta) 
-            epsi1 = 3.9 + new_epsi1.imag # ver si el problema esta en la parte real 
-             
+#            epsi1 = 3.9 + new_epsi1.imag  # ver si el problema esta en la parte real 
+            epsi1 = new_epsi1               # si re(epsi1) == 16
             Qabss = Cross_Section(kz,omeggac,epsi1,nmax,R,hbaramu,Ao,Bo)
             list_Qabs1.append(Qabss)  
         list_Qabs_tot1.append(list_Qabs1)  
