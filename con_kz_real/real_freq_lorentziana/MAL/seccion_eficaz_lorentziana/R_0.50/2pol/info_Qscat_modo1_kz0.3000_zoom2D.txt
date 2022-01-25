@@ -1,0 +1,1 @@
+kz = 0.3000 $\mu m^{-1}$, R = 0.50$\mu$m, nmax = 5, $\mu_c$ = 0.6 eV, Ao = 1, Bo = 1, $\epsilon_1$ = 16.0 - i1.09580e-04 y $\omega$ = 3.06965e+01 THz del modo = 1, plot_cross_section_lorentziana.py

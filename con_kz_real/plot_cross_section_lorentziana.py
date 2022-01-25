@@ -16,6 +16,8 @@ passarelli2019
 modelo lorentziana para el epsilon pero con los resultados
 del modelo simple no dispersivo (real_freq)
 
+plot_cross_section_lorentziana.py : usa las soluciones del epsilon1 constante pero grafica el Qscat con el epsilon1(omega). No funca bien, por eso hay que hallar las soluciones
+	con el modelo lorentziano (carpeta real_freq_lorentziana).
 """
 import numpy as np
 import sys
@@ -97,7 +99,7 @@ else:
 
 #freq en THz
 try:
-    sys.path.insert(1, path_basic)
+    sys.path.insert(1, path_basic + '/' + 'real_freq_lorentziana')
     from epsilon_lorentziana import epsilon 
 except ModuleNotFoundError:
     print('epsilon_lorentziana.py no se encuentra en ' + path_basic)

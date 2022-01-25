@@ -86,7 +86,7 @@ def coef(kz,omegac,epsi1,modo,R,mu_c,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
     
     """
     
-    E = omegac*c*hb 
+    E = omegac*(c*hb) 
     k0 = omegac #=omega/c
     xz = kz/k0
     Rbarra = R*k0 #adimensional

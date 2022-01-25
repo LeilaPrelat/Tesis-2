@@ -68,8 +68,7 @@ def Qscat(omegac,epsi1,nmax,R,hbaramu,Ao):
     nmax = int(nmax)
     # epsi1 = re_epsi1 + 1j*im_epsi1
     # omega_c = 2*pi/lambbda
-    omega = omegac*c
-    energy = omega*hb
+    energy = omegac*(hb*c)
 
     sigmatot, inter, intra = sigma(energy,hbaramu,hbargama) 
         

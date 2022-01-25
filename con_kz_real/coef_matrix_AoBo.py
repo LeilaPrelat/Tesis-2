@@ -7,7 +7,8 @@ Created on Thu Jun  4 22:07:37 2020
 
 coeficientes de la matriz de 4x4
       (caso con kz)
-caso inhomogeneo (con campos incidentes)  
+caso inhomogeneo (con campos incidentes) 
+para el caso con epsilon1 constante complejo
 """
 
 import numpy as np
@@ -45,10 +46,8 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #%%
 
-
 def coef(kz_var,omegac,epsi1,mode,R,mu_c,Ao,Bo):
     """
-
     Parameters
     ----------
     kz_var : kz en 1/micrometros
@@ -66,9 +65,7 @@ def coef(kz_var,omegac,epsi1,mode,R,mu_c,Ao,Bo):
         (A1,B2,C1,D2) del min{|autovalor1|,|autovalor2|,|autovalor3|,|autovalor4|}
     
     """
-    
-    ω = omegac*c
-    E = ω*hb 
+    E = omegac*(hb*c) 
     
     k0 = omegac #=omega/c
     xz = kz_var/k0
@@ -94,13 +91,15 @@ def coef(kz_var,omegac,epsi1,mode,R,mu_c,Ao,Bo):
             
     def xt2(medio):
         xt2rta = -xz**2 + mu(medio)*epsi(medio)
-        if medio == 2 and xt2rta <= 1e-23:
-            raise TypeError('Se anulo el argumento de Hankel y Hankel diverge en el 0')
+
         return xt2rta
             
     def xt(medio):
         inside = xt2(medio)+0j
         xtmedio = (inside)**(1/2)   
+
+        if medio == 2 and np.abs(xtmedio*Rbarra) <= 1e-21:
+            raise TypeError('Se anulo el argumento de Hankel y Hankel diverge en el 0')
 
         if (xtmedio*Rbarra).real>=0:
     	    xtmedio = xtmedio

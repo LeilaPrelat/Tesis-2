@@ -1,0 +1,1 @@
+kz = 0.0100$\mu m^{-1}$, R = 0.50$\mu$m, $\mu_c$ = 0.6000eV, $\nu$ = 1, Ao = 1, Bo = 1, $\eta$ = 0.9500, nmax = 5, plot_cross_section_lorentziana.py

@@ -67,7 +67,7 @@ def determinante(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,modo,R,mu_c):
 	---> caso sin kz 
 
     """
-    energy = omegac*c*hb
+    energy = omegac*(c*hb)
     
     sigmatot, inter, intra = sigma(energy,mu_c,hbargama) 
 

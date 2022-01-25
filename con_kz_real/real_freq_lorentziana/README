@@ -1,0 +1,4 @@
+estaba mal el epsilon1(omega) : la funcion esta hecha para que el input sea la frecuencia f y no la omega (yo pensaba que era la omega)
+
+
+solve_det_conkz.py : graficar el log|det| en funcion de mu y omega en THz (mapa de color)

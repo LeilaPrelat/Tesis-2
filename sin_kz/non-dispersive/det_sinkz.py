@@ -64,7 +64,7 @@ def determinante(omegac,epsi1,mode,R,mu_c):
 
     """
     mode = int(mode)
-    energy = omegac*c*hb
+    energy = omegac*(c*hb)
     
     sigmatot, inter, intra = sigma(energy,mu_c,hbargama) 
     

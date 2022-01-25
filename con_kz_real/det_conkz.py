@@ -62,9 +62,7 @@ def determinante(kz_var,omegac,epsi1,mode,R,mu_c):
     determinante de la matriz de 4x4
     
     """
-    
-    ω = omegac*c
-    E = ω*hb 
+    E = omegac*(hb*c) 
     
     k0 = omegac #=omega/c
     xz = kz_var/k0

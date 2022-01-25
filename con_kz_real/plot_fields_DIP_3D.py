@@ -20,12 +20,15 @@ import matplotlib.pyplot as plt
 
 save_graphs = 1 #guardar los graficos 2D del campo
 non_active_medium = 1 #plotear campos con im(epsilon1) = 0
+
 paper = 0
 normalizar = 0 #normalizar los campos
-dipolo_alineado = 1 # si es igual a 1: el dipolo px,py,pz se alinea con kz
+
+dipolo_alineado = 1 # si es igual a 1: el dipolo px,py,pz se alinea con el k incidente. 
+                    # FALTABA NORMALIZAR EL P DEL DIPOLO. Sino el campo va a aumentar cada vez que aumente kz (porque si es proporcional a p, aumenta |p| y aumenta el |campo|)
 
 list_field = ['Ez', 'Hz', 'Etot', 'Htot'] 
-type_field = list_field[3]
+type_field = list_field[2]
 if type_field == 'Ez' or type_field == 'Hz':
     modulo = 0 #if modulo == 1 graf3icar |Hz| o |Ez| y si vale 0 grafica la parte real
 
@@ -71,17 +74,17 @@ if save_graphs==1:
         os.mkdir(path_save0)
 
 #print('Importar modulos necesarios para este codigo')
-err = 'fields_DIP_conkz.py no se encuentra en ' + path_basic
-err2 = 'path de la carpeta donde se encuentra fields_DIP_conkz.py'
+err = 'fields_conkz_DIP.py no se encuentra en ' + path_basic
+err2 = 'path de la carpeta donde se encuentra fields_conkz_DIP.py'
 if type_field == 'Ez':
     try:
         sys.path.insert(1, path_basic)
-        from fields_DIP_conkz import Ez
+        from fields_conkz_DIP import Ez
     except ModuleNotFoundError:
         print(err)
         path_basic = input(err2)
         sys.path.insert(1, path_basic)
-        from fields_DIP_conkz import Ez
+        from fields_conkz_DIP import Ez
 
     def fields(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         [rta1,rta2] = Ez(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
@@ -94,12 +97,12 @@ if type_field == 'Ez':
 elif type_field == 'Hz':
     try:
         sys.path.insert(1, path_basic)
-        from fields_DIP_conkz import Hz
+        from fields_conkz_DIP import Hz
     except ModuleNotFoundError:
         print(err)
         path_basic = input(err2)
         sys.path.insert(1, path_basic)
-        from fields_DIP_conkz import Hz
+        from fields_conkz_DIP import Hz
 
     def fields(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         [rta1,rta2] = Hz(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
@@ -113,12 +116,12 @@ elif type_field == 'Hz':
 elif type_field == 'Htot':
     try:
         sys.path.insert(1, path_basic)
-        from fields_DIP_conkz import Htot
+        from fields_conkz_DIP import Htot
     except ModuleNotFoundError:
         print(err)
         path_basic = input(err2)
         sys.path.insert(1, path_basic)
-        from fields_DIP_conkz import Htot
+        from fields_conkz_DIP import Htot
 
     def fields(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         return Htot(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
@@ -127,12 +130,12 @@ else:
 
     try:
         sys.path.insert(1, path_basic)
-        from fields_DIP_conkz import Etot
+        from fields_conkz_DIP import Etot
     except ModuleNotFoundError:
         print(err)
         path_basic = input(err2)
         sys.path.insert(1, path_basic)
-        from fields_DIP_conkz import Etot
+        from fields_conkz_DIP import Etot
 
     def fields(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         return Etot(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
@@ -158,7 +161,7 @@ R = 0.5              # micrones
 hbaramu = 0.3        # eV mu_c
 list_modos = [1,2,3,4]
 list_ind = [0,50,500,1000,5000,-1]
-list_ind = [0,50,1000]
+list_ind = [1000,-1]
 #list_ind = [0]
 z = 0
 nmax = 10
@@ -201,7 +204,7 @@ def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpad
     listx2,listy2 = circle(R)
     plt.plot(listx2,listy2,'-',color = 'blue')
     if ptot !=0:
-        plt.arrow(coordX_D, coordY_D , px*arrow, py*arrow, head_width = 0.05,
+        plt.arrow(coordX_D, coordY_D , px/3, py/3, head_width = 0.05,
           width = 0.02,color = 'blue')
     
     if paper == 0:
@@ -333,7 +336,7 @@ def graficar_campos(modo,ind):
     k_tot = kt(kz,omegac)**2 + kz**2
     p_cuadrado = (a**2 + b**2)/(1-(kz/np.abs(k_tot))**2)
     p_cuadrado = p_cuadrado.real
-    p = p_cuadrado**(1/2)
+    # p = p_cuadrado**(1/2)
     
     # xt_val = np.abs(kt(kz,omegac))
     # x_tot = (mu2*epsi2)**(1/2) #k total dividido x0
@@ -347,7 +350,10 @@ def graficar_campos(modo,ind):
     
     px = a
     py = b
-    pz = p*kz/np.abs(k_tot)
+    pz = kz/np.abs(k_tot)
+    pvector = [px,py,pz]
+    pvector_normalize = pvector/np.linalg.norm(pvector)
+    [px,py,pz] = pvector_normalize
     
     ptot = px + py + pz 
     
@@ -362,8 +368,8 @@ def graficar_campos(modo,ind):
     labelpx = 'px' + labelp(px)
     labelpy = 'py' + labelp(py)
     
-    labelp1 = 'p+' + labelp(p1)
-    labelp2 = 'p-' + labelp(p2)
+    # labelp1 = 'p+' + labelp(p1)
+    # labelp2 = 'p-' + labelp(p2)
     
     info1 = r'Ao = %i, Bo = %i, kz = %.4f 1/$\mu$m, z = %i$\mu$m' %(Ao,Bo,kz,z)
     info2 = r'R = %.2f$\mu$m, nmax = %i, $\mu_c$ = %.1f eV, $\nu$ = %i' %(R,nmax,hbaramu,modo)
@@ -386,8 +392,8 @@ def graficar_campos(modo,ind):
             os.mkdir(path_save2)
 
     print('')
-    print(labelp1)
-    print(labelp2)
+    print(labelpx)
+    print(labelpy)
     print('pz = ', pz)
     print('kz = ', kz)
     print('modo = ', modo)            

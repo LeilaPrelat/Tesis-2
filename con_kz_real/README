@@ -26,5 +26,9 @@ B) LORENTZIANA para epsilon1(omega)
 		-Cuesta encontrar soluciones del determinante usando la funcion epsilon1(omega) dado que el parámetro de Im(epsi1) ahora está fijo 
 		 Solucion: dentro de la carpeta real_freq_lorentziana, el archivo plot_det_conkz.py resuelve el determinante y grafica mapas de color
 		 para chequear que el algoritmo Nelder-Mead encuentre correctamente 
+		 
+	-plot_cross_section_lorentziana.py : usa las soluciones del epsilon1 constante pero grafica el Qscat con el epsilon1(omega). No funca bien, por eso hay que hallar las soluciones
+	con el modelo lorentziano (carpeta real_freq_lorentziana). 
+	
 
 

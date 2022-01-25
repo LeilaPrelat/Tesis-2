@@ -71,7 +71,7 @@ def Qscat(omegac,Ep,epsiinf_DL,gamma_DL,epsi_ci,nmax,R,hbaramu,Ao):
     """
     nmax = int(nmax)
     # omega = omegac*c
-    energy = omegac*c*hb
+    energy = omegac*(c*hb)
 
     num = Ep**2
     den = energy**2 + 1j*gamma_DL*energy
