@@ -81,6 +81,7 @@ def coef_lorentziana(kz_var,omegac,eta,mode,R,mu_c,Ao,Bo):
     
     E = omegac*(c*hb)
     omegga = omegac*aux_cte
+    freqq = omegga/(2*np.pi)
 
     k0 = omegac #=omega/c
     xz = kz_var/k0
@@ -88,7 +89,7 @@ def coef_lorentziana(kz_var,omegac,eta,mode,R,mu_c,Ao,Bo):
  
     def epsi(medio):
         if medio ==1:
-            epsirta = epsilon(omegga, eta) 
+            epsirta = epsilon(freqq, eta) 
         elif medio ==2:
             epsirta = epsi2
         else:

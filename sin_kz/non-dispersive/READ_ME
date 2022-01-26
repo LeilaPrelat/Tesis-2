@@ -13,3 +13,5 @@ parametros en real_freq: re(omega/c), im(epsilon1)
 
 
 en el caso no dispersivo, siempre el radio es 0.5 micrones
+
+carpeta: real_freq_lorentziana (paper 2 con depine) agregar el caso del modelo lorentziano para el epsilon1 del medio activo ---> terminar: agregar scattering (copiar de la carepta con kz)

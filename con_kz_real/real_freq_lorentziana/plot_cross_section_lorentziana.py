@@ -27,8 +27,8 @@ import matplotlib.pyplot as plt
 #%%
 
 save_graphs = 1 #guardar los graficos 
-graph_2D_freq_mu = 1    #graficos mapa de color en el plano omega-mu
-graph_2D_freq_eta = 0    #graficos mapa de color en el plano eta- freq (omega/2*np.pi)
+graph_2D_freq_mu = 0   #graficos mapa de color en el plano omega-mu
+graph_2D_freq_eta = 1    #graficos mapa de color en el plano eta- freq (omega/2*np.pi)
 zoom = 0        #graficos 2D con o sin zoom
 graph_1D = 0  #graficos 1D
 
@@ -88,7 +88,7 @@ print('Definir parametros del problema')
 eta0 = 0.95  # population invertion para el epsilon(omega) lorentziano
 R = 0.5    #micrones
 mu0 = 0.3       #eV mu_c
-modo = 1
+modo = 2
 
 Ao, Bo = 1,1
 nmax = 5
@@ -287,7 +287,7 @@ if graph_2D_freq_mu ==1:
         return Qscatt
         
 
-    N = 300
+    N = 250
     
     if zoom==1:
         tol = 1e-3
@@ -365,7 +365,7 @@ if graph_2D_freq_eta ==1:
         return Qscatt
         
 
-    N = 300
+    N = 250
     
     if zoom==1:
         tol = 1e-3
@@ -382,7 +382,7 @@ if graph_2D_freq_eta ==1:
     list_omega = np.linspace(omega0 - 0.5, omega0 + 0.5,N)
     
     freq0 = omega0/(2*np.pi)
-    list_x = np.linspace(freq0 - 1.5, freq0 + 3.5,N) # mu
+    list_x = np.linspace(freq0 - 1, freq0 + 3.5,N) # mu
 
     list_y = np.linspace(eta0 - 5*1e-1, eta0 + 5*1e-2,N) # kz
 #    list_y = np.linspace(0.3,0.9,N)
