@@ -29,7 +29,7 @@ def epsilon(freq, eta):
     """
     Parameters
     ----------
-    freq : freq en THz (entre 1 y 10). OJO es f = omega/2*pi
+    freq : freq en THz (entre 1 y 10). OJO es f = omega/(2*pi)
     eta : inversion de poblacion en THz (entre
                                          0 y 1)
 

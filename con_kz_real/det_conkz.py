@@ -47,7 +47,6 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 def determinante(kz_var,omegac,epsi1,mode,R,mu_c):
     """
-
     Parameters
     ----------
     kz_var : kz en 1/micrometros

@@ -1,4 +1,64 @@
-estaba mal el epsilon1(omega) : la funcion esta hecha para que el input sea la frecuencia f y no la omega (yo pensaba que era la omega)
+estaba mal el epsilon1(omega) : la funcion esta hecha para que el input sea la frecuencia f y no la omega (yo pensaba que era la omega). Ahora epsilon_lorentziana.py esta bien
 
 
-solve_det_conkz.py : graficar el log|det| en funcion de mu y omega en THz (mapa de color)
+-solve_det_conkz3.py : graficar el log|det| en funcion de mu y omega en THz (mapa de color)
+	
+	-minimizar_omega_kz  # data para un mu0,eta0 fijos
+	-minimizar_omega_mu  # data para un kz0,eta0 fijos: este barrido nunca funca (error en hankel, arg muy chico)
+	-minimizar_omega_eta # data para un mu0,kz0 fijos: este barrido nunca funca (error en hankel, arg muy chico)
+	
+	if minimizar_omega_kz == 1:
+	    eta0 = 0.8
+	    ########### parte 1 del barrido en mu ###################################################
+	    list_mu0 = np.linspace(0.1,0.5,5) # para un mu0 y eta0 fijos
+	    list_kz = np.linspace(0.1, 2.6, n)
+	    list_omegaTHz = np.linspace(5,50,n)
+	    list_cond_init = [20]
+	    ########### parte 2 del barrido en mu ###################################################
+	    # list_mu0 = np.linspace(0.6,0.9,4) # para un mu0 y eta0 fijos
+	    # list_kz = np.linspace(0.2, 2.7, n)
+	    # list_omegaTHz = np.linspace(5,60,n)	
+	    # list_cond_init = [30]
+	    #######################################################################
+
+
+-plot_cross_sections_lorentziana3D.py : mapas de color de las secciones eficaces, importa las funciones de cross_sections_conkz_lorentziana.py (usan el epsilon1(freq) de la lorentziana, dependen de eta). 
+
+	se usa la data de freq vs kz creada por solve_det_conkz3.py y se grafica el scattering. Las funciones de scattering tienen incorporadas la funcion epsilon1(freq)
+	El mapa de color de la seccion eficaz alrededor de los valroes de data de freq vs kz pueden ser: 
+	    graficar3D_freq_vs_kz = 1
+	    graficar3D_freq_vs_mu = 1
+	    graficar3D_freq_vs_eta = 1
+	
+	Valores importantes sacados de buscar las freq1=3.15THz y freq2=5.09THz del medio activo de los datos de minimizacion .txt. 
+	if data_freq_kz == 1: 
+    
+    ################## cerca de freq2 ###########################
+    [mu0,eta0,ind] = 0.6,0.8,60  # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat
+    [mu0,eta0,ind] = 0.5,0.8,135 # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat
+    [mu0,eta0,ind] = 0.4,0.8,207 # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat
+    
+    [mu0,eta0,ind] = 0.6,0.85,60 
+    [mu0,eta0,ind] = 0.5,0.85,135
+    [mu0,eta0,ind] = 0.4,0.85,206  # este funca bien sin cambiar ningun parametro
+    
+    [mu0,eta0,ind] = 0.6,0.9,61 
+    [mu0,eta0,ind] = 0.5,0.9,135
+    [mu0,eta0,ind] = 0.4,0.9,206
+    
+    [mu0,eta0,ind] = 0.6,0.95,60 
+    [mu0,eta0,ind] = 0.5,0.95,134
+    [mu0,eta0,ind] = 0.4,0.95,205
+    
+    tolfreq = 0.2
+    ############################################################
+    ################## cerca de freq1 ###########################
+    [mu0,eta0,ind] = 0.2,0.8,117  # poner desp eta0 = 0.74 (estaba corrido el maximo de Qscat en la minimizacion) para el graf omega vs eta
+    [mu0,eta0,ind] = 0.2,0.85,117
+    [mu0,eta0,ind] = 0.2,0.9,90
+    # tolfreq = 0.1
+    
+    ############################################################
+
+solve_det_conkz4.py : resolver usando 3 variables: kz, omegaTHz y eta, para un mu0 fijo. Con el mu0 intentar llegar a soluciones cerca de 
+freq1 y freq2 del medio activo.   

@@ -80,7 +80,7 @@ def coef_lorentziana(kz_var,omegac,eta,mode,R,mu_c,Ao,Bo):
     """
     
     E = omegac*(c*hb)
-    omegga = omegac*aux_cte
+    omegga = omegac*aux_cte # en THz
     freqq = omegga/(2*np.pi)
 
     k0 = omegac #=omega/c

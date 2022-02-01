@@ -1,0 +1,2 @@
+# mu [eV]    Omega [THz]    kz [1/micrones]    eta    |det|$\mu_c$ = 0.530 eVmodo = 1, R = 0.50$\mu$m, solve_det_conkz4.py
+5.30000000000e-01	6.89327962907e+02	1.36251686711e+03	-1.76130948311e+02	0.00000000000e+00

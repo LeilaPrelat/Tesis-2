@@ -1,0 +1,1 @@
+no se por que pero usar un determinante con la funcion de epsilon lorenziana incorporada no funciona (es decir, el det con variable eta en lugar de variable epsilon1). Me tira un error raro de "SystemError: PyEval_EvalFrameEx returned a result with an error set " para los mapas de color

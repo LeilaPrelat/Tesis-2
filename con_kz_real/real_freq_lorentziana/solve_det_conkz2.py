@@ -1,19 +1,12 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Created on Wed May 20 08:58:35 2020
-
 @author: leila
-
 Diferencia con find_Lambda_conkz.py:
 Cambiar las funciones de Bessel
 (que sean J y Hankel, al igual que en gn)
-
 determinante de 4x4
-
 graficar el log|det(kz)| en mapa de color en funcion de 
 omega en THz y del potencial quimico mu
-
 """
 
 import numpy as np
@@ -114,6 +107,7 @@ def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpad
     return 
 
 #%%
+
 path_save = path_basic + '/' +  r'eta_%.2f/R_%.2f' %(eta,R)
 
 if save_data_opt==1:
@@ -128,52 +122,6 @@ labelx = '$\omega$ [THz]'
 labely2 = '$\mu_c$ [eV]'
 labely1 = '|det|'
 inf_fig = 'det_modo%i_kz%.4f.png' %(modo,kz0)
-
-#%%
-
-print('')
-print('Graficar |det| vs omega y mu para kz fijo para el modo = %i' %(modo))
-       
-def det_2variables(omegaTHz,mu):
-    fTHz = omegaTHz/(2*np.pi)
-    epsi1 = epsilon(fTHz, eta)
-    omegac = omegaTHz/aux_cte
-    
-    rta = determinante(kz0,omegac,epsi1,modo,R,mu)
-    return np.log10(np.abs(rta))
-#
-
-graph(title,labelx,labely2,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
-plt.title(title,fontsize=int(tamtitle*0.9))
-# im = plt.imshow(Z, extent = limits,  cmap='RdBu', interpolation='bilinear')
-
-X, Y = np.meshgrid(list_omegaTHz, list_mu, sparse=True)
-f = np.vectorize(det_2variables)
-Z = f(X, Y)
-
-vmin,vmax = np.min(Z), np.max(Z)
-maxlog=int(np.ceil( np.log10( np.abs(vmax))))
-minlog=int(np.ceil( np.log10( np.abs(vmin))))
-
-if vmin < 0 :
-      tick_locations = ( [-(10.0**x) for x in np.linspace(minlog,-1,minlog+2)] 
-                        + [0] 
-                        + [(10.0**x) for x in np.linspace(-1,maxlog,maxlog+minlog+3)] )
-else:
-      tick_locations = ( [(10.0**x) for x in np.linspace(minlog,maxlog,maxlog + np.abs(minlog) + 1) ])    
-    
-pcm = plt.pcolormesh(X, Y, Z,
-                      norm=colors.SymLogNorm(linthresh=0.5, linscale=0.5,
-                                          vmin=int(vmin), vmax=int(vmax)),cmap='RdBu_r')
-
-#    im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
-cbar = plt.colorbar(pcm, extend='both')
-# cbar.set_ticks(tick_locations)
-cbar.ax.tick_params(labelsize=tamnum)
-if save_graphs==1:
-    os.chdir(path_save)
-    plt.savefig(inf_fig, format='png') 
-
 
 #%%
 
@@ -263,7 +211,7 @@ for mu0 in list_mu0:
     vmin,vmax = np.min(Z), np.max(Z)
     maxlog=int(np.ceil( np.log10( np.abs(vmax))))
     minlog=int(np.ceil( np.log10( np.abs(vmin))))
-    
+
     if vmin < 0 :
           tick_locations = ( [-(10.0**x) for x in np.linspace(minlog,-1,minlog+2)] 
                             + [0] 
@@ -286,4 +234,51 @@ for mu0 in list_mu0:
         plt.savefig(inf_fig, format='png') 
             # np.savetxt('info_det_modo%i_mu%.4f.txt' %(modo,mu0), [inf_tot],fmt='%s')
     
+#%%
+
+"""
+print('')
+print('Graficar |det| vs omega y mu para kz fijo para el modo = %i' %(modo))
+       
+def det_2variables(omegaTHz,mu):
+    fTHz = omegaTHz/(2*np.pi)
+    epsi1 = epsilon(fTHz, eta)
+    omegac = omegaTHz/aux_cte
+    
+    rta = determinante(kz0,omegac,epsi1,modo,R,mu)
+    return np.log10(np.abs(rta))
+#
+
+graph(title,labelx,labely2,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpady,pad)
+plt.title(title,fontsize=int(tamtitle*0.9))
+# im = plt.imshow(Z, extent = limits,  cmap='RdBu', interpolation='bilinear')
+
+X, Y = np.meshgrid(list_omegaTHz, list_mu, sparse=True)
+f = np.vectorize(det_2variables)
+Z = f(X, Y)
+
+vmin,vmax = np.min(Z), np.max(Z)
+maxlog=int(np.ceil( np.log10( np.abs(vmax))))
+minlog=int(np.ceil( np.log10( np.abs(vmin))))
+
+if vmin < 0 :
+      tick_locations = ( [-(10.0**x) for x in np.linspace(minlog,-1,minlog+2)] 
+                        + [0] 
+                        + [(10.0**x) for x in np.linspace(-1,maxlog,maxlog+minlog+3)] )
+else:
+      tick_locations = ( [(10.0**x) for x in np.linspace(minlog,maxlog,maxlog + np.abs(minlog) + 1) ])    
+    
+pcm = plt.pcolormesh(X, Y, Z,
+                      norm=colors.SymLogNorm(linthresh=0.5, linscale=0.5,
+                                          vmin=int(vmin), vmax=int(vmax)),cmap='RdBu_r')
+
+#    im = plt.imshow(Z, extent = limits, cmap=plt.cm.hot, interpolation='bilinear')
+cbar = plt.colorbar(pcm, extend='both')
+# cbar.set_ticks(tick_locations)
+cbar.ax.tick_params(labelsize=tamnum)
+if save_graphs==1:
+    os.chdir(path_save)
+    plt.savefig(inf_fig, format='png') 
+"""
+
 #%%

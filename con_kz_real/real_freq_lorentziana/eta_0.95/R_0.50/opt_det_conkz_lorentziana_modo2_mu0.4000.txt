@@ -1,4 +1,4 @@
-# kz [1/micrones]     Omega [THz]    log10(|det|)     , $\mu_c$ = 0.4000 eV, modo = 2, R = 0.50$\mu$m, $\eta$ = 0.95, solve_det_conkz.py
+# kz [1/micrones]     Omega [THz]    log10(|det|)     , $\mu_c$ = 0.4000 eV, modo = 2, R = 0.50$\mu$m, $\eta$ = 0.95, solve_det_conkz2.py
 1.00000000000e-02	3.51843933194e+01	1.26345289519e+00
 2.00000000000e-02	3.51846021598e+01	1.29189338036e+00
 3.00000000000e-02	3.51849503688e+01	1.34076702129e+00
