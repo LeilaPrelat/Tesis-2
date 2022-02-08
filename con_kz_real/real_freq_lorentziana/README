@@ -36,29 +36,39 @@ estaba mal el epsilon1(omega) : la funcion esta hecha para que el input sea la f
     ################## cerca de freq2 ###########################
     [mu0,eta0,ind] = 0.6,0.8,60  # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat
     [mu0,eta0,ind] = 0.5,0.8,135 # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat
-    [mu0,eta0,ind] = 0.4,0.8,207 # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat
+    [mu0,eta0,ind] = 0.4,0.8,207 # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat. (***)
+    # [mu0,eta0,ind] = 0.6,0.85,60 
+    # [mu0,eta0,ind] = 0.5,0.85,135 # (*)
+    # [mu0,eta0,ind] = 0.6,0.9,61 
+    # [mu0,eta0,ind] = 0.5,0.9,135
+    # [mu0,eta0,ind] = 0.4,0.9,206
+    # [mu0,eta0,ind] = 0.6,0.95,60 
+    # [mu0,eta0,ind] = 0.5,0.95,134
+    # [mu0,eta0,ind] = 0.4,0.95,205
     
-    [mu0,eta0,ind] = 0.6,0.85,60 
-    [mu0,eta0,ind] = 0.5,0.85,135
-    [mu0,eta0,ind] = 0.4,0.85,206  # este funca bien sin cambiar ningun parametro
     
-    [mu0,eta0,ind] = 0.6,0.9,61 
-    [mu0,eta0,ind] = 0.5,0.9,135
-    [mu0,eta0,ind] = 0.4,0.9,206
+    [mu0,eta0,ind] = 0.4,0.85,206  # este funca bien cambiando eta por 0.75 para el barrido en eta: (***)
+#    [mu0,eta0,ind] = 0.4,0.66,206  # (***). cambiar por eta = 0.66
     
-    [mu0,eta0,ind] = 0.6,0.95,60 
-    [mu0,eta0,ind] = 0.5,0.95,134
-    [mu0,eta0,ind] = 0.4,0.95,205
+#    [mu0,eta0,ind] = 0.53,0.8,117 # match con (**), no poner eta0 = 0.74. Cambiar el freq0 a 5.39888 y el ind a 153 para el barrido en kz: (iv)
+#    [mu0,eta0,ind] = 0.53,0.8,153 # (iv) cambiar el kz para que llegue al maximo de scattering
     
-    tolfreq = 0.2
+    
     ############################################################
     ################## cerca de freq1 ###########################
-    [mu0,eta0,ind] = 0.2,0.8,117  # poner desp eta0 = 0.74 (estaba corrido el maximo de Qscat en la minimizacion) para el graf omega vs eta
-    [mu0,eta0,ind] = 0.2,0.85,117
-    [mu0,eta0,ind] = 0.2,0.9,90
-    # tolfreq = 0.1
+    [mu0,eta0,ind] = 0.2,0.8,117 # (**) # poner desp eta0 = 0.74 (estaba corrido el maximo de Qscat en la minimizacion) para el graf omega vs eta
+#    [mu0,eta0,ind] = 0.2,0.85,117
+#    [mu0,eta0,ind] = 0.2,0.9,90
+#    [mu0,eta0,ind] = 0.2,0.95,117
+#    [mu0,eta0,ind] = 0.1,0.85,135 # extra para que halla match con el de mu0 = 0.5 (*)
+    
+    
+#    tolfreq = 0.05
     
     ############################################################
 
 solve_det_conkz4.py : resolver usando 3 variables: kz, omegaTHz y eta, para un mu0 fijo. Con el mu0 intentar llegar a soluciones cerca de 
 freq1 y freq2 del medio activo.   
+
+
+

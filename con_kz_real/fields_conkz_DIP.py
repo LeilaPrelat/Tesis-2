@@ -228,7 +228,8 @@ def Ez(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         Ez1,Ez2
     -------
     """
-    
+    if rho_D>R:
+        raise TypeError('Invalid value for r_D: r_D must be < R')    
     def coeficientes(modo):
         
         coeff = coef(kz,omegac,epsi1,modo,R,mu_c,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
@@ -331,7 +332,8 @@ def Etot(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
         |Etot|^2 =  |Erho|^2 + |Ephi|^2 + |Ez|^2
     -------
     """
-    
+    if rho_D>R:
+        raise TypeError('Invalid value for r_D: r_D must be < R')    
     Ez1, Ez2 = Ez(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
     Erho1,Erho2,Ephi1,Ephi2 = Et(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
     
@@ -520,7 +522,8 @@ def Hz(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
         Hz1,Hz2
     -------
     """
-
+    if rho_D>R:
+        raise TypeError('Invalid value for r_D: r_D must be < R')
     def coeficientes(modo):
         
         coeff = coef(kz,omegac,epsi1,modo,R,mu_c,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
@@ -623,7 +626,8 @@ def Htot(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
         |Htot|^2 =  |Hrho|^2 + |Hphi|^2 + |Hz|^2
     -------
     """
-    
+    if rho_D>R:
+        raise TypeError('Invalid value for r_D: r_D must be < R')    
     Hz1, Hz2 = Hz(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
     Hrho1,Hrho2,Hphi1,Hphi2 = Ht(kz,omegac,epsi1,nmax,R,mu_c,rho,phi,z,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
     

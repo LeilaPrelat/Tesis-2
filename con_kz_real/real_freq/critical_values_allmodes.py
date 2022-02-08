@@ -31,9 +31,10 @@ if paper == 1:
     labelpady = -0.5
     labelpadx = -0.5
     lw = 1.5
-    pad = -2.3
+    pad = -2.5
     loc1 = [0.16,0.88]
     loc2 = [0.05,1]
+    columnspace = 0.5
     
 else:
     tamfig = (11,7)
@@ -48,7 +49,7 @@ else:
     pad = 0
     loc1 = [0.15,0.88]
     loc2 = [0.025,1]
-    
+
 #%%
 
 name_this_py = os.path.basename(__file__)
@@ -76,7 +77,7 @@ re_epsi1 = 3.9
 R = 0.5              #micrones
 list_kz = [0,0.0001,0.05,0.1,0.135,0.14,0.5] 
 
-path_load = path_basic + '/re_epsi1_%.2f_vs_mu' %(re_epsi1)
+path_load = path_basic + '/re_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
 
 info1 = 'R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f' %(R,re_epsi1)
 info2 = '$gamma_c$ = %.4f eV, $\mu_1$ = %i, $\mu_2$ = %i, $\epsilon_2$ = %i' %(hbargama,mu1,mu2,epsi2)
@@ -106,6 +107,14 @@ for kz in list_kz:
     labelx = '$\mu_c$ [eV]'
     labely = '[Im($\epsilon_1$)]$_c$'
     
+    if kz == 0.05:
+        ticks_y1 = np.linspace(-0.036,-0.032,5)
+        ticks_y2 = np.linspace(-0.03,-0.01,5)
+        
+    if kz == 0.14:
+        ticks_y1 = np.linspace(-0.78,-0.76,5)
+        ticks_y2 = np.linspace(-0.03,-0.01,5)
+    
     k = 0
     for modo in [1,2,3,4]:
         os.chdir(path_load)
@@ -115,11 +124,14 @@ for kz in list_kz:
         [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
     
         if modo == 1:
-            line1, = axs[0].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = 'modo %i'%(k+1))
+            line1, = axs[0].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = 'mode %i'%(k+1))
             line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
+            if kz in [0.05,0.14]:
+                axs[0].set_yticks(ticks_y1)
         else:
-            axs[1].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = 'modo %i'%(k+1))
-            
+            axs[1].plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = 'mode %i'%(k+1))
+            if kz in [0.05,0.14]:
+                axs[1].set_yticks(ticks_y2)
         k = k + 1
     
     

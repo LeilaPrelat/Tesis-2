@@ -29,12 +29,12 @@ path_graphene = path_basic.replace('/' + 'con_kz_real/real_freq_lorentziana','')
 
 try:
     sys.path.insert(1, path_basic)
-    from coef_matrix_AoBo_lorentziana import coef_lorentziana
+    from coef_matrix_AoBo_lorentziana_dipole import coef_lorentziana
 except ModuleNotFoundError:
-    print('coef_matrix_AoBo_lorentziana.py no se encuentra en ' + path_basic)
+    print('coef_matrix_AoBo_lorentziana_dipole.py no se encuentra en ' + path_basic)
     path_basic = input('path de la carpeta donde se encuentra coef_matrix_AoBo_lorentziana.py')
     sys.path.insert(1, path_basic)
-    from coef_matrix_AoBo_lorentziana import coef_lorentziana
+    from coef_matrix_AoBo_lorentziana_dipole import coef_lorentziana
     
 try:
     sys.path.insert(1, path_graphene)
@@ -53,7 +53,7 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #Ojo: aca solo van frecuencias reales
 
-def Qscat(kz_var,omegac,eta,nmax,R,hbaramu,Ao,Bo): 
+def Qscat(kz_var,omegac,eta,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo): 
     """
     Parameters
     ----------
@@ -64,6 +64,14 @@ def Qscat(kz_var,omegac,eta,nmax,R,hbaramu,Ao,Bo):
     nmax: sumatoria en modos desde -nmax hasta +nmax (2*nmax+1 modos)
     R: radio del cilindro en micrometros
     hbaramu: potencial quimico del grafeno en eV
+
+    p1 = p+ = px + 1j*py
+    p2 = p- = px - 1j*py
+    pz 
+    
+    rho_D : posicion rho del dipolo en micrometros    
+    theta_D : posicion theta del dipolo en radianes    
+    z_D : posicion z del dipolo en micrometros   
     
     Ao: pol p dentro de Hz
     Bo: pol s dentro de Ez
@@ -71,7 +79,7 @@ def Qscat(kz_var,omegac,eta,nmax,R,hbaramu,Ao,Bo):
     Returns
         Qscat/c adimensional
         modelando el epsilon1 como una lorentziana funcion de omega en THz y de eta
-        (inversion de poblacion)
+        (inversion de poblacion) +  un dipolo en la posicion rho_d, theta_d, z_D 
     -------
     """
     k0 = omegac #=omega/c
@@ -81,7 +89,7 @@ def Qscat(kz_var,omegac,eta,nmax,R,hbaramu,Ao,Bo):
 
     def coef_an_bn(mode):
         
-        coeff = coef_lorentziana(kz_var,omegac,eta,mode,R,hbaramu,Ao,Bo)
+        coeff = coef_lorentziana(kz_var,omegac,eta,mode,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
     
         coef_A1,coef_B2,coef_C1,coef_D2 = coeff  #intercambio de la columna 2 con 3
         

@@ -17,7 +17,7 @@ modelo lorentziana para el epsilon pero con los resultados
 del modelo simple no dispersivo (real_freq)
 
 plot_cross_section_lorentziana.py : usa las soluciones del epsilon1(omega) de la carpeta 
-real_freq_lorentziana
+real_freq_lorentziana  + un dipolo en el interior del cilindro
 """
 import numpy as np
 import sys
@@ -36,9 +36,9 @@ paper = 0
 save_graphs = 1 #guardar los graficos 
 
 if data_freq_kz == 1 and graficar_3D == 1:
-    graficar3D_freq_vs_kz = 1
+    graficar3D_freq_vs_kz = 0
     graficar3D_freq_vs_mu = 0
-    graficar3D_freq_vs_eta = 0
+    graficar3D_freq_vs_eta = 1
 
 list_cross_section = ['Qscat', 'Qabs', 'Qext'] 
 cross_section = list_cross_section[0]
@@ -59,16 +59,16 @@ err2 = 'path de la carpeta donde se encuentra cross_sections_conkz_lorentziana.p
 try:
     sys.path.insert(1, path_basic)
     if cross_section == 'Qscat':
-        from cross_sections_conkz_lorentziana import Qscat as cross_section_f
+        from cross_sections_conkz_lorentziana_dipole import Qscat as cross_section_f
     elif cross_section == 'Qabs':
-        from cross_sections_conkz_lorentziana import Qabs as cross_section_f
+        from cross_sections_conkz_lorentziana_dipole import Qabs as cross_section_f
     elif cross_section == 'Qext':
-        from cross_sections_conkz_lorentziana import Qext as cross_section_f
+        from cross_sections_conkz_lorentziana_dipole import Qext as cross_section_f
 except ModuleNotFoundError:
     print(err)
 
-def Cross_Section(kz,omeggac,eta,nmax,R,hbaramu,Ao,Bo):
-    return cross_section_f(kz,omeggac,eta,nmax,R,hbaramu,Ao,Bo)
+def Cross_Section(kz,omeggac,eta,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
+    return cross_section_f(kz,omeggac,eta,nmax,R,hbaramu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
 
 try:
     sys.path.insert(1, path_graphene)
@@ -97,8 +97,17 @@ Ao, Bo = 1,1
 nmax = 5
 N = 250
 
-infAoBo = r'$A_o$ = %i, $B_o$ = %i' %(Ao,Bo)
-info = r'$\nu$ = %i, R = %.2f$\mu$m' %(modo,R) + ', ' + infAoBo
+p1,p2,pz = 1,1,0
+rho_D,theta_D,z_D = 0,0,0
+px = (p1 + p2)/2
+py = (p1 - p2)/(2j)
+if py.imag == 0:
+    py = py.real
+
+infoDIP_1 = r'px = %i, py = %i, pz = %i' %(px,py,pz) 
+infoDIP_2 =  r'$\rho_D$ = %i$\mu$m, $\theta_D$ = %i, $z_D$ = %i$\mu$m' %(rho_D,theta_D,z_D)
+infAoBo = r'$A_o$ = %i, $B_o$ = %i' %(Ao,Bo) 
+info = r'$\nu$ = %i, R = %.2f$\mu$m' %(modo,R) + ', ' + infAoBo + ', ' + infoDIP_2 + ', '  + infoDIP_1
 labelfreq = 'f = $\omega/2\pi$ [THz]'
 tolkz = 0.05
 tolmu = 0.005
@@ -131,7 +140,7 @@ if data_freq_kz == 1:
 #    [mu0,eta0,ind] = 0.4,0.66,206  # (***). cambiar por eta = 0.66
     
 #    [mu0,eta0,ind] = 0.53,0.8,117 # match con (**), no poner eta0 = 0.74. Cambiar el freq0 a 5.39888 y el ind a 153 para el barrido en kz: (iv)
-    [mu0,eta0,ind] = 0.53,0.8,153 # (iv) cambiar el kz para que llegue al maximo de scattering
+#    [mu0,eta0,ind] = 0.53,0.8,153 # (iv) cambiar el kz para que llegue al maximo de scattering
     
     
     ############################################################
@@ -149,9 +158,8 @@ if data_freq_kz == 1:
     
     labely = '$k_z$ [$\mu m^{-1}$]'
     inf = '$\mu_c$ = %.3f eV, $\eta$ = %.2f, ' %(mu0,eta0) + info + ', ' + name_this_py
-    title = r'$\mu_c$ = %.3f eV, $\eta$ = %.2f' %(mu0,eta0) + '\n' + info 
+    title = r'$\mu_c$ = %.3f eV, $\eta$ = %.2f' %(mu0,eta0) + ', ' + infoDIP_1 + '\n' + infoDIP_2 + ', ' + infAoBo
     nametxt = 'opt_lorentz_conkzdet_modo%i_mu%.4f_eta%.2f' %(modo,mu0,eta0) + '.txt'
-    
     
     try:
         data = np.loadtxt(nametxt,delimiter = '\t', skiprows=1)
@@ -166,9 +174,10 @@ if data_freq_kz == 1:
     omega0 = row2[ind]     
     freq0 = omega0/(2*np.pi)
 
-    
-#    eta0 = 0.66  # estaba corrido el maximo de Qscat en la minimizacion para el caso [mu0,eta0,ind] = 0.2,0.8,117 
-    freq0 = 5.39888
+    if [mu0,eta0,ind] == [0.2,0.8,117] :
+        eta0 = 0.66  # estaba corrido el maximo de Qscat en la minimizacion para el caso [mu0,eta0,ind] = 0.2,0.8,117 
+    if [mu0,eta0,ind] == [0.1,0.85,135] :
+        freq0 = 5.39888 # para el [mu0,eta0,ind] = 0.53,0.8,153 
     inf_fig = '_modo%i_mu%.4f_eta%.2f'  %(modo,mu0,eta0)  + '.png'
     
 #%% 2
@@ -178,7 +187,7 @@ elif data_freq_mu == 1:
     kz0 = 0.1   
     labely = '$\mu_c$ [eV]'
     inf = 'kz = %.4f $\mu m^{-1}$, $\eta$ = %.2f, ' %(kz0,eta0) + info + ', ' + name_this_py
-    title = 'kz = %.4f $\mu m^{-1}$, $\eta$ = %.2f' %(kz0,eta0) + '\n' + info 
+    title = 'kz = %.4f $\mu m^{-1}$, $\eta$ = %.2f' %(kz0,eta0) + ', ' + infoDIP_1 + '\n' + infoDIP_2 + ', ' + infAoBo
     nametxt = 'opt_lorentz_conkzdet_modo%i_kz%.4f_eta%.2f' %(modo,kz0,eta0) + '.txt'
     inf_fig = '_modo%i_kz%.4f_eta%.2f' %(modo,kz0,eta0) + '.png'
     
@@ -199,7 +208,7 @@ elif data_freq_mu == 1:
         Omega = 2*np.pi*Freq
         Omegac = Omega/aux_cte   
         
-        Qscatt = Cross_Section(kz0,Omegac,eta0,nmax,R,Mu,Ao,Bo)
+        Qscatt = Cross_Section(kz0,Omegac,eta0,nmax,R,Mu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
         return Qscatt   
 
 #%% 3
@@ -209,7 +218,7 @@ elif data_freq_eta == 1:
     kz0 = 0.1
     labely = '$\eta$'
     inf = '$\mu_c$ = %.3f eV, kz = %.4f $\mu m^{-1}$, ' %(mu0,kz0) + info + ', ' + name_this_py
-    title = '$\mu_c$ = %.3f eV, kz = %.4f $\mu m^{-1}$' %(mu0,kz0) + '\n' + info 
+    title = '$\mu_c$ = %.3f eV, kz = %.4f $\mu m^{-1}$' %(mu0,kz0) + ', ' + infoDIP_1 + '\n' + infoDIP_2 + ', ' + infAoBo
     nametxt = 'opt_lorentz_conkzdet_modo%i_kz%.4f_mu%.2f' %(modo,kz0,mu0) + '.txt'
     inf_fig = '_modo%i_kz%.4f_mu%.2f' %(modo,kz0,mu0) + '.png'
     
@@ -230,7 +239,7 @@ elif data_freq_eta == 1:
         Omega = 2*np.pi*Freq
         Omegac = Omega/aux_cte   
         
-        Qscatt = Cross_Section(kz0,Omegac,Eta,nmax,R,mu0,Ao,Bo)
+        Qscatt = Cross_Section(kz0,Omegac,Eta,nmax,R,mu0,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
         return Qscatt   
     
 label_cross_section = cross_section + '$_{ad}$'
@@ -273,7 +282,7 @@ def graph(title,labelx,labely,tamfig,tamtitle,tamletra,tamnum,labelpadx,labelpad
     return 
 
 if save_graphs == 1:
-    path_g = path_basic + '/' + 'seccion_eficaz_lorentziana/R_%.2f' %(R)
+    path_g = path_basic + '/' + 'seccion_eficaz_lorentziana_dipole/R_%.2f' %(R)
     if not os.path.exists(path_g):
         print('Creating folder to save graphs')
         os.mkdir(path_g)
@@ -293,7 +302,7 @@ if data_freq_kz == 1:
                 Omega = 2*np.pi*Freq
                 Omegac = Omega/aux_cte   
                 
-                Qscatt = Cross_Section(Kz,Omegac,eta0,nmax,R,mu0,Ao,Bo)
+                Qscatt = Cross_Section(Kz,Omegac,eta0,nmax,R,mu0,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
                 return Qscatt
             
             # print(list_x[0],list_x[-1])
@@ -336,7 +345,7 @@ if data_freq_kz == 1:
                 Omega = 2*np.pi*Freq
                 Omegac = Omega/aux_cte   
                 
-                Qscatt = Cross_Section(kz0,Omegac,eta0,nmax,R,Mu,Ao,Bo)
+                Qscatt = Cross_Section(kz0,Omegac,eta0,nmax,R,Mu,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
                 return Qscatt
             
             # print(list_x[0],list_x[-1])
@@ -380,7 +389,7 @@ if data_freq_kz == 1:
                 Omega = 2*np.pi*Freq
                 Omegac = Omega/aux_cte   
                 
-                Qscatt = Cross_Section(kz0,Omegac,Eta,nmax,R,mu0,Ao,Bo)
+                Qscatt = Cross_Section(kz0,Omegac,Eta,nmax,R,mu0,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
                 return Qscatt
             
             # print(list_x[0],list_x[-1])
@@ -426,7 +435,7 @@ if data_freq_kz == 1:
             for freqq in list_freq:
                 omegga = freqq*2*np.pi
                 omeggac = omegga/aux_cte
-                Qabss = Cross_Section(kz,omeggac,eta0,nmax,R,mu0,Ao,Bo)
+                Qabss = Cross_Section(kz,omeggac,eta0,nmax,R,mu0,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo)
                 list_Qabs1.append(Qabss)  
             list_Qabs_tot1.append(list_Qabs1)  
             if kz == kz0:

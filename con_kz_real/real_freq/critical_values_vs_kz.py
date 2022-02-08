@@ -31,9 +31,10 @@ if paper == 1:
     labelpady = -0.5
     labelpadx = -0.5
     lw = 1.5
-    pad = -2.3
+    pad = -2.5
     loc1 = [-0.1,1]
     loc2 = [-0.1,1]
+    columnspace = 0.5
     
 else:
     tamfig = (11,7)
@@ -77,7 +78,7 @@ R = 0.5              #micrones
 list_kz = [0,0.0001,0.05,0.1,0.135,0.14,0.5] 
 list_kz_chicos = [0,0.05,0.1,0.13]
 
-path_load = path_basic + '/re_epsi1_%.2f_vs_mu' %(re_epsi1)
+path_load = path_basic + '/re_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
 
 info1 = 'R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f' %(R,re_epsi1)
 info2 = '$gamma_c$ = %.4f eV, $\mu_1$ = %i, $\mu_2$ = %i, $\epsilon_2$ = %i' %(hbargama,mu1,mu2,epsi2)
@@ -122,7 +123,7 @@ for modo in [1,2,3,4]:
     plt.tick_params(labelsize = tamnum, pad = pad)
                 
     #fig.legend(handles=patchList2,loc=[0.145,0.87],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    plt.legend(loc = loc1, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = 0.4,frameon=0,handletextpad=0.1)
+    plt.legend(loc = loc1, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = columnspace,frameon=0,handletextpad=0.1)
     
     if save_graphs==1:
         os.chdir(path_load)
@@ -148,9 +149,10 @@ for modo in [1,2,3,4]:
     plt.ylabel(labely,fontsize=int(tamletra*1.2),labelpad =labelpady)
     plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
     plt.tick_params(labelsize = tamnum, pad = pad)
+    
             
     #plt.legend(handles=patchList2,loc=[0.02,0.99],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    plt.legend(loc = loc2, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = 0.4,frameon=0,handletextpad=0.1)
+    plt.legend(loc = loc2, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = columnspace,frameon=0,handletextpad=0.1)
     
     if save_graphs==1:
         os.chdir(path_load)
