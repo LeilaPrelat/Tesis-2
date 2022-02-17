@@ -36,9 +36,9 @@ paper = 0
 save_graphs = 1 #guardar los graficos 
 
 if data_freq_kz == 1 and graficar_3D == 1:
-    graficar3D_freq_vs_kz = 0
+    graficar3D_freq_vs_kz = 1
     graficar3D_freq_vs_mu = 0
-    graficar3D_freq_vs_eta = 1
+    graficar3D_freq_vs_eta = 0
 
 list_cross_section = ['Qscat', 'Qabs', 'Qext'] 
 cross_section = list_cross_section[0]
@@ -145,14 +145,14 @@ if data_freq_kz == 1:
     
     ############################################################
     ################## cerca de freq1 ###########################
-#    [mu0,eta0,ind] = 0.2,0.8,117 # (**) # poner desp eta0 = 0.74 (estaba corrido el maximo de Qscat en la minimizacion) para el graf omega vs eta
+    [mu0,eta0,ind] = 0.2,0.8,117 # (**) # poner desp eta0 = 0.74 (estaba corrido el maximo de Qscat en la minimizacion) para el graf omega vs eta
 #    [mu0,eta0,ind] = 0.2,0.85,117
 #    [mu0,eta0,ind] = 0.2,0.9,90
 #    [mu0,eta0,ind] = 0.2,0.95,117
 #    [mu0,eta0,ind] = 0.1,0.85,135 # extra para que halla match con el de mu0 = 0.5 (*)
     
     
-#    tolfreq = 0.05
+    tolfreq = 0.05
     
     ############################################################
     
@@ -174,7 +174,7 @@ if data_freq_kz == 1:
     omega0 = row2[ind]     
     freq0 = omega0/(2*np.pi)
 
-    if [mu0,eta0,ind] == [0.2,0.8,117] :
+    if [mu0,eta0,ind] == [0.4,0.85,206]:
         eta0 = 0.66  # estaba corrido el maximo de Qscat en la minimizacion para el caso [mu0,eta0,ind] = 0.2,0.8,117 
     if [mu0,eta0,ind] == [0.1,0.85,135] :
         freq0 = 5.39888 # para el [mu0,eta0,ind] = 0.53,0.8,153 
@@ -335,7 +335,6 @@ if data_freq_kz == 1:
             
             labely = '$\mu_c$ [eV]'
             inf = 'kz = %.4f $\mu m^{-1}$, $\eta$ = %.2f, ' %(kz0,eta0) + info + ', ' + name_this_py
-            title = 'kz = %.4f $\mu m^{-1}$, $\eta$ = %.2f' %(kz0,eta0) + '\n' + info 
             nametxt = 'opt_lorentz_conkzdet_modo%i_kz%.4f_eta%.2f' %(modo,kz0,eta0) + '.txt'
             inf_fig = '_modo%i_kz%.4f_eta%.2f' %(modo,kz0,eta0) + '.png'
             print('')
@@ -379,7 +378,6 @@ if data_freq_kz == 1:
 
             labely = '$\eta$'
             inf = '$\mu_c$ = %.3f eV, kz = %.4f $\mu m^{-1}$, ' %(mu0,kz0) + info + ', ' + name_this_py
-            title = '$\mu_c$ = %.3f eV, kz = %.4f $\mu m^{-1}$' %(mu0,kz0) + '\n' + info 
             nametxt = 'opt_lorentz_conkzdet_modo%i_kz%.4f_mu%.2f' %(modo,kz0,mu0) + '.txt'
             inf_fig = '_modo%i_kz%.4f_mu%.2f' %(modo,kz0,mu0) + '.png'
             print('')

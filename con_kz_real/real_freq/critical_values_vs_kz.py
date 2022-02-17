@@ -22,20 +22,23 @@ paper = 1
 #%%
 
 if paper == 1: 
-    tamfig = (6,3.5)
-    tamlegend = 10
-    tamletra = 11
-    tamtitle = 10
-    tamnum = 9
+    tamfig = (3, 2)
+    tamletra = 7
+    tamnum = 6
+    tamlegend = 6
     
-    labelpady = -0.5
-    labelpadx = -0.5
-    lw = 1.5
-    pad = -2.5
-    loc1 = [-0.1,1]
-    loc2 = [-0.1,1]
-    columnspace = 0.5
-    
+    labelpady = 0.2
+    labelpadx = 0
+    lw = 1
+    pad = -4
+    loc1 = [0.052,1]
+    loc2 = [0,1]
+    columnspace = 3.5
+
+    dpi = 500
+    ticks_x = [0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+    ticks_y1 = [-0.041,-0.036,-0.031]
+    ticks_y2 = [-0.041,-0.036,-0.031]
 else:
     tamfig = (11,7)
     tamlegend = 18
@@ -101,7 +104,7 @@ if R != 0.5:
 
 for modo in [1,2,3,4]: 
 
-    plt.figure(figsize=tamfig)
+    fig, ax = plt.subplots(1,1,figsize=tamfig)
 
     labelx = '$\mu_c$ [eV]'
     labely = '[Im($\epsilon_1$)]$_c$'
@@ -118,16 +121,20 @@ for modo in [1,2,3,4]:
             line1.set_dashes([2, 2, 10, 2])  # 2pt line, 2pt break, 10pt line, 2pt break
         k = k + 1
         
-    plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
-    plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
-    plt.tick_params(labelsize = tamnum, pad = pad)
-                
+    ax.set_ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+    ax.set_xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+    ax.tick_params(labelsize = tamnum, pad = pad)
+    ax.set_xticks(ticks_x)            
+    if modo == 1:
+        ax.set_yticks(ticks_y1)   
+        
     #fig.legend(handles=patchList2,loc=[0.145,0.87],ncol=4,fontsize=tamlegend,frameon=0,handletextpad=0.5) 
-    plt.legend(loc = loc1, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = columnspace,frameon=0,handletextpad=0.1)
+    plt.legend(loc = loc1, ncol = 2,markerscale=1,fontsize=tamlegend, columnspacing = columnspace,frameon=0,handletextpad=0.3)
     
     if save_graphs==1:
+        plt.tight_layout()
         os.chdir(path_load)
-        plt.savefig('Im_epsi1_vs_mu_tot_modo%i.png'%(modo) ,format = 'png')
+        plt.savefig('Im_epsi1_vs_mu_tot_modo%i.png'%(modo) ,format = 'png', dpi = dpi)
         
     labely = '$\omega/c$ [$\mu$m$^{-1}$]'
     
@@ -155,8 +162,9 @@ for modo in [1,2,3,4]:
     plt.legend(loc = loc2, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = columnspace,frameon=0,handletextpad=0.1)
     
     if save_graphs==1:
+        plt.tight_layout()
         os.chdir(path_load)
-        plt.savefig('omegac_vs_mu_tot_modo%i.png'%(modo) ,format = 'png')
+        plt.savefig('omegac_vs_mu_tot_modo%i.png'%(modo) ,format = 'png', dpi = dpi)
         
 #%%
  

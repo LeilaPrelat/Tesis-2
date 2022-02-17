@@ -22,20 +22,23 @@ paper = 1
 #%%
 
 if paper == 1: 
-    tamfig = (6,3.5)
-    tamlegend = 10
-    tamletra = 11
-    tamtitle = 10
-    tamnum = 9
+    tamfig = (3, 2)
+    tamletra = 7
+    tamnum = 6
+    tamlegend = 6
     
-    labelpady = -0.5
-    labelpadx = -0.5
-    lw = 1.5
-    pad = -2.5
-    loc1 = [0.16,0.88]
-    loc2 = [0.05,1]
-    columnspace = 0.5
-    
+    labelpady = 0.2
+    labelpadx = 0
+    lw = 1
+    pad = -4
+    loc1 = [0.052,1]
+    loc2 = [0,1]
+    columnspace = 3.5
+
+    dpi = 500
+    ticks_x = [0.4,0.6,0.8]
+    ticks_y1 = [-0.041,-0.036,-0.031]
+    ticks_y2 = [-0.041,-0.036,-0.031]
 else:
     tamfig = (11,7)
     tamlegend = 18
@@ -97,8 +100,8 @@ if R != 0.5:
 
 #%%
 
-hspace = 0.1
-wspace = 0.08
+hspace = -0.1
+wspace = 0.03
 
 for kz in list_kz: 
     fig,axs = plt.subplots(2,1, sharex=True, facecolor='w', figsize = tamfig)
@@ -154,8 +157,9 @@ for kz in list_kz:
     
     
     if save_graphs==1:
+        plt.tight_layout()
         os.chdir(path_load)
-        plt.savefig('Im_epsi1_vs_mu_kz%.4f.png'%(kz) ,format = 'png')
+        plt.savefig('Im_epsi1_vs_mu_kz%.4f.png'%(kz) ,format = 'png',dpi = dpi)
         
     labely = '$\omega/c$ [$\mu$m$^{-1}$]'
     
@@ -182,8 +186,9 @@ for kz in list_kz:
     plt.legend(loc = loc2, ncol = 4,markerscale=1,fontsize=tamlegend, columnspacing = 2,frameon=0,handletextpad=0.1)
     
     if save_graphs==1:
+        plt.tight_layout()
         os.chdir(path_load)
-        plt.savefig('omegac_vs_mu_kz%.4f.png'%(kz) ,format = 'png')
+        plt.savefig('omegac_vs_mu_kz%.4f.png'%(kz) ,format = 'png',dpi = dpi)
         
 #%%
  

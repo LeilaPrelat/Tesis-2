@@ -116,6 +116,15 @@ if data_freq_kz == 1:
     ################## cerca de freq2 ###########################
     [mu0,eta0,ind] = 0.6,0.8,60  # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat
     [mu0,eta0,ind] = 0.5,0.8,135 # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat
+    [mu0,eta0,ind] = 0.49,0.8,140
+    [mu0,eta0,ind] = 0.48,0.8,147
+    [mu0,eta0,ind] = 0.47,0.8,154
+    [mu0,eta0,ind] = 0.46,0.8,160
+    [mu0,eta0,ind] = 0.45,0.8,167
+    [mu0,eta0,ind] = 0.44,0.8,174
+    [mu0,eta0,ind] = 0.43,0.8,182
+    [mu0,eta0,ind] = 0.42,0.8,189
+    [mu0,eta0,ind] = 0.41,0.8,197
     [mu0,eta0,ind] = 0.4,0.8,207 # no funca muy bien cerca de freq2, nunca termina siendo el maximo de Qscat. (***)
     # [mu0,eta0,ind] = 0.6,0.85,60 
     # [mu0,eta0,ind] = 0.5,0.85,135 # (*)
@@ -125,7 +134,11 @@ if data_freq_kz == 1:
     # [mu0,eta0,ind] = 0.6,0.95,60 
     # [mu0,eta0,ind] = 0.5,0.95,134
     # [mu0,eta0,ind] = 0.4,0.95,205
-    
+    [mu0,eta0,ind] = 0.39,0.8,214
+    [mu0,eta0,ind] = 0.38,0.8,222
+    [mu0,eta0,ind] = 0.37,0.8,231
+    [mu0,eta0,ind] = 0.36,0.8,241
+    [mu0,eta0,ind] = 0.35,0.8,-1
     
     [mu0,eta0,ind] = 0.4,0.85,206  # este funca bien cambiando eta por 0.75 para el barrido en eta: (***)
 #    [mu0,eta0,ind] = 0.4,0.66,206  # (***). cambiar por eta = 0.66
@@ -136,14 +149,24 @@ if data_freq_kz == 1:
     
     ############################################################
     ################## cerca de freq1 ###########################
-#    [mu0,eta0,ind] = 0.2,0.8,117 # (**) # poner desp eta0 = 0.74 (estaba corrido el maximo de Qscat en la minimizacion) para el graf omega vs eta
+    [mu0,eta0,ind] = 0.2,0.8,117 # (**) # poner desp eta0 = 0.74 (estaba corrido el maximo de Qscat en la minimizacion) para el graf omega vs eta
 #    [mu0,eta0,ind] = 0.2,0.85,117
 #    [mu0,eta0,ind] = 0.2,0.9,90
 #    [mu0,eta0,ind] = 0.2,0.95,117
 #    [mu0,eta0,ind] = 0.1,0.85,135 # extra para que halla match con el de mu0 = 0.5 (*)
-    
-    
-#    tolfreq = 0.05
+    [mu0,eta0,ind] = 0.25,0.8,7
+    [mu0,eta0,ind] = 0.24,0.8,43
+    [mu0,eta0,ind] = 0.23,0.8,65
+    [mu0,eta0,ind] = 0.22,0.8,83
+    [mu0,eta0,ind] = 0.21,0.8,100
+    [mu0,eta0,ind] = 0.2,0.8,117
+    [mu0,eta0,ind] = 0.19,0.8,133
+    [mu0,eta0,ind] = 0.18,0.8,151
+    [mu0,eta0,ind] = 0.17,0.8,169
+    [mu0,eta0,ind] = 0.16,0.8,188
+    [mu0,eta0,ind] = 0.15,0.8,209
+    [mu0,eta0,ind] = 0.14,0.8,232
+#    tolfreq = 0.1
     
     ############################################################
     
@@ -166,10 +189,11 @@ if data_freq_kz == 1:
     omega0 = row2[ind]     
     freq0 = omega0/(2*np.pi)
 
-    
-#    eta0 = 0.66  # estaba corrido el maximo de Qscat en la minimizacion para el caso [mu0,eta0,ind] = 0.2,0.8,117 
-    freq0 = 5.39888
-    inf_fig = '_modo%i_mu%.4f_eta%.2f'  %(modo,mu0,eta0)  + '.png'
+    # if [mu0,eta0,ind] == [0.4,0.85,206]:
+    #     eta0 = 0.66  # estaba corrido el maximo de Qscat en la minimizacion para el caso [mu0,eta0,ind] = 0.2,0.8,117 
+    # if [mu0,eta0,ind] == [0.1,0.85,135] :
+    #     freq0 = 5.39888 # para el [mu0,eta0,ind] = 0.53,0.8,153 
+    inf_fig = '_modo%i_mu%.4f_eta%.2f_ind%i'  %(modo,mu0,eta0,ind)  + '.png'
     
 #%% 2
 

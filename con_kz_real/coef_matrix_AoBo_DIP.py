@@ -34,12 +34,12 @@ except ModuleNotFoundError:
 
 try:
     sys.path.insert(1, path_basic)
-    from dipolo_functions import hzDIP, ezDIP
+    from dipole_functions import hzDIP, ezDIP
 except ModuleNotFoundError:
-    print('dipolo_functions.py no se encuentra en ' + path_basic)
-    path_graphene2 = input('path de la carpeta donde se encuentra dipolo_functions.py')
+    print('dipole_functions.py no se encuentra en ' + path_basic)
+    path_graphene2 = input('path de la carpeta donde se encuentra dipole_functions.py')
     sys.path.insert(1, path_basic)
-    from dipolo_functions import hzDIP, ezDIP
+    from dipole_functions import hzDIP, ezDIP
 
 try:
     sys.path.insert(1, path_graphene)
@@ -140,8 +140,8 @@ def coef(kz,omegac,epsi1,modo,R,mu_c,p1,p2,pz,rho_D,theta_D,z_D,Ao,Bo):
     def d(j):
         return 1j*epsi(j)/xt(j)
     
-    ez,der_ez = ezDIP(kz,omegac,epsi1,modo,mu_c,R,p1,p2,pz,rho_D,theta_D,z_D)
-    hz,der_hz = hzDIP(kz,omegac,epsi1,modo,mu_c,R,p1,p2,pz,rho_D,theta_D,z_D)
+    ez,der_ez = ezDIP(kz,omegac,epsi1,modo,R,p1,p2,pz,rho_D,theta_D,z_D)
+    hz,der_hz = hzDIP(kz,omegac,epsi1,modo,R,p1,p2,pz,rho_D,theta_D,z_D)
     
     J = special.jn(modo,xt(1)*Rbarra) + 0j
     J2 = special.jn(modo,xt(2)*Rbarra) + 0j

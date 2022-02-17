@@ -41,23 +41,18 @@ pi,hb,c,alfac,hbargama,mu1,mu2,epsi2 = constantes()
 
 #print('Definir hz del dipolo: hz y hz'/k0')
 
-def hzDIP(kz,omegac,epsi1,modo,hbaramu,rho,p1,p2,pz,rho_D,theta_D,z_D):
+def hzDIP(kz,omegac,epsi1,modo,rho,p1,p2,pz,rho_D,theta_D,z_D):
     """
     Parameters
     ----------
     kz : kz en 1/micrometros
     omegac : omega/c en 1/micrometros
     epsi1 : permeabilidad electrica del medio 1
-
     modo: modo entero
-
-    hbaramu: potencial quimico del grafeno en eV
     rho : coordenada radial en micrometros
-
     p1 = p+ = px + 1j*py
     p2 = p- = px - 1j*py
     pz
-
     rho_D : posicion rho del dipolo en micrometros
     theta_D : posicion theta del dipolo en radianes
     z_D : posicion z del dipolo en micrometros
@@ -138,23 +133,18 @@ def hzDIP(kz,omegac,epsi1,modo,hbaramu,rho,p1,p2,pz,rho_D,theta_D,z_D):
 
 #print('Definir ez del dipolo: ez y ez'/k0')
 
-def ezDIP(kz,omegac,epsi1,modo,hbaramu,rho,p1,p2,pz,rho_D,theta_D,z_D):
+def ezDIP(kz,omegac,epsi1,modo,rho,p1,p2,pz,rho_D,theta_D,z_D):
     """
     Parameters
     ----------
     kz : kz en 1/micrometros
     omegac : omega/c en 1/micrometros
     epsi1 : permeabilidad electrica del medio 1
-
     modo: modo entero
-
-    hbaramu: potencial quimico del grafeno en eV
     rho : coordenada radial en micrometros
-
     p1 = p+ = px + 1j*py
     p2 = p- = px - 1j*py
     pz
-
     rho_D : posicion rho del dipolo en micrometros
     theta_D : posicion theta del dipolo en radianes
     z_D : posicion z del dipolo en micrometros

@@ -1,0 +1,1 @@
+Ao = 1, Bo = 1, kz = 0.0000 1/$\mu$m, z = 0$\mu$m, nmax = 5, $\nu$ = 1, $\epsilon_1$ = 3.9 - i3.5307e-02, $\omega/c$ = 1.3401e-01 1/$\mu$m, $\rho_D$ = 0.250$\mu$m, $\theta_D$ = pi/4, $z_D$ = 0$\mu$m, px = 0, py = 0, pz = 1.00, plot_fields_DIP_3D.py

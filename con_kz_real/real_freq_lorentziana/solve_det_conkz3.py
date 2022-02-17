@@ -82,18 +82,17 @@ n = 251
 #%%
 
 if minimizar_omega_kz == 1:
-    eta0 = 0.75
+    eta0 = 0.92
     ########### parte 1 del barrido en mu ###################################################
-    list_mu0 = np.linspace(0.1,0.5,5) # para un mu0 y eta0 fijos
-    list_mu0 = [0.4]
+    list_mu0 =  np.linspace(0.1,0.5,41) # para un mu0 y eta0 fijos
     list_kz = np.linspace(0.1, 2.6, n)
     list_omegaTHz = np.linspace(5,50,n)
     list_cond_init = [20]
     ########### parte 2 del barrido en mu ###################################################
-    # list_mu0 = np.linspace(0.6,0.9,4) # para un mu0 y eta0 fijos
-    # list_kz = np.linspace(0.2, 2.7, n)
-    # list_omegaTHz = np.linspace(5,60,n)
-    # list_cond_init = [30]
+    list_mu0 = np.linspace(0.9,0.59,32) # para un mu0 y eta0 fijos
+    list_kz = np.linspace(0.25, 2.75, n)
+    list_omegaTHz = np.linspace(5,60,n)
+    list_cond_init = [30]
     #######################################################################
 
 elif minimizar_omega_mu == 1:
@@ -157,7 +156,7 @@ if minimizar_omega_kz == 1:
         title = '$\mu_c$ = %.3f eV, $\eta$ = %.2f, ' %(mu0,eta0) + info + '\n' + name_this_py
         inf_fig = 'det_modo%i_mu%.4f_eta%.2f' %(modo,mu0,eta0)
             
-        print('Graficar |det| vs omega y kz con mu = %.1f eV' %(mu0))
+        print('Graficar |det| vs omega y kz con mu = %.2f eV' %(mu0))
         
         
         def det_2variables2(omegaTHz,kz):
@@ -168,7 +167,7 @@ if minimizar_omega_kz == 1:
             return np.log10(np.abs(rta))
     
     #
-        print('Minimizar |det| con mu = %.1f eV' %(mu0))
+        print('Minimizar |det| con mu = %.2f eV' %(mu0))
         
         # list_cond_init  = [43, 59, 73]
         omegaTHz_opt = []
