@@ -24,7 +24,7 @@ paper = 1
 if paper == 1: 
     tamfig = (3, 2)
     tamletra = 7
-    tamnum = 6
+    tamnum = 8
     tamlegend = 6
     
     labelpady = 0.2
