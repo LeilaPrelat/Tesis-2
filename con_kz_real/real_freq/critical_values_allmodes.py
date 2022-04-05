@@ -275,7 +275,45 @@ for kz in list_kz:
             plt.savefig('omegac_vs_mu_kz%.4f.png'%(kz) ,format = 'png',dpi = dpi)
             
 #%%
- 
+loc4 = [0.012,0.98]
+if kz == 0.5:
+    
+    labelx = '$\mu_c$ [eV]'
+    labely = '[Im($\epsilon_1$)]$_c$'
+         
+    plt.figure(figsize=tamfig)
+
+    k = 0
+    for modo in list_modos:
+        os.chdir(path_load)
+        name = 'opt_det_conkz_vs_mu_kz%.4f_modo%i.txt' %(kz,modo)
+        tabla = np.loadtxt(name, delimiter='\t', skiprows=1)
+        tabla = np.transpose(tabla)
+        [list_mu_opt,omegac_opt,epsi1_imag_opt,eq_det] = tabla
+        
+        if modo == 1:
+            line1, = plt.plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = r'$n=$%i'%(k+1))
+            line1.set_dashes([2, 2, 10, 2])
+        
+        else:
+            plt.plot(list_mu_opt,epsi1_imag_opt,symbols[k],lw =lw,color = colors[k],label = r'$n=$%i'%(k+1))
+        
+        k = k + 1
+
+plt.legend(loc = loc4,ncol = 4,markerscale=1,fontsize=tamlegend, 
+                      columnspacing = columnspace,frameon=0,handletextpad=0.2, handlelength=length_marker)    
+            
+plt.ylabel(labely,fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if save_graphs==1:
+    plt.tight_layout()    
+    os.chdir(path_load)
+    plt.savefig('Im_epsi1_vs_mu_kz%.4f.png'%(kz) ,format = 'png',dpi = dpi)
+
+
+"""
+
 if kz == 0.5:
     loc1 = [0.275,0.94]
     ticks_y1_kz3 = [-0.76,-0.77,-0.78]
@@ -345,3 +383,4 @@ if kz == 0.5:
 
 #%%    
 
+"""
