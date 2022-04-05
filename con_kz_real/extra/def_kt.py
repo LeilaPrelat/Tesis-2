@@ -16,7 +16,7 @@ import os
 name_this_py = os.path.basename(__file__)
 path = os.path.abspath(__file__) #path absoluto del .py actual
 path_basic = path.replace('/' + name_this_py,'')
-path_graphene = path_basic.replace('/' + 'con_kz_real','') 
+path_graphene = path_basic.replace('/' + 'con_kz_real/extra','') 
 
 
 try:

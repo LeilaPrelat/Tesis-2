@@ -24,12 +24,40 @@ import matplotlib.pyplot as plt
 
 save_data_opt = 1 #guardar data de la minimizacion
 save_graphs = 1 #guardar los graficos
+paper = 1
 
-tamfig = (11,9)
-tamlegend = 18
-tamletra = 18
-tamtitle = 18
-tamnum = 16
+if paper == 0:
+    tamfig = (11,9)
+    tamlegend = 18
+    tamletra = 18
+    tamtitle = 18
+    tamnum = 16
+    ms,ms2 = 1,10
+    pad = 0
+    labelpady = 0.2
+    labelpadx = 0.2
+else:
+    tamfig = (3, 2)
+    tamletra = 9
+    tamnum = 8.5
+    tamlegend = 8.5
+    ms,ms2 = 1,2
+    pad = -1.5
+    import seaborn as sns
+    sns.set()
+# ticks_x = [0.4,0.6,0.8]
+# ticks_y1_kz1 = [-0.036,-0.034,-0.032]
+# ticks_y2_kz1 = [-0.012,-0.020,-0.028]
+
+# ticks_y1_kz2 = [-0.761, -0.770, -0.779]
+# ticks_y2_kz2 = [-0.012,-0.020,-0.028]
+    
+# columnspace = 0.5
+# markerscale = 0.7
+# loc1 = [0.275,0.9]  
+# length_marker = 1
+    labelpady = 1.1
+    labelpadx = 0.7
 
 #%%
 
@@ -39,10 +67,10 @@ path_basic = path.replace('/' + name_this_py,'')
 path_basic2 = path_basic.replace('/' + 'real_freq','')
 
 try:
-    sys.path.insert(1, path_basic2)
+    sys.path.insert(1, path_basic2 + '/extra')
     from def_kt import kt
 except ModuleNotFoundError:
-    print('def_kt.py no se encuentra en el path_basic2 definido/carpeta de trabajo')
+    print('def_kt.py no se encuentra en '+ path_basic2 + '/extra')
     path_basic2 = input('path de la carpeta donde se encuentra def_kt.py')
     sys.path.insert(1, path_basic2)
     from def_kt import kt
@@ -53,12 +81,12 @@ print('Definir parametros del problema')
 
 re_epsi1 = 3.9
 R = 0.5              #micrones
-kz_real = 1       #eV mu_c
+kz_real = 0.5      #eV mu_c
 modo = 4
     
-kzlim = 0.14
+# kzlim = 0.14
 
-path_load = path_basic + '/' + 're_epsi1_%.2f_vs_mu' %(re_epsi1)
+path_load = path_basic + '/' + 're_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
 path_save = path_load
 
 #%%
@@ -88,53 +116,127 @@ labelsinkz = 'Opt sin kz'
 labelx = '$\mu_c$ [eV]'
 title = 'Modo = %i, R = %.1f $\mu$m, Re($\epsilon_1$) = %.2f' %(modo,R,re_epsi1) 
 title2 = title + '\n' + name_this_py
+dpi = 300
 
 kt_imag = [] # Imag(kt)
 kt_real = [] # Real(kt)
 kt_abs = [] #modulo del k transversal |kt|
 
+kt_imag2 = [] # Imag(kt)
+kt_real2 = [] # Real(kt)
+kt_abs2 = [] #modulo del k transversal |kt|
+
+mu2,epsi2 = 1,1
 for j in range(len(list_mu_opt)):
     hbaramu = list_mu_opt[j]
     omegac = omegac_opt[j]
     epsi1_imag = epsi1_imag_opt[j]
     epsi1 = re_epsi1 + 1j*epsi1_imag
     kt_value = kt(kz_real,omegac,epsi1,modo,R,hbaramu)    
+    k0 = omegac
+    xz = kz_real/k0
+    Rbarra = R*k0
+    xt_value2 = -xz**2 + mu2*epsi2
+    xtmedio = (xt_value2)**(1/2)   
+    if (xtmedio*Rbarra).real>=0:
+	    xtmedio = xtmedio
+    else:
+	    xtmedio = -xtmedio
+    
+    kt_value2 = xtmedio*k0
+    kt_abs2.append(np.abs(kt_value2))
+    kt_imag2.append(kt_value2.imag)
+    kt_real2.append(kt_value2.real)
+    
     kt_abs.append(np.abs(kt_value))
     kt_imag.append(kt_value.imag)
     kt_real.append(kt_value.real)
     
 plt.figure(figsize=tamfig)
-plt.plot(list_mu_opt,kt_abs,'.-r',ms=10,label=label_graph)
-plt.title(title2,fontsize=tamtitle)
-plt.ylabel('|$k_t$| [1/$\mu$m]',fontsize=tamletra)
-plt.xlabel(labelx,fontsize=tamletra)
-plt.tick_params(labelsize = tamnum)
-plt.legend(loc='best',markerscale=2,fontsize=tamlegend)
-plt.grid(1)
+plt.plot(list_mu_opt,kt_abs,'-r',lw=ms2,label=label_graph)
+if paper == 0:
+    plt.title(title2,fontsize=tamtitle)
+    plt.legend(loc='best',markerscale=ms,fontsize=tamlegend)
+    plt.grid(1)
+plt.ylabel('|$k_t$| [1/$\mu$m]',fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if paper == 1:
+    plt.tight_layout()
 if save_graphs==1:
     os.chdir(path_save)
-    plt.savefig('|kt|_vs_mu_kz%.4f_%i'%(kz_real,modo), format='png')
+    plt.savefig('|kt|_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
     
 plt.figure(figsize=tamfig)
-plt.plot(list_mu_opt,kt_real,'.-r',ms=10,label=label_graph)
-plt.title(title2,fontsize=tamtitle)
-plt.ylabel('Re($k_t$) [1/$\mu$m]',fontsize=tamletra)
-plt.xlabel(labelx,fontsize=tamletra)
-plt.tick_params(labelsize = tamnum)
-plt.legend(loc='best',markerscale=2,fontsize=tamlegend)
-plt.grid(1)
+plt.plot(list_mu_opt,kt_real,'-r',lw=ms2,label=label_graph)
+if paper == 0:
+    plt.title(title2,fontsize=tamtitle)
+    plt.legend(loc='best',markerscale=ms,fontsize=tamlegend)
+    plt.grid(1)
+plt.ylabel('Re($k_t$) [1/$\mu$m]',fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if paper == 1:
+    plt.tight_layout()
 if save_graphs==1:
-    plt.savefig('kt_real_vs_mu_kz%.4f_%i'%(kz_real,modo), format='png')
+    plt.savefig('kt_real_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
     
 plt.figure(figsize=tamfig)
-plt.plot(list_mu_opt,kt_imag,'.-r',ms=10,label=label_graph)
-plt.title(title2,fontsize=tamtitle)
-plt.ylabel('Im($k_t$) [1/$\mu$m]',fontsize=tamletra)
-plt.xlabel(labelx,fontsize=tamletra)
-plt.tick_params(labelsize = tamnum)
-plt.legend(loc='best',markerscale=2,fontsize=tamlegend)
-plt.grid(1)
+plt.plot(list_mu_opt,kt_imag,'-r',lw=ms2,label=label_graph)
+if paper == 0:
+    plt.title(title2,fontsize=tamtitle)
+    plt.legend(loc='best',markerscale=ms,fontsize=tamlegend)
+    plt.grid(1)
+plt.ylabel('Im($k_t$) [1/$\mu$m]',fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if paper == 1:
+    plt.tight_layout()
 if save_graphs==1:
-    plt.savefig('kt_imag_vs_mu_kz%.4f_%i'%(kz_real,modo), format='png')
+    plt.savefig('kt_imag_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
+ 
+    ########
+plt.figure(figsize=tamfig)
+plt.plot(list_mu_opt,kt_abs2,'-r',lw=ms2,label=label_graph)
+if paper == 0:
+    plt.title(title2,fontsize=tamtitle)
+    plt.legend(loc='best',markerscale=ms,fontsize=tamlegend)
+    plt.grid(1)
+plt.ylabel('|$k_t$| [1/$\mu$m]',fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if paper == 1:
+    plt.tight_layout()
+if save_graphs==1:
+    os.chdir(path_save)
+    plt.savefig('|kt|_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
+    
+plt.figure(figsize=tamfig)
+plt.plot(list_mu_opt,kt_real2,'-r',lw=ms2,label=label_graph)
+if paper == 0:
+    plt.title(title2,fontsize=tamtitle)
+    plt.legend(loc='best',markerscale=ms,fontsize=tamlegend)
+    plt.grid(1)
+plt.ylabel('Re($k_t$) [1/$\mu$m]',fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if paper == 1:
+    plt.tight_layout()
+if save_graphs==1:
+    plt.savefig('kt_real_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
+    
+plt.figure(figsize=tamfig)
+plt.plot(list_mu_opt,kt_imag2,'-r',lw=ms2,label=label_graph)
+if paper == 0:
+    plt.title(title2,fontsize=tamtitle)
+    plt.legend(loc='best',markerscale=ms,fontsize=tamlegend)
+    plt.grid(1)
+plt.ylabel('Im($k_t$) [1/$\mu$m]',fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if paper == 1:
+    plt.tight_layout()
+if save_graphs==1:
+    plt.savefig('kt_imag_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
     
 #%%

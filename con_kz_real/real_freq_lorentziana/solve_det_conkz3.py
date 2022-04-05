@@ -83,6 +83,7 @@ n = 251
 
 if minimizar_omega_kz == 1:
     eta0 = 0.92
+    eta0 = 0
     ########### parte 1 del barrido en mu ###################################################
     list_mu0 =  np.linspace(0.1,0.5,41) # para un mu0 y eta0 fijos
     list_kz = np.linspace(0.1, 2.6, n)
