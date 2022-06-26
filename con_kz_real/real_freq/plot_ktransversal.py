@@ -81,8 +81,8 @@ print('Definir parametros del problema')
 
 re_epsi1 = 3.9
 R = 0.5              #micrones
-kz_real = 0.5      #eV mu_c
-modo = 4
+kz_real = 0.13      #eV mu_c
+modo = 1
     
 # kzlim = 0.14
 
@@ -126,10 +126,18 @@ kt_imag2 = [] # Imag(kt)
 kt_real2 = [] # Real(kt)
 kt_abs2 = [] #modulo del k transversal |kt|
 
+lambbda_R_re = []
+lambbda_R_im = []
+
 mu2,epsi2 = 1,1
 for j in range(len(list_mu_opt)):
     hbaramu = list_mu_opt[j]
     omegac = omegac_opt[j]
+    lambbda = 2*np.pi/omegac
+    
+    factor_re = np.real(R/lambbda)
+    factor_im = np.imag(R/lambbda)
+    
     epsi1_imag = epsi1_imag_opt[j]
     epsi1 = re_epsi1 + 1j*epsi1_imag
     kt_value = kt(kz_real,omegac,epsi1,modo,R,hbaramu)    
@@ -151,6 +159,9 @@ for j in range(len(list_mu_opt)):
     kt_abs.append(np.abs(kt_value))
     kt_imag.append(kt_value.imag)
     kt_real.append(kt_value.real)
+    
+    lambbda_R_re.append(factor_re)
+    lambbda_R_im.append(factor_im)
     
 plt.figure(figsize=tamfig)
 plt.plot(list_mu_opt,kt_abs,'-r',lw=ms2,label=label_graph)
@@ -238,5 +249,34 @@ if paper == 1:
     plt.tight_layout()
 if save_graphs==1:
     plt.savefig('kt_imag_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
+
+
+plt.figure(figsize=tamfig)
+plt.plot(list_mu_opt,lambbda_R_re,'-m',lw=ms2,label=label_graph)
+if paper == 0:
+    plt.title(title2,fontsize=tamtitle)
+    plt.legend(loc='best',markerscale=ms,fontsize=tamlegend)
+    plt.grid(1)
+plt.ylabel('Re($R/\lambda$)',fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if paper == 1:
+    plt.tight_layout()
+if save_graphs==1:
+    plt.savefig('lambdaR_re_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
+
+plt.figure(figsize=tamfig)
+plt.plot(list_mu_opt,lambbda_R_im,'-m',lw=ms2,label=label_graph)
+if paper == 0:
+    plt.title(title2,fontsize=tamtitle)
+    plt.legend(loc='best',markerscale=ms,fontsize=tamlegend)
+    plt.grid(1)
+plt.ylabel('Im($R/\lambda$)',fontsize=tamletra,labelpad =labelpady)
+plt.xlabel(labelx,fontsize=tamletra,labelpad =labelpadx)
+plt.tick_params(labelsize = tamnum,pad = pad)
+if paper == 1:
+    plt.tight_layout()
+if save_graphs==1:
+    plt.savefig('lambdaR_imag_vs_mu_kz%.4f_%i.png'%(kz_real,modo), format='png', dpi = dpi)
     
 #%%
