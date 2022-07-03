@@ -56,3 +56,28 @@ def sigma(hbw,hbmu,hbgama):
 
 #%%
 
+def sigma_DL(hbw,hbmu,hbgama):
+    """
+    Parameters
+    ----------
+    hbw : energia = hbar*omega en eV
+    hbmu : potencial quimico del grafeno mu (en eV)
+    hbgama : collision frequency in eV 
+
+    Returns
+    -------
+    devuelve la conductividad del grafeno
+    del modelo drude lorentz (parte intra aproximada)
+    en unidades de e^2/hbar 
+	---> multiplicar despues por fine_structure*c (unidades gaussianas)
+    
+
+    """
+    
+#    c = 3*10**(14)                ### light velocity in micron/seg
+#    alfac = 1/137.0359            ### fine structure
+    
+    den = hbw + 1j*hbgama
+    num = 1j*hbmu/np.pi
+
+    return num/den
