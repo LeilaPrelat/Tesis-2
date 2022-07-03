@@ -109,7 +109,7 @@ print('Definir parametros del problema')
 re_epsi1 = 3.9
 R = 0.5              #micrones
 list_kz = [0,0.0001,0.05,0.1,0.135,0.14,0.5] 
-list_kz = [0.1] 
+list_kz = [0.2] 
 list_modos = [1,2,3,4]
 
 path_load = path_basic + '/re_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
