@@ -109,7 +109,7 @@ print('Definir parametros del problema')
 re_epsi1 = 3.9
 R = 0.5              #micrones
 list_kz = [0,0.0001,0.05,0.1,0.135,0.14,0.5] 
-list_kz = [0.2] 
+list_kz = [0.5] 
 list_modos = [1,2,3,4]
 
 path_load = path_basic + '/re_epsi1_%.2f_vs_mu/R_%.2f' %(re_epsi1,R)
@@ -170,7 +170,7 @@ for kz in list_kz:
         if save_graphs==1:
             plt.tight_layout()
             os.chdir(path_load)
-            plt.savefig('Im_epsi1_vs_mu_kz%.4f_modo%i.png'%(kz,modo) ,format = 'png',dpi = dpi)
+            plt.savefig('Im_epsi1_vs_mu_kz%.4f_modo%i_compare_Eq_plano.png'%(kz,modo) ,format = 'png',dpi = dpi)
             
         labely = '$\omega/c$ [$\mu$m$^{-1}$]'
         
@@ -198,6 +198,6 @@ for kz in list_kz:
         if save_graphs==1:
             plt.tight_layout()
             os.chdir(path_load)
-            plt.savefig('omegac_vs_mu_kz%.4f_modo%i.png'%(kz,modo) ,format = 'png',dpi = dpi)
+            plt.savefig('omegac_vs_mu_kz%.4f_modo%i_compare_Eq_plano.png'%(kz,modo) ,format = 'png',dpi = dpi)
 
 #%%

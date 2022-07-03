@@ -64,11 +64,11 @@ except ModuleNotFoundError:
 print('Definir parametros del problema')
 
 re_epsi1 = 3.9
-R = 0.05              #micrones
-kz_real = 0.05     
-modo = 4
+R = 0.5              #micrones
+kz_real = 0.2    
+modo = 2
     
-list_mu = np.linspace(0.3,0.9,6001) 
+list_mu = np.linspace(0.3,0.9,601) 
 kzlim = 0.132
 
 #%%
@@ -170,7 +170,7 @@ if save_data_opt==1:
     tabla = np.transpose(tabla)
     info = '.Opt det con kz, R=%.2f \mum, Re(epsi1)=%.2f, kz = %.4f 1/\mum' %(R,re_epsi1,kz_real) 
     header1 = 'mu [eV]     Omega/c [1/micrones]    Im(epsi1)     Eq(det)' + info + ', ' + name_this_py
-    np.savetxt('opt_det_conkz' + labeltxt, tabla, fmt='%1.11e', delimiter='\t', header = header1)
+    np.savetxt('opt_det_conkz' + labeltxt + '.txt', tabla, fmt='%1.11e', delimiter='\t', header = header1)
 
 #%%
 

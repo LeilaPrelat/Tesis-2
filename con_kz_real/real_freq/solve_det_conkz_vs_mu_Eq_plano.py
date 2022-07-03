@@ -65,8 +65,8 @@ print('Definir parametros del problema')
 
 re_epsi1 = 3.9
 R = 0.5              #micrones
-kz_real = 0.14  
-modo = 4   
+kz_real = 0.3  
+modo = 4  
     
 list_mu = np.linspace(0.3,0.9,6001) 
 kzlim = 0.132
